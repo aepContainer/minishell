@@ -13,4 +13,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+typedef struct s_mshell
+{
+}	t_mshell;
+
+
 #endif
