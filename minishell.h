@@ -21,4 +21,6 @@ typedef struct s_mshell
 	char	**history;
 }	t_mshell;
 
+void	free_and_exit(t_mshell *mshell);
+
 #endif
