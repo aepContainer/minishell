@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define PROMPT "minishell >> "
+
 typedef struct s_mshell
 {
 	char	**envar;
