@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 17:50:55 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/19 17:31:04 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-typedef struct s_mshell
+char	*ft_strchr(const char *s, int c)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	char	*rtrn;
+	int		i;
 
-#endif
+	i = 0;
+	rtrn = (char *) s;
+	while (rtrn[i])
+	{
+		if (rtrn[i] == (char) c)
+			return (rtrn + i);
+		i++;
+	}
+	if (rtrn[i] == (char) c)
+		return (rtrn + i);
+	return (0);
+}

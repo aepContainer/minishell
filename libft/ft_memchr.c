@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:41:17 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/21 17:40:46 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+void	*ft_memchr(const void *s, int c, size_t len)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	t_uc	*cpys;
+	size_t	i;
 
-#endif
+	cpys = (t_uc *) s;
+	i = 0;
+	while (i < len)
+	{
+		if (cpys[i] == (t_uc) c)
+			return ((void *)(cpys + i));
+		i++;
+	}
+	return (0);
+}

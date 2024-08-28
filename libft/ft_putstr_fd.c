@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 20:39:54 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:43 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+void	ft_putstr_fd(char *s, int fd)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	i;
 
-#endif
+	i = 0;
+	while (s[i])
+	{
+		ft_putchar_fd(s[i], fd);
+		i++;
+	}
+}

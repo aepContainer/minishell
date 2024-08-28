@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:09:04 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:13 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	i;
+	size_t	j;
+	size_t	nlen;
 
-#endif
+	if (!*needle)
+		return ((char *) haystack);
+	i = 0;
+	nlen = ft_strlen(needle);
+	while (haystack[i] && nlen <= len)
+	{
+		j = 0;
+		if (haystack[i] == needle[j] && !ft_strncmp(haystack + i, needle, nlen))
+			return ((char *)(haystack + i));
+		len--;
+		i++;
+	}
+	return (0);
+}

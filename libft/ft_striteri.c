@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 20:37:47 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:33 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+void	ft_striteri(char *s, void (*f)(t_ui, char *))
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	slen;
+	size_t	i;
 
-#endif
+	slen = ft_strlen(s);
+	i = 0;
+	while (s[i])
+	{
+		f((t_ui) i, &s[i]);
+		i++;
+	}
+}

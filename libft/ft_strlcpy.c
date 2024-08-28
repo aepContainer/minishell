@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:14:08 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:26 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	i;
+	size_t	lensrc;
 
-#endif
+	i = 0;
+	lensrc = ft_strlen(src);
+	while (src[i] && i + 1 < dstsize)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (dstsize != 0)
+		dst[i] = 0;
+	return (lensrc);
+}

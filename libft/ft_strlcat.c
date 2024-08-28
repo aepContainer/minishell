@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:15:57 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:28 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	lendst;
+	size_t	lensrc;
+	size_t	i;
 
-#endif
+	lendst = ft_strlen(dst);
+	lensrc = ft_strlen(src);
+	if (dstsize <= lendst)
+		return (dstsize + lensrc);
+	i = 0;
+	while (src[i] && lendst + i + 1 < dstsize)
+	{
+		dst[lendst + i] = src[i];
+		i++;
+	}
+	dst[lendst + i] = 0;
+	return (lendst + lensrc);
+}

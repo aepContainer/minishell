@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/09 16:35:35 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/10 18:44:10 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	t_list	*temp;
 
-#endif
+	if (!new)
+		return ;
+	if (!lst || !*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	temp = *lst;
+	temp = ft_lstlast(temp);
+	temp->next = new;
+}

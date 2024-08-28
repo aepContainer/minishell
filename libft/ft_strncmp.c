@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:03:25 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:16 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	size_t	i;
 
-#endif
+	i = 0;
+	while (s1[i] && s2[i] && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((t_uc) s1[i] - (t_uc) s2[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return ((t_uc) s1[i] - (t_uc) s2[i]);
+}

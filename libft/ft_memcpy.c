@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:54:10 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:55 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	char	*cpydst;
+	char	*cpysrc;
+	size_t	i;
 
-#endif
+	if (!dst && !src)
+		return (dst);
+	cpydst = (char *) dst;
+	cpysrc = (char *) src;
+	i = 0;
+	while (i < n)
+	{
+		cpydst[i] = cpysrc[i];
+		i++;
+	}
+	dst = (void *) cpydst;
+	return (dst);
+}

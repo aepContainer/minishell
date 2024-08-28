@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/05 18:46:30 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:00:57 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	t_uc	*cpys1;
+	t_uc	*cpys2;
+	size_t	i;
 
-#endif
+	cpys1 = (t_uc *) s1;
+	cpys2 = (t_uc *) s2;
+	i = 0;
+	while (i < n)
+	{
+		if (cpys1[i] != cpys2[i])
+			return (cpys1[i] - cpys2[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return (cpys1[i] - cpys2[i]);
+}

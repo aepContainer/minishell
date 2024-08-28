@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/09 16:35:14 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/15 16:01:03 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+t_list	*ft_lstnew(void *content)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	t_list	*rtrn;
 
-#endif
+	rtrn = malloc(sizeof(t_list));
+	if (!rtrn)
+		return (0);
+	rtrn->content = content;
+	rtrn->next = 0;
+	return (rtrn);
+}

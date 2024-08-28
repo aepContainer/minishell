@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Created: 2023/12/09 16:35:20 by apalaz            #+#    #+#             */
+/*   Updated: 2023/12/10 17:14:25 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-typedef struct s_mshell
+int	ft_lstsize(t_list *lst)
 {
-	char	**envar;
-	char	**history;
-}	t_mshell;
+	int	counted;
 
-#endif
+	if (!lst)
+		return (0);
+	counted = 0;
+	while (lst->next)
+	{
+		counted++;
+		lst = lst->next;
+	}
+	return (counted + 1);
+}
