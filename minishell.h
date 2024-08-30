@@ -6,7 +6,7 @@
 /*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 16:41:48 by apalaz            #+#    #+#             */
-/*   Updated: 2024/08/19 16:42:04 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/08/30 19:14:50 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 
 typedef struct s_mshell
 {
-	char	**envar;
-	char	**history;
+	char		**envar;
+	char		**history;
+	ParseTree	*parsed;
 }	t_mshell;
 
 void	free_and_exit(t_mshell *mshell);
