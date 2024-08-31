@@ -36,5 +36,6 @@ t_ParseTree	*parser(int argc, char **argv, t_mshell *mshell)
 	mshell->prompt = get_prompt(argc, argv);
 	if (!mshell->prompt)
 		return (NULL);
-	// Quote Check
+	if (ctrl_quote(mshell->prompt))
+		return (NULL);// Error Control!!
 }
