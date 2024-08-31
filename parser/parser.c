@@ -1,26 +1,40 @@
 #include "../minishell.h"
 
-t_ParseTree	*parser(int argc, char **argv)
+static char	*get_prompt(int argc, char **argv)
+{
+	char	*rtrn;
+	char	*temp;
+	int		i;
+
+	rtrn = ft_strdup(argv[1]);
+	if (!rtrn)
+		return (NULL);
+	i = 1;
+	while (++i < argc)
+	{
+		temp = rtrn;
+		rtrn = ft_strjoin(temp, argv[i]);
+		free(temp);
+		if (!rtrn)
+			return (NULL);
+		temp = rtrn;
+		rtrn = ft_strjoin(temp, " ");
+		free(temp);
+		if (!rtrn)
+			return (NULL);
+	}
+	return (rtrn);
+}
+
+t_ParseTree	*parser(int argc, char **argv, t_mshell *mshell)
 {
 	t_ParseTree	*rtrn;
 	int			i;
 
-	if (!argc)
-		return (NULL);
-	argv = space_ctrl(argc, argv);// (cmd) -> ( cmd )
 	if (!argv)
 		return (NULL);
-	rtrn = ft_calloc(1, sizeof(t_ParseTree));
-	if (!rtrn)
+	mshell->prompt = get_prompt(argc, argv);
+	if (!mshell->prompt)
 		return (NULL);
-	// job nasıl elde edilir? Entegre edilecek!
-	i = -1;
-	while (++i < argc)
-	{
-		rtrn->this_node->type = lexer(argv[i]);
-		if (rtrn->this_node->type == CMD)
-			rtrn->this_node->cmd = ft_strdup(argv[i]);
-		else if (rtrn->this_node->type == ARG)
-			rtrn->this_node->arg = ft_strdup(argv[i]);
-	}
+	// Quote Check
 }

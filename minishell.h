@@ -20,6 +20,7 @@
 
 typedef struct s_mshell
 {
+	char		*prompt;
 	char		**envar;
 	char		**history;
 	char		nop;// number of pipe
