@@ -13,13 +13,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft/libft.h"
+# include "parser/parser.h"
+# include "stdlib.h"
+
 # define PROMPT "minishell >> "
 
 typedef struct s_mshell
 {
 	char		**envar;
 	char		**history;
-	ParseTree	*parsed;
+	char		nop;// number of pipe
+	t_ParseTree	*parsed;
 }	t_mshell;
 
 void	free_and_exit(t_mshell *mshell);
