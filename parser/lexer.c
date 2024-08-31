@@ -14,7 +14,7 @@ char	lexer(char *str)
 		|| !ft_strncmp(str, "unset", len) ||!ft_strncmp(str, "env", len)
 		|| !ft_strncmp(str, "exit", len))
 		return (CMD);
-	else if (str[0] == '\'' || str[0] == '\"')
+	else if (str[0] == '\'' || str[0] == '\"' || !ft_strncmp(str, "-n", len))
 		return (ARG);
 	else if (str[0] == '|' && !str[1])
 		return (PIPE);

@@ -1,6 +1,8 @@
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "libft/libft.h"
+
 # define NONE 0
 # define CMD 1
 # define ARG 2
