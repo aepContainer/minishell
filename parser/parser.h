@@ -11,7 +11,7 @@
 # define PTHSS 5
 # define ENVAR 6
 
-typedef struct s_ParseTree t_ParseTree;
+typedef struct s_parse_tree t_parse_tree;
 typedef struct s_node		t_node;
 
 struct s_node
@@ -22,10 +22,10 @@ struct s_node
 	char	type;
 };
 
-struct s_ParseTree
+struct s_parse_tree
 {
-	t_node		*this_node;
-	t_ParseTree	*next;
+	t_node			*this_node;
+	t_parse_tree	*next;
 };
 
 char	lexer(char *str);

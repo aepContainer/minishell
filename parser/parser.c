@@ -26,9 +26,12 @@ static char	*get_prompt(int argc, char **argv)
 	return (rtrn);
 }
 
-t_ParseTree	*parser(int argc, char **argv, t_mshell *mshell)
+char	ctrl_quote(char *prompt)
+{}
+
+t_parse_tree	*parser(int argc, char **argv, t_mshell *mshell)
 {
-	t_ParseTree	*rtrn;
+	t_parse_tree	*rtrn;
 	int			i;
 
 	if (!argv)
@@ -38,4 +41,7 @@ t_ParseTree	*parser(int argc, char **argv, t_mshell *mshell)
 		return (NULL);
 	if (ctrl_quote(mshell->prompt))
 		return (NULL);// Error Control!!
+	rtrn = ft_calloc(1, sizeof(t_parse_tree));
+	if (!rtrn)
+		return (NULL);
 }
