@@ -1,8 +1,5 @@
 https://github.com/aepContainer/minishell.git
 
-Girdiyi Grupladım.
-Gruplanan girdide pipe varsa multipleExe'ye yolladım, yoksa SingleExe'ye yolladım.
-
 heredoc'ta cat kendinden önceki çıktıları alır, hafızada tutar,
 kendi çıktısını üzerine ekleyip çıktıyı basar.
 
@@ -10,5 +7,15 @@ lexer -> parser -> executor
 
 ParseTree :
 
+this_node;			//	job
+	child_node;		//	cmd / arg
+next;
 
+PseudoCode :
+
+Girdiyi al ve parse et.
+Pipe'a/lara göre işle.
+Heredoc varsa işle.
+EnvVar varsa expand et.
+Executor ile işleyip sonucu al ve ekrana yaz.
 
