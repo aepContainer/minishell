@@ -14,9 +14,9 @@
 # define MINISHELL_H
 
 # include "parser/parser.h"
+# include "error/error.h"
 # include "stdlib.h"
 # include "unistd.h"
-# include "errno.h"
 
 # define PROMPT "minishell >> "
 
@@ -29,6 +29,6 @@ typedef struct s_mshell
 	t_parse_tree	*parsed;
 }	t_mshell;
 
-void	free_and_exit(t_mshell *mshell);
+void	free_mshell(t_mshell *mshell);
 
 #endif

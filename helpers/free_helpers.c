@@ -1,6 +1,18 @@
 #include "../minishell.h"
 
-void	free_and_exit(t_mshell *mshell)
+void	free_args(char **args)
+{
+	int	i;
+
+	if (!args)
+		return ;
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
+}
+
+void	free_mshell(t_mshell *mshell)
 {
 	if (!mshell)
 		return ;

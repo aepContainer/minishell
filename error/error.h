@@ -1,7 +1,7 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-# include "../minishell.h"
+# include "errno.h"
 
 # define ERR_CMD 10
 // böyle bir.ok tanımlama

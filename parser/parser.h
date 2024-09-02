@@ -13,22 +13,36 @@
 
 typedef struct s_parse_tree t_parse_tree;
 typedef struct s_node		t_node;
+typedef union u_cnt			t_cnt;
+
+union u_cnt
+{
+	char	*cmd;
+	char	**job;
+	char	**args;
+	char	*envar;
+	char	pipe;
+	char	heredoc;
+};
 
 struct s_node
 {
-	char	**job;// job nasıl elde edilir?
-	char	*cmd;
-	char	*arg;
 	char	type;
+	t_cnt	content;
+	t_node	**child_nodes;// cmd / arg
+	t_node	*next;
 };
 
 struct s_parse_tree
 {
 	t_node			*this_node;// job
-	t_node			**child_node;// cmd / arg
 	t_parse_tree	*next;
 };
 
-char	lexer(char *str);
+void	add_arg(char ***args, char *arg);
+
+char			lexer(char *str);
+
+t_parse_tree	*parser(t_mshell *mshell);
 
 #endif

@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-char	ctrl_quote(char *prompt)
+static char	ctrl_quote(char *prompt)
 {
 	char	state;
 	int		i;
@@ -17,26 +17,39 @@ char	ctrl_quote(char *prompt)
 	return (state);
 }
 
-void	tokenize(t_parse_tree *rtrn, t_mshell *mshell)
+static t_node	*new_token(char *input, char type)
 {
-	t_node	*temp;// hem this_node için hem de child_node için
-	char	**splitted;
-	int		i;
-// mshell->nop hesapla!
-	splitted = ft_split(mshell->prompt, ' ');
-	if (!splitted)
-		return ;
+	t_node	*rtrn;
+
+	if (type == -1)
+		return (NULL);
+	rtrn = ft_calloc(1, sizeof(t_node));
+	if (!rtrn)
+		return (NULL);
+	rtrn->type = type;
+	if (rtrn->type == CMD)
+		rtrn->content.cmd = input;
+	else if (rtrn->type == ARG)
+		add_arg(&rtrn->content.args, input);
+//	yapıdaki değerlere değer atamaya devam et!
+	if (ft_strnstr(input, "|", ft_strlen(input)))
+		rtrn->content.pipe = 1;
+	return (rtrn);
 }
+
+static t_node	*tokenize(t_parse_tree *rtrn, char *prompt)
+{}
 
 t_parse_tree	*parser(t_mshell *mshell)
 {
 	t_parse_tree	*rtrn;
+	t_node			*input_list;
 	int				i;
 
 	if (ctrl_quote(mshell->prompt))
-		return (NULL);// Error Control!!
+		return (NULL);// ErrorPrint!
 	rtrn = ft_calloc(1, sizeof(t_parse_tree));
 	if (!rtrn)
 		return (NULL);
-	tokenize(rtrn, mshell->prompt);
+	input_list = tokenize(rtrn, mshell->prompt);
 }

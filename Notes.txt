@@ -7,6 +7,7 @@ lexer -> parser -> executor
 
 ParseTree :
 
+//	pipe'a/lara göre
 this_node;			//	job
 	child_node;		//	cmd / arg
 next;
