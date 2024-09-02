@@ -3,10 +3,11 @@
 void	free_and_exit(t_mshell *mshell)
 {
 	if (!mshell)
-		exit();
+		return ;
 	if (mshell->envar)
 		free_str_arr(mshell->envar);
 	if (mshell->history)
 		free_str_arr(mshell->history);
-	exit();
+	if (mshell->prompt)
+		free(mshell->prompt);
 }

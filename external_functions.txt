@@ -1,18 +1,16 @@
-readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
-add_history,
-printf
-malloc, free
-write, access, open, read, close
-fork, wait, waitpid, wait3, wait4
-signal, sigaction, sigemptyset, sigaddset, kill
-getcwd, chdir, opendir, readdir, closedir
-stat, lstat, fstat
-unlink
-execve
-dup, dup2, pipe
-strerror, perror
-isatty, ttyname, ttyslot
-ioctl
-getenv
-tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-exit
+readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history		readline/readline.h		readline/history.h
+printf																						stdio.h
+malloc, free																				stdlib.h
+write, access, open, read, close															unistd.h				fcntl.h
+fork, wait, waitpid, wait3, wait4															sys/wait.h			sys/resource.h			opt : sys/types.h	
+signal, sigaction, sigemptyset, sigaddset, kill												signal.h
+getcwd, chdir, opendir, readdir, closedir													dirent.h
+stat, lstat, fstat																			sys/stat.h
+unlink, execve																				unistd.h
+dup, dup2, pipe																				unistd.h
+strerror, perror																			unistd.h			errno.h
+isatty, ttyname, ttyslot																	unistd.h			utmp.h
+ioctl																						sys/ioctl.h
+getenv																						stdlib.h
+tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs						termios.h			termcap.h
+exit																						stdlib.h

@@ -19,10 +19,10 @@ char	ctrl_quote(char *prompt)
 
 void	tokenize(t_parse_tree *rtrn, t_mshell *mshell)
 {
-	t_node	*temp;
+	t_node	*temp;// hem this_node için hem de child_node için
 	char	**splitted;
 	int		i;
-
+// mshell->nop hesapla!
 	splitted = ft_split(mshell->prompt, ' ');
 	if (!splitted)
 		return ;
