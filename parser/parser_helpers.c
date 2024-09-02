@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-t_node	*new_token(char *input, char type)
+t_node	*new_node(char *input, char type)
 {
 	t_node	*rtrn;
 

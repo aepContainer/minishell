@@ -38,7 +38,7 @@ struct s_tree
 	t_tree	*next;
 };
 
-t_node	*new_token(char *input, char type);
+t_node	*new_node(char *input, char type);
 void	add_arg(char ***args, char *arg);
 
 char	lexer(char *str);

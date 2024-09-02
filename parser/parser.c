@@ -23,8 +23,7 @@ static t_node	*tokenize(t_tree *rtrn, char *prompt)
 t_tree	*parser(t_mshell *mshell)
 {
 	t_tree	*rtrn;
-	t_node			*input_list;
-	int				i;
+	t_node	*input_list;
 
 	if (ctrl_quote(mshell->prompt))
 		return (NULL);// ErrorPrint!

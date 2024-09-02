@@ -4,6 +4,9 @@
 # include "errno.h"
 
 # define ERR_CMD 10
-// böyle birçok tanımlama
+# define ERR_ALLOC 11
+// Böyle birçok tanımlama yap
+
+void	print_err(const char *error, char err_no);
 
 #endif
