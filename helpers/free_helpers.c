@@ -23,3 +23,42 @@ void	free_mshell(t_mshell *mshell)
 	if (mshell->prompt)
 		free(mshell->prompt);
 }
+
+void	free_tree(t_tree *tree)
+{
+	int	i;
+
+	if (!tree)
+		return ;
+	while (tree)
+	{
+		if (tree->job)
+			free_args(tree->job);
+		i = -1;
+		if (tree->elements)
+		{
+			while (tree->elements[++i])
+				free_node(tree->elements[i]);
+			free(tree->elements);
+		}
+		free(tree);
+		tree = tree->next;
+	}
+}
+
+void	free_node(t_node *node_list)
+{
+	if (!node_list)
+		return ;
+	while (node_list)
+	{
+		if (node_list->content.args)
+			free_args(node_list->content.args);
+		if (node_list->content.cmd)
+			free(node_list->content.cmd);
+		if (node_list->content.envar)
+			free(node_list->content.envar);
+		free(node_list);
+		node_list = node_list->next;
+	}
+}

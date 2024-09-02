@@ -14,9 +14,9 @@
 
 int	main(void)
 {
-	t_parse_tree	*parsed;
-	t_mshell		*mshell;
-	char			*prompt;
+	t_tree		*parsed;
+	t_mshell	*mshell;
+	char		*prompt;
 
 	prompt = get_prompt();
 	if (!prompt)

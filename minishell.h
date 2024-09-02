@@ -22,11 +22,11 @@
 
 typedef struct s_mshell
 {
-	char			*prompt;
-	char			**envar;
-	char			**history;
-	char			nop;// number of pipe
-	t_parse_tree	*parsed;
+	char	*prompt;
+	char	**envar;
+	char	**history;
+	char	nop;// number of pipe
+	t_tree	*parsed;
 }	t_mshell;
 
 void	free_mshell(t_mshell *mshell);

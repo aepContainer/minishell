@@ -4,6 +4,6 @@
 # include "errno.h"
 
 # define ERR_CMD 10
-// böyle bir.ok tanımlama
+// böyle birçok tanımlama
 
 #endif
