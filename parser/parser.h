@@ -25,6 +25,7 @@ struct s_node
 struct s_parse_tree
 {
 	t_node			*this_node;
+	t_node			**child_node;
 	t_parse_tree	*next;
 };
 

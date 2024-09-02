@@ -1,47 +1,42 @@
 #include "../minishell.h"
 
-static char	*get_prompt(int argc, char **argv)
+char	ctrl_quote(char *prompt)
 {
-	char	*rtrn;
-	char	*temp;
+	char	state;
 	int		i;
 
-	rtrn = ft_strdup(argv[1]);
-	if (!rtrn)
-		return (NULL);
-	i = 1;
-	while (++i < argc)
+	state = 0;
+	i = -1;
+	while (prompt[++i])
 	{
-		temp = rtrn;
-		rtrn = ft_strjoin(temp, argv[i]);
-		free(temp);
-		if (!rtrn)
-			return (NULL);
-		temp = rtrn;
-		rtrn = ft_strjoin(temp, " ");
-		free(temp);
-		if (!rtrn)
-			return (NULL);
+		if (!state && (prompt[i] == '\'' || prompt[i] == '\"'))
+			state = prompt[i];
+		else if (state && (prompt[i] == '\'' || prompt[i] == '\"'))
+			state = 0;
 	}
-	return (rtrn);
+	return (state);
 }
 
-char	ctrl_quote(char *prompt)
-{}
+void	tokenize(t_parse_tree *rtrn, t_mshell *mshell)
+{
+	t_node	*temp;
+	char	**splitted;
+	int		i;
 
-t_parse_tree	*parser(int argc, char **argv, t_mshell *mshell)
+	splitted = ft_split(mshell->prompt, ' ');
+	if (!splitted)
+		return ;
+}
+
+t_parse_tree	*parser(t_mshell *mshell)
 {
 	t_parse_tree	*rtrn;
-	int			i;
+	int				i;
 
-	if (!argv)
-		return (NULL);
-	mshell->prompt = get_prompt(argc, argv);
-	if (!mshell->prompt)
-		return (NULL);
 	if (ctrl_quote(mshell->prompt))
 		return (NULL);// Error Control!!
 	rtrn = ft_calloc(1, sizeof(t_parse_tree));
 	if (!rtrn)
 		return (NULL);
+	tokenize(rtrn, mshell->prompt);
 }
