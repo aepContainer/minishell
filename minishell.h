@@ -30,5 +30,8 @@ typedef struct s_mshell
 }	t_mshell;
 
 void	free_mshell(t_mshell *mshell);
+void	free_node(t_node *node_list);
+void	free_tree(t_tree *tree);
+void	free_args(char **args);
 
 #endif

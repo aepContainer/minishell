@@ -2,12 +2,10 @@
 
 char	lexer(char *str)
 {
-	int	i;
 	int	len;
 
 	if (!str)
 		return (-1);
-	i = -1;
 	len = ft_strlen(str);
 	if (!ft_strncmp(str, "echo", len) || !ft_strncmp(str, "cd", len)
 		|| !ft_strncmp(str, "pwd", len) || !ft_strncmp(str, "export", len)
@@ -18,8 +16,9 @@ char	lexer(char *str)
 		return (ARG);
 	else if (str[0] == '|' && !str[1])
 		return (PIPE);
-	else if (str[0] == '(' && !str[1])
-		return (PTHSS);
+	else if (((str[0] == '<' && str[1] == '<')
+			|| str[0] == '>' && str[1] == '>') && !str[2])
+		return (HDOC);
 	else if (str[0] == '$')
 		return (ENVAR);
 	return (NONE);

@@ -8,7 +8,6 @@
 # define ARG 2
 # define PIPE 3
 # define HDOC 4
-# define PTHSS 5
 # define ENVAR 6
 
 typedef struct s_tree	t_tree;
@@ -38,7 +37,8 @@ struct s_tree
 	t_tree	*next;
 };
 
-t_node	*new_node(char *input, char type);
+char	add_node_to_tree(t_mshell *mshell, t_tree *tree, t_node *node);
+char	inject_jobs(t_tree *tree, t_node *node);
 void	add_arg(char ***args, char *arg);
 
 char	lexer(char *str);
