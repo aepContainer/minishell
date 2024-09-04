@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft/libft.h"
 # include "parser/parser.h"
 # include "error/error.h"
 # include "stdlib.h"
