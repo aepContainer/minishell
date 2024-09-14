@@ -51,12 +51,12 @@ static t_node	*tokenize(char *prompt)
 	{
 		temp->next = ft_calloc(1, sizeof(t_node));
 		if (!temp->next)
-			return (free(splitted), free_node(rtrn), NULL);
+			return (free_args(splitted), free_node(rtrn), NULL);
 		temp->next->type = lexer(splitted[i]);
 		temp = temp->next;
 		get_node_content(temp, prompt);
 	}
-	return (rtrn);
+	return (free_args(splitted), rtrn);
 }
 
 t_tree	*parser(t_mshell *mshell)

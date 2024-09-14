@@ -33,13 +33,16 @@ void	free_tree(t_tree *tree)
 	while (tree)
 	{
 		if (tree->job)
-			free_args(tree->job);
-		i = -1;
-		if (tree->elements)
 		{
-			while (tree->elements[++i])
-				free_node(tree->elements[i]);
-			free(tree->elements);
+			if (tree->job->job)
+				free_args(tree->job->job);
+			if (tree->job->elements)
+			{
+				i = -1;
+				while (tree->job->elements[++i])
+					free_node(tree->job->elements[i]);
+				free(tree->job->elements);
+			}
 		}
 		free(tree);
 		tree = tree->next;

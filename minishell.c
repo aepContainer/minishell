@@ -28,4 +28,5 @@ int	main(void)
 	if (!parsed)
 		return (free_mshell(mshell), free(prompt), -1);// ErrorPrint!
 	executor(parsed);
+	return (0);
 }

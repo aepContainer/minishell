@@ -15,14 +15,14 @@ static char	add_node_to_tree_helper(t_tree *tree, t_node *node)
 		temp = temp->next;
 		len++;
 	}
-	tree->elements = ft_calloc(len + 1, sizeof(t_node *));
-	if (!tree->elements)
+	tree->job->elements = ft_calloc(len + 1, sizeof(t_node *));
+	if (!tree->job->elements)
 		return (-1);
 	temp = node;
 	i = -1;
 	while (++i < len)
 	{
-		tree->elements[i] = temp;
+		tree->job->elements[i] = temp;
 		temp = temp->next;
 	}
 	return (0);

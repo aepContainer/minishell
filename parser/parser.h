@@ -11,8 +11,10 @@
 # define ENVAR 6
 
 typedef struct s_tree	t_tree;
+typedef struct s_job	t_job;
 typedef struct s_node	t_node;
 typedef union u_cnt		t_cnt;
+
 
 union u_cnt
 {
@@ -30,10 +32,15 @@ struct s_node
 	t_node	*next;
 };
 
-struct s_tree
+struct s_job
 {
 	char	**job;
 	t_node	**elements;
+};
+
+struct s_tree
+{
+	t_job	*job;
 	t_tree	*next;
 };
 
