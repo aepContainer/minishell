@@ -23,22 +23,24 @@ char	process(t_mshell *mshell)
 {
 	mshell->prompt = read_prompt();
 	if (!mshell->prompt)
-		return (free(mshell), -1);
+		return (-1);
 	//parser(mshell);
-	ctrl_builtins(mshell->prompt);
+	if (ctrl_builtins(mshell->prompt))
+		return (-1);
 	//executor(mshell);
+	return (0);
 }
 
 int main(void)
 {
 	t_mshell	*mshell;
-	char		**envp;
+	//char		**envp;
 
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (!mshell)
 		return (-1);
 	while (1)
-		if (!process(mshell))
+		if (process(mshell))
 			break ;
 	//quitting(mshell);
 	return (0);
