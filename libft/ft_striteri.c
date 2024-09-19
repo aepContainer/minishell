@@ -14,10 +14,8 @@
 
 void	ft_striteri(char *s, void (*f)(t_ui, char *))
 {
-	size_t	slen;
 	size_t	i;
 
-	slen = ft_strlen(s);
 	i = 0;
 	while (s[i])
 	{
