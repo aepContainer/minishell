@@ -15,7 +15,6 @@ typedef struct s_job	t_job;
 typedef struct s_node	t_node;
 typedef union u_cnt		t_cnt;
 
-
 union u_cnt
 {
 	char	*cmd;
@@ -40,7 +39,8 @@ struct s_job
 
 struct s_tree
 {
-	t_job	*job;
+	t_job	**job;
+	int		noj;//	number of jobs
 	t_tree	*next;
 };
 
