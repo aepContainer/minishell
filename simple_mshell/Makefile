@@ -8,12 +8,15 @@ RLINE_FLAG = -lreadline
 
 FLAGS = $(LFT_FLAGS) $(RLINE_FLAG)
 
-SRCS = mshell.c builtins.c
+SRCS = mshell.c builtins_1.c
 
 all: $(NAME)
 
-$(NAME): $(SRCS)
+$(NAME): $(LIBFT) $(SRCS)
 	cc $(CFLAGS) $(SRCS) $(FLAGS) -o $(NAME)
+
+$(LIBFT):
+	make -C $(LFT_PATH)
 
 clean:
 	$(RM) $(NAME)
