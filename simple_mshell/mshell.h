@@ -5,7 +5,12 @@
 # include "readline/readline.h"
 # include "readline/history.h"
 # include "unistd.h"
+# include "fcntl.h"
+# include "errno.h"
+# include "utmp.h"
 # include "stdio.h"
+# include "signal.h"
+# include "dirent.h"
 
 # define PROMPT "shell shock >> "
 
