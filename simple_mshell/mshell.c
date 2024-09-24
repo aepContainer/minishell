@@ -2,7 +2,8 @@
 
 char	ctrl_builtins(char	*prompt)
 {
-	if (!ft_strncmp(prompt, "pwd", ft_strlen(prompt)))
+	if (!ft_strncmp(prompt, "pwd", ft_strlen(prompt))
+			&& ft_strlen(prompt) == 3)
 		return (pwd());
 	return (-1);
 }
@@ -28,7 +29,7 @@ char	process(t_mshell *mshell)
 	if (ctrl_builtins(mshell->prompt))
 		return (-1);
 	//executor(mshell);
-	return (0);
+	return (free(mshell->prompt), 0);
 }
 
 int main(void)
