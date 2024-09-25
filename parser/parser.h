@@ -2,13 +2,15 @@
 # define PARSER_H
 
 # include "libft/libft.h"
+# include "minishell.h"
 
 # define NONE 0
 # define CMD 1
-# define ARG 2
-# define PIPE 3
-# define HDOC 4
-# define ENVAR 6
+# define BLTNS 2
+# define ARG 3
+# define ENVAR 4
+# define PIPE 5
+# define HDOC 6
 
 typedef struct s_tree	t_tree;
 typedef struct s_job	t_job;

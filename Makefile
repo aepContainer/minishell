@@ -1,4 +1,4 @@
-NAME = mshell
+NAME = minishell
 CFLAGS = -Wall -Werror -Wextra
 
 LFT_PATH = ../libft/
@@ -8,7 +8,7 @@ RLINE_FLAG = -lreadline
 
 FLAGS = $(LFT_FLAGS) $(RLINE_FLAG)
 
-SRCS = mshell.c builtins_1.c
+SRCS = minishell.c builtins_1.c
 
 all: $(NAME)
 
