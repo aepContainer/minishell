@@ -1,4 +1,4 @@
-NAME = minishell
+nAME = minishell
 CFLAGS = -Wall -Werror -Wextra
 
 LFT_PATH = ../libft/
