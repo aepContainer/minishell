@@ -1,7 +1,7 @@
 NAME = minishell
 CFLAGS = -Wall -Werror -Wextra
 
-LFT_PATH = ../libft/
+LFT_PATH = libft/
 LFT_FLAGS = -L $(LFT_PATH) -lft
 
 RLINE_FLAG = -lreadline

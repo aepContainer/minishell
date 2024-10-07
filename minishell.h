@@ -13,11 +13,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
 # include "parser/parser.h"
 # include "error/error.h"
 # include "stdlib.h"
 # include "unistd.h"
+# include "readline/readline.h"
+# include "readline/history.h"
 
 # define PROMPT "minishell >> "
 
@@ -34,5 +35,7 @@ void	free_mshell(t_mshell *mshell);
 void	free_node(t_node *node_list);
 void	free_tree(t_tree *tree);
 void	free_args(char **args);
+
+char	pwd(void);
 
 #endif

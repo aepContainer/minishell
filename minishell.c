@@ -27,9 +27,13 @@ static char	*read_prompt(void)
 	rtrn = readline(PROMPT);
 	if (!rtrn)
 		return (NULL);
-	if (*rtrn)
-		add_history(rtrn);
-	return (rtrn);
+	while (!*rtrn)
+	{
+		rtrn = readline(PROMPT);
+		if (!rtrn)
+			return (NULL);
+	}
+	return (add_history(rtrn), rtrn);
 }
 
 char	process(t_mshell *mshell)

@@ -1,4 +1,4 @@
-#include "mshell.h"
+#include "minishell.h"
 
 char	pwd(void)
 {

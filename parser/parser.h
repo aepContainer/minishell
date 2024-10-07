@@ -1,8 +1,7 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "libft/libft.h"
-# include "minishell.h"
+# include "../libft/libft.h"
 
 # define NONE 0
 # define CMD 1
@@ -45,13 +44,5 @@ struct s_tree
 	int		noj;//	number of jobs
 	t_tree	*next;
 };
-
-char	add_node_to_tree(t_mshell *mshell, t_tree *tree, t_node *node);
-char	inject_jobs(t_tree *tree, t_node *node);
-void	add_arg(char ***args, char *arg);
-
-char	lexer(char *str);
-
-t_tree	*parser(t_mshell *mshell);
 
 #endif
