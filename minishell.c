@@ -27,24 +27,26 @@ static char	*read_prompt(void)
 	rtrn = readline(PROMPT);
 	if (!rtrn)
 		return (NULL);
-	while (!*rtrn)
-	{
-		rtrn = readline(PROMPT);
-		if (!rtrn)
-			return (NULL);
-	}
-	return (add_history(rtrn), rtrn);
+	if (*rtrn)
+		add_history(rtrn);
+	return (rtrn);
 }
 
 char	process(t_mshell *mshell)
 {
-	mshell->prompt = read_prompt();
-	if (!mshell->prompt)
+	mshell->tree = ft_calloc(1, sizeof(t_tree));
+	if (!mshell->tree)
 		return (-1);
-	//parser(mshell);
+	mshell->prompt = read_prompt();
+	while (!mshell->prompt)
+		mshell->prompt = read_prompt();
+	if (parser(mshell->tree, mshell->prompt))
+		return (-1);
 	if (ctrl_builtins(mshell->prompt))
 		return (-1);
-	//executor(mshell);
+	//if (executor(mshell->tree))
+	//	return (-1);
+	//print_parse_tree(mshell->tree, 1);
 	return (free(mshell->prompt), 0);
 }
 
