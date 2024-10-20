@@ -49,11 +49,11 @@ static char	quote_nbr_ctrl(t_tree *tree)
 
 	nbr_of_q = 0;
 	i = -1;
+	if (tree->jobs[i]->job[0] && (tree->jobs[i]->job[0] == DQUOTE
+			|| tree->jobs[i]->job[0] == SQUOTE))
+		return (1);
 	while (++i < tree->noj)
 	{
-		if (tree->jobs[i]->job[0] && (tree->jobs[i]->job[0] == DQUOTE
-				|| tree->jobs[i]->job[0] == SQUOTE))
-			return (1);
 		j = -1;
 		while (tree->jobs[i]->job[++j])
 		{
