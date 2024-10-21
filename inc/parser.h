@@ -34,13 +34,13 @@ struct s_redir
 struct s_job
 {
 	char		**args;//quotes
-	t_type		type;
 	t_redir		*redir;
 	t_job		*next;
 };
 
 struct s_jobs
 {
+	t_type	type;
 	t_job	*jobs;
 	int		pipe[2];
 };
@@ -48,10 +48,13 @@ struct s_jobs
 /*
 PIPELIST
 	- t_job
-		-cmd
+		- cmd
 		- args
 		- redirs
 	- t_job
+		- cmd
+		- args
+		- redirs
 */
 
 #endif

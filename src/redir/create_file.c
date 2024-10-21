@@ -1,6 +1,6 @@
 #include "../../inc/parser.h"
 
-char	create_files(char **files, int len)
+void	create_files(char **files, int len)
 {
 	int	fd;
 	int	i;

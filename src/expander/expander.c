@@ -3,7 +3,6 @@
 char	*expander_helper(char *prompt, char *addr, char *expansion, char *value)
 {
 	char	*rtrn;
-	char	*temp;
 	int		len;
 	int		i;
 	int		j;

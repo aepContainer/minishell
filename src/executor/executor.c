@@ -1,5 +1,5 @@
 
-#include "../minishell.h"
+#include "../../inc/minishell.h"
 
 static void	setup_pipes(int pipes[][2], int noj)
 {
