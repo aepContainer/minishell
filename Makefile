@@ -25,6 +25,9 @@ PARSER_PATH = $(SRC_PATH)parser/
 RED_PATH = $(SRC_PATH)redir/
 RED_SRC = $(RED_PATH)create_file.c
 
+SIG_PATH = $(SRC_PATH)signals/
+#SIG_SRC = $(SIG_PATH) 
+
 SRCS = src/main.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(PARSER_SRC) $(RED_SRC)
 
 all: $(SRCS) $(LIBFT)
