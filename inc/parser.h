@@ -1,7 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-# include "../src/libft/libft.h"
+# include "libft/libft.h"
 # include "fcntl.h"
 # include "unistd.h"
 # include "stdio.h"
