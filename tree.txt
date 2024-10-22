@@ -1,0 +1,25 @@
+Örnek :
+echo "selam" naber "iyi" | echo "bir seyler" "baska bir" seyler | ls -a | cat < txt1.txt
+
+JOBS :
+	- JOB:
+		- CMD: echo
+		- QUTOES: selam , naber , iyi
+		- ARGS: selam , naber , iyi
+		- REDIR: NULL
+	- JOB_NEXT:
+		- CMD: echo
+		- QUTOES: bir seyler , baska bir , seyler
+		- ARGS: bir seyler , baska bir , seyler
+		- REDIR: NULL
+	- JOB_NEXT:
+		- CMD: ls
+		- QUTOES: NULL
+		- ARGS: -a
+		- REDIR: NULL
+	- JOB_NEXT:
+		- CMD: cat
+		- QUTOES: NULL
+		- ARGS: txt1.txt
+		- REDIR_args: txt1.txt
+

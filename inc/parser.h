@@ -34,7 +34,8 @@ struct s_redir
 struct s_job
 {
 	char		*cmd;
-	char		**args;//quotes
+	char		**quotes;
+	char		**args;
 	t_redir		*redir;
 	t_job		*next_job;
 };

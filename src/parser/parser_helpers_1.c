@@ -52,9 +52,9 @@ static char	dist_args_line_helper(t_job *job_list, char *prompt, int start, int 
 	temp = ft_substr(prompt, start, len);
 	if (!temp)
 		return (-1);
-	job_list->args = str_arr_realloc(job_list->args, temp);
+	job_list->quotes = str_arr_realloc(job_list->quotes, temp);
 	free(temp);
-	if (!job_list->args)
+	if (!job_list->quotes)
 		return (-1);
 	return (0);
 }
