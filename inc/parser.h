@@ -42,6 +42,7 @@ struct s_jobs
 {
 	t_type	type;
 	t_job	*jobs;
+	int		len;
 	int		pipe[2];
 };
 

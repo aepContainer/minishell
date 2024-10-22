@@ -17,6 +17,10 @@ typedef struct s_mshell
 	t_jobs	*jobs;
 }	t_mshell;
 
+// Builtins
 char	pwd(void);
+
+// Helpers
+char	**str_arr_realloc(char **arr, char *element);
 
 #endif
