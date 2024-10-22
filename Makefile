@@ -19,6 +19,9 @@ EX_PATH = $(SRC_PATH)executor/
 EXP_PATH = $(SRC_PATH)expander/
 EXP_SRC = $(EXP_PATH)expander.c
 
+H_PATH = $(SRC_PATH)helpers/
+H_SRC = $(H_PATH)
+
 PARSER_PATH = $(SRC_PATH)parser/
 #PARSER_SRC = $(PARSER_PATH)parser_helpers_1.c
 

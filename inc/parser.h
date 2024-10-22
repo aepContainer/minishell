@@ -59,13 +59,16 @@ PIPELIST
 		- redirs
 */
 
-// Helpers
-void 	free_job(t_job *job);
+char	dist_jobs(t_jobs *jobs, char *prompt);
+char	dist_args(t_job *job, char *prompt);
+
+// Free
+void 	free_job_list(t_job *job);
 void 	free_jobs(t_jobs *jobs);
 void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
+
+// Helpers
 char	**str_arr_realloc(char **arr, char *element);
 
-char	dist_jobs(t_jobs *jobs, char *prompt);
-char	dist_args(t_job *job, char *prompt);
 #endif

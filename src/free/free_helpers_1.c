@@ -12,15 +12,15 @@ void free_jobs(t_jobs *jobs)
 	free(jobs);
 }
 
-void free_job(t_job *job)
+void free_job_list(t_job *job_list)
 {
 	if(!job)
 		return ;
-	if(job->args)
-		free_str_arr(job->args); //fonksiyon yaz
-	if(job->redir)
-		free_redir(job->redir); //fonksiyon yaz
-    free(job);
+	if(job_list->args)
+		free_str_arr(job_list->args); //fonksiyon yaz
+	if(job_list->redir)
+		free_redir(job_list->redir); //fonksiyon yaz
+    free(job_list);
 }
 
 void free_redir(t_redir *redir)
