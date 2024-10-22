@@ -33,15 +33,16 @@ struct s_redir
 
 struct s_job
 {
+	char		*cmd;
 	char		**args;//quotes
 	t_redir		*redir;
-	t_job		*next;
+	t_job		*next_job;
 };
 
 struct s_jobs
 {
 	t_type	type;
-	t_job	*jobs;
+	t_job	*job_list;
 	int		len;
 	int		pipe[2];
 };
@@ -58,4 +59,13 @@ PIPELIST
 		- redirs
 */
 
+// Helpers
+void 	free_job(t_job *job);
+void 	free_jobs(t_jobs *jobs);
+void 	free_str_arr(char **arr);
+void 	free_redir(t_redir *redir);
+char	**str_arr_realloc(char **arr, char *element);
+
+char	dist_jobs(t_jobs *jobs, char *prompt);
+char	dist_args(t_job *job, char *prompt);
 #endif

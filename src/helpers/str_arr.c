@@ -21,7 +21,7 @@ char	**str_arr_realloc(char **arr, char *element)
 		if (!rtrn)
 			return (NULL);
 		rtrn[0] = ft_strdup(element);
-		return (rtrn);
+		return (free(element),rtrn);
 	}
 	rtrn = ft_calloc(sizeof(char *), str_arr_len(arr) + 2);
 	if (!rtrn)
@@ -32,6 +32,6 @@ char	**str_arr_realloc(char **arr, char *element)
 		rtrn[i] = ft_strdup(arr[i]);
 		free(arr[i]);
 	}
-	rtrn[i] = element;
-	return (free(arr), rtrn);
+	rtrn[i] = ft_strdup(element);
+	return (free(arr), free(element), rtrn);
 }
