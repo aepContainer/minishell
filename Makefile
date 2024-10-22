@@ -19,8 +19,11 @@ EX_PATH = $(SRC_PATH)executor/
 EXP_PATH = $(SRC_PATH)expander/
 EXP_SRC = $(EXP_PATH)expander.c
 
+FREE_PATH = $(SRC_PATH)free/
+FREE_SRC = $(FREE_PATH)free_helpers_1.c
+
 H_PATH = $(SRC_PATH)helpers/
-H_SRC = $(H_PATH)
+H_SRC = $(H_PATH)str_arr.c
 
 PARSER_PATH = $(SRC_PATH)parser/
 #PARSER_SRC = $(PARSER_PATH)parser_helpers_1.c
@@ -31,7 +34,7 @@ RED_SRC = $(RED_PATH)create_file.c
 SIG_PATH = $(SRC_PATH)signals/
 #SIG_SRC = $(SIG_PATH) 
 
-SRCS = src/main.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(PARSER_SRC) $(RED_SRC)
+SRCS = src/main.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC)
 
 all: $(SRCS) $(LIBFT)
 	cc $(CFLAGS) $(SRCS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
