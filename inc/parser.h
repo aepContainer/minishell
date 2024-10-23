@@ -34,7 +34,6 @@ struct s_redir
 struct s_job
 {
 	char		*cmd;
-	char		**quotes;
 	char		**args;
 	t_redir		*redir;
 	t_job		*next_job;
@@ -60,8 +59,7 @@ PIPELIST
 		- redirs
 */
 
-char	dist_jobs(t_jobs *jobs, char *prompt);
-char	dist_args(t_job *job, char *prompt);
+char	parser(t_jobs *jobs, char *prompt);
 
 // Free
 void 	free_job_list(t_job *job);

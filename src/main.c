@@ -22,7 +22,11 @@ static char	*read_prompt(void)
 
 char	process(t_mshell *mshell)
 {
-	mshell->prompt = read_prompt();
+	char	*prompt;
+
+	prompt = read_prompt();
+	mshell->prompt = ft_strtrim(prompt, " \t");
+	free(prompt);
 	if (!mshell->prompt)
 		return (-1);
 	//parser(mshell);

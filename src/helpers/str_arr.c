@@ -35,3 +35,6 @@ char	**str_arr_realloc(char **arr, char *element)
 	rtrn[i] = ft_strdup(element);
 	return (free(arr), free(element), rtrn);
 }
+
+str_arr_split(char *prompt)
+{}
