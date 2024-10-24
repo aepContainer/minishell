@@ -14,6 +14,7 @@ typedef struct s_redir		t_redir;
 typedef struct s_hdoc		t_hdoc;
 typedef struct s_job		t_job;
 typedef struct s_jobs		t_jobs;
+typedef struct s_env		t_env;
 
 typedef enum	e_type
 {
@@ -45,6 +46,13 @@ struct s_jobs
 	t_job	*job_list;
 	int		len;
 	int		pipe[2];
+};
+
+struct s_env
+{
+	char	*key;
+	char	*value;
+	t_env	*next;
 };
 
 /*

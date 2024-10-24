@@ -14,7 +14,7 @@ void free_jobs(t_jobs *jobs)
 
 void free_job_list(t_job *job_list)
 {
-	if(!job)
+	if(!job_list)
 		return ;
 	if(job_list->args)
 		free_str_arr(job_list->args); //fonksiyon yaz
