@@ -15,7 +15,7 @@ char	parser(t_jobs *jobs, char *prompt)
 		{
 			jobs->job_list->next_job = ft_calloc(1, sizeof(t_job));
 			if (!jobs->job_list->next_job)
-				return (EXIT_FAILURE);
+				return (free_jobs(jobs), EXIT_FAILURE);
 			jobs->job_list = jobs->job_list->next_job;
 		}
 		else
