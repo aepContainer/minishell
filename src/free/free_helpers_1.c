@@ -1,6 +1,6 @@
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
-void free_jobs(t_jobs *jobs)
+void	free_jobs(t_jobs *jobs)
 {
 	if(!jobs)
 		return ;
@@ -12,18 +12,18 @@ void free_jobs(t_jobs *jobs)
 	free(jobs);
 }
 
-void free_job_list(t_job *job_list)
+void	free_job_list(t_job *job_list)
 {
 	if(!job_list)
 		return ;
 	if(job_list->args)
-		free_str_arr(job_list->args); //fonksiyon yaz
+		free_str_arr(job_list->args);
 	if(job_list->redir)
-		free_redir(job_list->redir); //fonksiyon yaz
+		free_redir(job_list->redir);
     free(job_list);
 }
 
-void free_redir(t_redir *redir)
+void	free_redir(t_redir *redir)
 {
 	if (!redir)
 		return ;
@@ -36,7 +36,7 @@ void free_redir(t_redir *redir)
 	free(redir);
 }
 
-void free_str_arr(char **arr)
+void	free_str_arr(char **arr)
 {
 	if(!arr)
 		return ;
@@ -46,4 +46,18 @@ void free_str_arr(char **arr)
 		arr++;
 	}
 	free(arr);
+}
+
+void	free_mshell(t_mshell *mshell)
+{
+	if (!mshell)
+		return ;
+	if (mshell->jobs)
+		free_jobs(mshell->jobs);
+	if (mshell->success_arr)
+		free_str_arr(mshell->success_arr);
+	if (mshell->prompt)
+		free(mshell->prompt);
+	if (mshell->path_env)
+		free(mshell->path_env);
 }

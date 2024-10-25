@@ -1,7 +1,7 @@
 
 #include "../../inc/minishell.h"
 
-static void	setup_pipes(int pipes[][2], int noj)
+static char	setup_pipes(int pipes[][2], int noj)
 {
 	int	i;
 
@@ -10,10 +10,11 @@ static void	setup_pipes(int pipes[][2], int noj)
 	{
 		if (pipe(pipes[i]) == -1)
 		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
+			perror("pipe error");
+			return (EXIT_FAILURE);
 		}
 	}
+	return (EXIT_SUCCESS);
 }
 
 static void	close_all_pipes(int pipes[][2], int noj)
@@ -28,37 +29,43 @@ static void	close_all_pipes(int pipes[][2], int noj)
 	}
 }
 
-static void	exec_child(int i, t_tree *tree, int pipes[][2], char **envp)
+static void	exec_child(int i, t_mshell *mshell, int pipes[][2], char **envp)
 {
 	if (i > 0)
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 	if (i + 1 < tree->noj)
 		dup2(pipes[i][1], STDOUT_FILENO);
 	close_all_pipes(pipes, tree->noj);
-	execve(tree->success_arr[i], tree->jobs[i]->job_exec, envp);
-	perror("execve");
+	while (i)
+	{
+		mshell->jobs->job_list = mshell->jobs->job_list->next_job;
+		i--;
+	}
+	execve(mshell->success_arr[i], mshell->jobs->job_list->args, envp);
+	perror("execve error");
 }
 
-char	executor(t_tree *tree)
+char	executor(t_mshell *mshell)
 {
 	int		pipes[tree->noj - 1][2];
 	pid_t	pid;
 	int		i;
 
-	tree->success_arr = accessor(tree);
-	setup_pipes(pipes, tree->noj);
+	mshell->success_arr = accessor(mshell);
+	if (setup_pipes(pipes, mshell->jobs->len))
+		return (EXIT_FAILURE);
 	i = -1;
-	while (++i < tree->noj)
+	while (++i < mshell->jobs->len)
 	{
 		pid = fork();
 		if (pid == -1)
-			return(perror("fork"), 1);
+			return(perror("fork error"), EXIT_FAILURE);
 		if (pid == 0)
-			exec_child(i, tree, pipes, tree->env);
+			exec_child(i, mshell, pipes, mshell->env);
 	}
-	close_all_pipes(pipes, tree->noj);
+	close_all_pipes(pipes, mshell->jobs->len);
 	i = -1;
-	while (++i < tree->noj)
+	while (++i < mshell->jobs->len)
 		wait(NULL);
-	return (0);
+	return (EXIT_SUCCESS);
 }

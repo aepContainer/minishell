@@ -1,4 +1,4 @@
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 char	parser(t_jobs *jobs, char *prompt)
 {
@@ -6,7 +6,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	char	**splitted;
 	int		i;
 
-	splitted = str_arr_split(prompt);
+	splitted = word_split(prompt);
 	if (!splitted)
 		return (-1);
 	i = -1;
