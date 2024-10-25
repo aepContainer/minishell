@@ -16,6 +16,7 @@ typedef struct s_hdoc			t_hdoc;
 typedef struct s_job			t_job;
 typedef struct s_jobs			t_jobs;
 typedef struct s_mshell			t_mshell;
+typedef struct s_env			t_env;
 typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
 
@@ -61,6 +62,13 @@ struct s_mshell
 	char	**success_arr;
 	int		active_pipe[2];
 	int		old_pipe[2];
+};
+
+struct s_env
+{
+	char	*key;
+	char	*value;
+	t_env	*next;
 };
 
 struct s_quote_state
