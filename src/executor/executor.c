@@ -1,4 +1,4 @@
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 static void close_pipe(int pipe[2])
 {
@@ -25,39 +25,38 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
     perror("execve error");
 }
 
-static char	executor_line_helper(t_mshell *mshell)
+static char	executor_line_helper(t_mshell *mshell, int i)
 {
+	pid_t   pid;
+
 	if (i + 1 < mshell->jobs->len)
     {
-        if (pipe(active_pipe) == -1)
+        if (pipe(mshell->active_pipe) == -1)
             return (perror("pipe error"), EXIT_FAILURE);
     }
     pid = fork();
     if (pid == -1)
         return (perror("fork error"), EXIT_FAILURE);
     if (pid == 0)
-        exec_child(i, mshell, active_pipe, old_pipe, mshell->envp);
+        exec_child(i, mshell, mshell->active_pipe, mshell->old_pipe);
     if (i > 0)
-        close_pipe(old_pipe);
+        close_pipe(mshell->old_pipe);
     if (i + 1 < mshell->jobs->len)
     {
-        old_pipe[0] = pipes[0];
-        old_pipe[1] = pipes[1];
+        mshell->old_pipe[0] = mshell->active_pipe[0];
+        mshell->old_pipe[1] = mshell->active_pipe[1];
     }
 	return (EXIT_SUCCESS);
 }
 
 char	executor(t_mshell *mshell)
 {
-    int     active_pipe[2];
-    int     old_pipe[2];
-    pid_t   pid;
     int     i;
 
     mshell->success_arr = accessor(mshell);
     i = -1;
     while (++i < mshell->jobs->len)
-        if (executor_line_helper(mshell))
+        if (executor_line_helper(mshell, i))
 			return (EXIT_FAILURE);
     i = -1;
     while (++i < mshell->jobs->len)

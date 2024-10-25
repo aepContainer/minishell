@@ -48,7 +48,6 @@ struct s_jobs
 	t_type	type;
 	t_job	*job_list;
 	int		len;
-	int		pipe[2];
 };
 
 struct s_mshell
@@ -60,6 +59,8 @@ struct s_mshell
 	char	**ctrl_paths;
 	char	**cmds;
 	char	**success_arr;
+	int		active_pipe[2];
+	int		old_pipe[2];
 };
 
 struct s_quote_state
