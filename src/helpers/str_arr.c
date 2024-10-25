@@ -1,4 +1,4 @@
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 int	str_arr_len(char **arr)
 {

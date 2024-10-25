@@ -17,6 +17,7 @@ typedef struct s_job			t_job;
 typedef struct s_jobs			t_jobs;
 typedef struct s_env			t_env;
 typedef struct s_mshell			t_mshell;
+typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
 
 typedef enum	e_type
@@ -66,13 +67,31 @@ struct s_mshell
 	char	**success_arr;
 };
 
+struct s_quote_state
+{
+	bool	in_single;
+	bool	in_double;
+};
+
 struct s_parser_state
 {
-    bool in_quote;
-    char quote_type;
-    int pos;
-    int len;
+    t_quote_state	*state;
+    int				pos;
+    int				len;
 };
+
+char	parser(t_jobs *jobs, char *prompt);
+char 	**word_split(char *prompt);
+
+// Helpers
+int		str_arr_len(char **arr);
+char	**str_arr_realloc(char **arr, char *element);
+
+// Free
+void 	free_job_list(t_job *job);
+void 	free_jobs(t_jobs *jobs);
+void 	free_str_arr(char **arr);
+void 	free_redir(t_redir *redir);
 
 /*
 PIPELIST
@@ -85,18 +104,5 @@ PIPELIST
 		- args
 		- redirs
 */
-
-char	parser(t_jobs *jobs, char *prompt);
-char 	**word_split(char *prompt);
-
-// Free
-void 	free_job_list(t_job *job);
-void 	free_jobs(t_jobs *jobs);
-void 	free_str_arr(char **arr);
-void 	free_redir(t_redir *redir);
-
-// Helpers
-int		str_arr_len(char **arr);
-char	**str_arr_realloc(char **arr, char *element);
 
 #endif
