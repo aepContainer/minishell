@@ -6,7 +6,7 @@ typedef struct s_quote_state
     bool in_double;
 }   t_quote_state;
 
-char *expander_helper(char *prompt, char *addr, char *expansion, char *value)
+static char *expander_helper(char *prompt, char *addr, char *expansion, char *value)
 {
     char    *rtrn;
     int     len;
@@ -62,7 +62,10 @@ static size_t get_var_length(const char *str, size_t *i, t_env *env)
     if (var_start < *i)
     {
         value = find_env_value(env, str + var_start, *i - var_start);
-        return (value ? ft_strlen(value) : 0);
+		if (value)
+			return (ft_strlen(value));
+		else
+			return (0);
     }
     return (1);
 }
@@ -72,7 +75,7 @@ static size_t calculate_expanded_length(const char *str, t_env *env)
     size_t  len;
     size_t  i;
     t_quote_state state;
-    
+
     len = 0;
     i = 0;
     state.in_single = false;
@@ -114,7 +117,7 @@ static void copy_var_value(const char *input, size_t *i, size_t *j,
         result[(*j)++] = '$';
 }
 
-char *expand_env_variables(const char *input, t_env *env)
+static char *expand_env_variables(const char *input, t_env *env)
 {
     size_t total_len;
     char *result;
@@ -125,7 +128,7 @@ char *expand_env_variables(const char *input, t_env *env)
     if (!input)
         return (NULL);
     total_len = calculate_expanded_length(input, env);
-    result = (char *)malloc(total_len + 1);
+    result = ft_calloc(1, total_len + 1);
     if (!result)
         return (NULL);
     i = 0;
