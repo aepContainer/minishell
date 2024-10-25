@@ -6,13 +6,14 @@
 # include "readline/readline.h"
 # include "readline/history.h"
 
-# define PROMPT "Shell Shock <_>"
+# define PROMPT "shellshock <(^_^)> "
+
+// Executor
+char	executor(t_mshell *mshell);
+char	**accessor(t_mshell *mshell);
 
 // Builtins
 char	pwd(void);
-
-// Helpers
-char	**str_arr_realloc(char **arr, char *element);
-
+char	cd(char *path);
 
 #endif

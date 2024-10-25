@@ -16,7 +16,7 @@ static void update_quote_state(t_parser_state *parser, char c)
 
 static int get_word_len(const char *prompt, t_parser_state *parser)
 {
-    int len = 0;
+    int	len;
 
     if (prompt[parser->pos] == '<' || prompt[parser->pos] == '>' || prompt[parser->pos] == '|')
     {
@@ -25,7 +25,8 @@ static int get_word_len(const char *prompt, t_parser_state *parser)
         else
             return (1);
     }
-    while (prompt[parser->pos + len])
+	len = -1;
+    while (prompt[++len + parser->pos])
     {
         if (prompt[parser->pos + len] == '\'' || prompt[parser->pos + len] == '\"')
             update_quote_state(parser, prompt[parser->pos + len]);
@@ -33,15 +34,14 @@ static int get_word_len(const char *prompt, t_parser_state *parser)
                 (prompt[parser->pos + len] == ' ' || prompt[parser->pos + len] == '<' || 
                  prompt[parser->pos + len] == '>' || prompt[parser->pos + len] == '|'))
             break;
-        len++;
     }
     return (len);
 }
 
 static char *get_word(const char *prompt, t_parser_state *parser, char **tokens, int current)
 {
-    char *word;
-    int i = 0;
+    char	*word;
+    int		i;
 
     while (prompt[parser->pos] && (prompt[parser->pos] == ' ' || prompt[parser->pos] == '\t' || 
            prompt[parser->pos] == '\v' || prompt[parser->pos] == '\f' || prompt[parser->pos] == '\r'))
@@ -52,6 +52,7 @@ static char *get_word(const char *prompt, t_parser_state *parser, char **tokens,
     word = ft_calloc(1, parser->len + 1);
     if (!word)
         return NULL;
+	i = 0;
     while (i < parser->len)
         word[i++] = prompt[parser->pos++];
     word[i] = '\0';
@@ -60,10 +61,10 @@ static char *get_word(const char *prompt, t_parser_state *parser, char **tokens,
 
 char **word_split(char *prompt)
 {
-    t_quote_state quote_state = {false, false};
-    t_parser_state parser = {&quote_state, 0, 0};
-    char **words;
-    char *word;
+    t_quote_state	quote_state = {false, false};
+    t_parser_state	parser = {&quote_state, 0, 0};
+    char			**words;
+    char			*word;
     
     words = NULL;
     while (prompt[parser.pos])

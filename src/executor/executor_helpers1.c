@@ -1,21 +1,25 @@
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
-char	**accessor(t_tree *tree)
+static char    **access_pathcheck(char **ctrl_paths, int p_len, int c_len)
 {
     char	**success_arr;
     int		i;
     int		j;
 
-    success_arr = ft_calloc(tree->c_len, sizeof(char *));
+	if (!ctrl_paths)
+		return (NULL);
+    success_arr = ft_calloc(c_len, sizeof(char *));
+	if (!success_arr)
+		return (NULL);
     i = -1;
-    while (++i < tree->c_len)
+    while (++i < c_len)
     {
         j = -1;
-        while (++j < tree->p_len)
+        while (++j < p_len)
         {
-            if (!access(tree->paths[i * tree->p_len + j], X_OK))
+            if (!access(ctrl_paths[i * p_len + j], X_OK))
             {
-                success_arr[i] = ft_strdup(tree->paths[i * tree->p_len + j]);
+                success_arr[i] = ft_strdup(ctrl_paths[i * p_len + j]);
                 break ;
             }
         }
@@ -25,31 +29,68 @@ char	**accessor(t_tree *tree)
     return (success_arr);
 }
 
-char    **joins(char **env_paths, int paths_len, char **cmds, int cmds_len)
+static char    **joins(char **env_paths, int paths_len, char **cmds, int cmds_len)
 {
     char    **cmd_paths;
     char    *temp1;
     char    *temp2;
-    int     cmd_paths_index;
-    int     i;
-    int     j;
+    int     index[3];
 
-    cmd_paths_index = 0;
     cmd_paths = ft_calloc(cmds_len * paths_len + 1, sizeof(char *));
-    i = -1;
-    while (cmds[++i])
+	if (!cmd_paths)
+		return (NULL);
+    index[2] = 0;
+    index[0] = -1;
+    while (cmds[++index[0]])
     {
-        j = -1;
-        while (env_paths[++j])
+        index[1] = -1;
+        while (env_paths[++index[1]])
         {
-            temp1 = ft_strjoin(env_paths[j], ft_strdup("/"));
-            temp2 = ft_strjoin(temp1, cmds[i]);
+            temp1 = ft_strjoin(env_paths[index[1]], ft_strdup("/"));
+            temp2 = ft_strjoin(temp1, cmds[index[0]]);
             free(temp1);
-            cmd_paths[cmd_paths_index] = ft_calloc(ft_strlen(temp2) + 1, 1);
-            ft_strlcpy(cmd_paths[cmd_paths_index], temp2, ft_strlen(temp2) + 1);
+            cmd_paths[index[2]] = ft_calloc(ft_strlen(temp2) + 1, 1);
+            ft_strlcpy(cmd_paths[index[2]], temp2, ft_strlen(temp2) + 1);
             free(temp2);
-            cmd_paths_index++;
+            index[2]++;
         }
     }
     return (cmd_paths);
+}
+
+static char	get_data(t_mshell *mshell)
+{
+	char	*env;
+
+	env = getenv("PATH");
+    mshell->envp = ft_split(env, ':');
+	free(env);
+	if (!mshell->envp)
+		return (EXIT_FAILURE);
+	while (mshell->jobs->job_list)
+	{
+		mshell->cmds = str_arr_realloc(mshell->cmds, mshell->jobs->job_list->cmd);
+		if (!mshell->cmds)
+			return (free_str_arr(mshell->cmds), EXIT_FAILURE);
+		mshell->jobs->job_list = mshell->jobs->job_list->next_job;
+	}
+	return (EXIT_SUCCESS);
+}
+
+char	**accessor(t_mshell *mshell)
+{
+    char    **success_arr;
+    int     p_len;
+    int     c_len;
+
+	if (get_data(mshell))
+		return (NULL);
+    p_len = str_arr_len(mshell->envp);
+    c_len = mshell->jobs->len;
+    mshell->ctrl_paths = joins(mshell->envp, p_len, mshell->cmds, c_len);
+    success_arr = access_pathcheck(mshell->ctrl_paths, p_len, c_len);
+	free_str_arr(mshell->ctrl_paths);
+	if (!success_arr)
+		return (NULL);
+    return (success_arr);
 }

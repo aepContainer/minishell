@@ -54,10 +54,16 @@ void	free_mshell(t_mshell *mshell)
 		return ;
 	if (mshell->jobs)
 		free_jobs(mshell->jobs);
-	if (mshell->success_arr)
-		free_str_arr(mshell->success_arr);
+	if (mshell->envp)
+		free(mshell->envp);
 	if (mshell->prompt)
 		free(mshell->prompt);
 	if (mshell->path_env)
 		free(mshell->path_env);
+	if (mshell->cmds)
+		free_str_arr(mshell->cmds);
+	if (mshell->ctrl_paths)
+		free_str_arr(mshell->ctrl_paths);
+	if (mshell->success_arr)
+		free_str_arr(mshell->success_arr);
 }

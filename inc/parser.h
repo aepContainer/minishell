@@ -15,7 +15,6 @@ typedef struct s_redir			t_redir;
 typedef struct s_hdoc			t_hdoc;
 typedef struct s_job			t_job;
 typedef struct s_jobs			t_jobs;
-typedef struct s_env			t_env;
 typedef struct s_mshell			t_mshell;
 typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
@@ -52,18 +51,14 @@ struct s_jobs
 	int		pipe[2];
 };
 
-struct s_env
-{
-	char	*key;
-	char	*value;
-	t_env	*next;
-};
-
 struct s_mshell
 {
 	t_jobs	*jobs;
+	char	*envp;
 	char	*prompt;
 	char	*path_env;
+	char	**ctrl_paths;
+	char	**cmds;
 	char	**success_arr;
 };
 
@@ -80,6 +75,7 @@ struct s_parser_state
     int				len;
 };
 
+// Parser
 char	parser(t_jobs *jobs, char *prompt);
 char 	**word_split(char *prompt);
 
@@ -92,6 +88,9 @@ void 	free_job_list(t_job *job);
 void 	free_jobs(t_jobs *jobs);
 void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
+
+// Redir
+void	create_file(char **files, int len);
 
 /*
 PIPELIST

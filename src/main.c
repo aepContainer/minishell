@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-char	ctrl_builtins(char	*prompt)
+static char	ctrl_builtins(char	*prompt)
 {
 	if (!ft_strncmp(prompt, "pwd", 3)
 			&& ft_strlen(prompt) == 3)
@@ -20,7 +20,7 @@ static char	*read_prompt(void)
 	return (rtrn);
 }
 
-char	process(t_mshell *mshell)
+static char	process(t_mshell *mshell)
 {
 	char	*prompt;
 
@@ -28,12 +28,12 @@ char	process(t_mshell *mshell)
 	mshell->prompt = ft_strtrim(prompt, " \t");
 	free(prompt);
 	if (!mshell->prompt)
-		return (-1);
+		return (EXIT_FAILURE);
 	//parser(mshell);
 	if (ctrl_builtins(mshell->prompt))
-		return (-1);
+		return (EXIT_FAILURE);
 	//executor(mshell);
-	return (free(mshell->prompt), 0);
+	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
 int main(void)
@@ -42,11 +42,11 @@ int main(void)
 
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (!mshell)
-		return (-1);
-	signal_handle();
+		return (EXIT_FAILURE);
+	signal_handle(); // Yazılacak
 	while (1)
 		if (process(mshell))
 			break ;
 	//quitting(mshell);
-	return (0);
+	return (EXIT_SUCCESS);
 }
