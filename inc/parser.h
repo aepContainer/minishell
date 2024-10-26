@@ -19,6 +19,7 @@ typedef struct s_mshell			t_mshell;
 typedef struct s_env			t_env;
 typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
+typedef struct termios			t_termios;
 
 typedef enum	e_type
 {
@@ -53,15 +54,16 @@ struct s_jobs
 
 struct s_mshell
 {
-	t_jobs	*jobs;
-	char	*envp;
-	char	*prompt;
-	char	*path_env;
-	char	**ctrl_paths;
-	char	**cmds;
-	char	**success_arr;
-	int		active_pipe[2];
-	int		old_pipe[2];
+	t_jobs		*jobs;
+	char		*envp;
+	char		*prompt;
+	char		*path_env;
+	char		**ctrl_paths;
+	char		**cmds;
+	char		**success_arr;
+	int			active_pipe[2];
+	int			old_pipe[2];
+	t_termios	*termios;
 };
 
 struct s_env
@@ -97,6 +99,8 @@ void 	free_job_list(t_job *job);
 void 	free_jobs(t_jobs *jobs);
 void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
+void	free_mshell(t_mshell *mshell);
+void	free_env_node(t_env *env);
 
 // Redir
 void	create_file(char **files, int len);

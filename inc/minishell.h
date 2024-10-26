@@ -5,6 +5,8 @@
 # include "dirent.h"
 # include "readline/readline.h"
 # include "readline/history.h"
+# include "termios.h"
+# include "signal.h"
 
 # define PROMPT "shellshock <(^_^)> "
 

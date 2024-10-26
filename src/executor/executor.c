@@ -54,6 +54,7 @@ char	executor(t_mshell *mshell)
     int     i;
 
     mshell->success_arr = accessor(mshell);
+    signal_handle_exec(mshell);
     i = -1;
     while (++i < mshell->jobs->len)
         if (executor_line_helper(mshell, i))

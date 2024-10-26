@@ -32,7 +32,7 @@ static char	process(t_mshell *mshell)
 	//parser(mshell);
 	if (ctrl_builtins(mshell->prompt))
 		return (EXIT_FAILURE);
-	//executor(mshell);
+	executor(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
@@ -43,7 +43,7 @@ int main(void)
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (!mshell)
 		return (EXIT_FAILURE);
-	signal_handle(); // Yazılacak
+	signal_handle_general(mshell);
 	while (1)
 		if (process(mshell))
 			break ;

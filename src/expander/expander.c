@@ -5,7 +5,7 @@ typedef struct s_quote_state
     bool in_single;
     bool in_double;
 }   t_quote_state;
-
+// kullanılmıyor gibi duruyor, testlerde silmeyi dene !!!
 static char *expander_helper(char *prompt, char *addr, char *expansion, char *value)
 {
     char    *rtrn;

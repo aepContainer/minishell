@@ -36,11 +36,18 @@ SIG_PATH = $(SRC_PATH)signals/
 
 SRCS = src/main.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC)
 
-all: $(SRCS) $(LIBFT)
+all: $(SRCS) $(LIBFT) $(READLINE)
 	cc $(CFLAGS) $(SRCS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	make -c $(LIBFT_PATH)
+
+$(READLINE):
+	curl -O https://gnu.org/gnu/readline/readline-8.2.tar.gz
+	tar -xvf readline-8.2.tar.gz
+	cd readline-8.2 && ./configure --prefix=../inc/readline
+	cd readline-8.2 && make install
+	@rm -fr readline-8.2 readline-8.2.tar.gz
 
 clean:
 	make -c $(LIBFT_PATH) clean
