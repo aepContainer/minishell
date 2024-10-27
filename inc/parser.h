@@ -68,9 +68,9 @@ struct s_mshell
 
 struct s_env
 {
-	char	*key;
-	char	*value;
-	t_env	*next;
+	char	**key;
+	char	**value;
+	int		len;
 };
 
 struct s_quote_state
@@ -94,6 +94,13 @@ char 	**word_split(char *prompt);
 int		str_arr_len(char **arr);
 char	**str_arr_realloc(char **arr, char *element);
 
+// Redir
+void	create_file(char **files, int len);
+
+// Env
+char	env_del_element(t_env **env, char *key, char *value);
+char	env_add(t_env **env, char *key, char *value);
+
 // Free
 void 	free_job_list(t_job *job);
 void 	free_jobs(t_jobs *jobs);
@@ -101,9 +108,6 @@ void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
 void	free_mshell(t_mshell *mshell);
 void	free_env_node(t_env *env);
-
-// Redir
-void	create_file(char **files, int len);
 
 /*
 PIPELIST

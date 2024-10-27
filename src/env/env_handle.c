@@ -1,44 +1,91 @@
 #include "../../inc/parser.h"
 
-char	env_del(t_env **env, char *key, char *value)
+static char	calloc_key_value(char ***key, char ***value, int len)
 {
-	t_env	**origin;
+	*key = ft_calloc(len, sizeof(char *));
+	if (!*key)
+		return (EXIT_FAILURE);
+	*value = ft_calloc(len, sizeof(char *));
+	if (!*value)
+		return (free(*key), EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+static char	env_del_index(t_env **env, int index)
+{
 	t_env	*temp;
-	int		len[2];
+	char	state;
+	int		i;
+
+	temp = ft_calloc(1, sizeof(t_env));
+	if (!temp)
+		return (EXIT_FAILURE);
+	temp->len = (*env)->len - 1;
+	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
+		return (EXIT_FAILURE);
+	state = 0;
+	i = -1;
+	while (++i < temp->len)
+	{
+		if (i == index)
+		{
+			state = 1;
+			free((*env)->key);
+			free((*env)->value);
+		}
+		temp->key[i] = (*env)->key[i + state];
+		temp->value[i] = (*env)->value[i + state];
+	}
+	i = index;
+	return (EXIT_SUCCESS);
+}
+
+char	env_del_element(t_env **env, char *key, char *value)
+{
+	t_env	*temp;
+	int		len1;
+	int		len2;
+	int		i;
 
 	if (!key || !value)
 		return (EXIT_FAILURE);
-	origin = env;
+	len1 = ft_strlen(key);
 	temp = *env;
-	while (*env)
+	i = -1;
+	while (temp->key[++i])
 	{
-		len[0] = ft_strlen(temp->key);
-		len[1] = ft_strlen(key);
-		if (len[0] == len[1] && !ft_strncmp(temp->key, key, len[0]))
+		len2 = ft_strlen(temp->key[i]);
+		if (len1 == len2 && !ft_strncmp(temp->key[i], key, len1))
 		{
-			len[0] = ft_strlen(temp->value);
-			len[1] = ft_strlen(value);
-			if (len[0] == len[1] && !ft_strncmp(temp->value, value, len[0]))
-			{
-				*env = ((*env)->next);
-				return (free_env_node(temp), EXIT_SUCCESS);
-			}
+			len2 = ft_strlen(temp->value[i]);
+			if (ft_strlen(value) == len2 && ft_strncmp(temp->value[i], value, len2))
+				return (env_del_index(env, i));
 		}
-		temp = temp->next;
 	}
 	return (EXIT_FAILURE);
 }
 
-char	env_add(t_env *env, char *key, char *value)
+char	env_add(t_env **env, char *key, char *value)
 {
+	t_env	*temp;
+	int		i;
+
 	if (!key || !value)
 		return (EXIT_FAILURE);
-	while (env->next)
-		env = env->next;
-	env->next = ft_calloc(1, sizeof(t_env));
-	if (!env->next)
+	temp = ft_calloc(1, sizeof(t_env));
+	if (!temp)
 		return (EXIT_FAILURE);
-	env->next->key = key;
-	env->next->value = value;
+	i = -1;
+	temp->len = (*env)->len + 1;
+	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
+		return (free(temp), EXIT_FAILURE);
+	while (++i < temp->len)
+	{
+		temp->key[i] = (*env)->key[i];
+		temp->value[i] = (*env)->value[i];
+	}
+	temp->key[i] = key;
+	temp->value[i] = value;
+	*env = temp;
 	return (EXIT_SUCCESS);
 }

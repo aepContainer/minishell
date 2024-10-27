@@ -2,7 +2,9 @@
 
 int	str_arr_len(char **arr)
 {
-    int	i = 0;
+    int	i;
+
+	i = 0;
     while (arr[i])
         i++;
     return (i);
@@ -11,17 +13,20 @@ int	str_arr_len(char **arr)
 char	**str_arr_realloc(char **arr, char *element)
 {
     char	**rtrn;
-    int	i = -1;
+    int		i;
 
     if (!arr)
     {
-        if (!(rtrn = ft_calloc(sizeof(char *), 2)))
+		rtrn = ft_calloc(2, sizeof(char *));
+        if (!rtrn)
             return (NULL);
         rtrn[0] = ft_strdup(element);
         return (free(element), rtrn);
     }
-    if (!(rtrn = ft_calloc(sizeof(char *), str_arr_len(arr) + 2)))
+	rtrn = ft_calloc(sizeof(char *), str_arr_len(arr) + 2);
+    if (!rtrn)
         return (NULL);
+	i = -1;
     while (arr[++i])
     {
         rtrn[i] = ft_strdup(arr[i]);
