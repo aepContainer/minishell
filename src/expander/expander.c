@@ -5,27 +5,6 @@ typedef struct s_quote_state
     bool in_single;
     bool in_double;
 }   t_quote_state;
-// kullanılmıyor gibi duruyor, testlerde silmeyi dene !!!
-static char *expander_helper(char *prompt, char *addr, char *expansion, char *value)
-{
-    char    *rtrn;
-    int     len;
-    int     i;
-    int     j;
-
-    len = ft_strlen(prompt) - ft_strlen(expansion) + ft_strlen(value);
-    rtrn = ft_calloc(1, len + 1);
-    if (!rtrn)
-        return (NULL);
-    i = -1;
-    while (prompt[++i] && prompt + i != addr)
-        rtrn[i] = prompt[i];
-    j = -1;
-    while (value[++j])
-        rtrn[i + j] = value[j];
-    rtrn[i + j] = 0;
-    return (rtrn);
-}
 
 static void update_quote_state(char c, t_quote_state *state)
 {
@@ -35,7 +14,7 @@ static void update_quote_state(char c, t_quote_state *state)
         state->in_double = !state->in_double;
 }
 
-static char *find_env_value(t_env *env, const char *key, size_t key_len)
+static char *find_value(t_env *env, const char *key, size_t key_len)
 {
     if (!key || key_len == 0 || !env)
         return (NULL);
@@ -53,7 +32,6 @@ static size_t get_var_length(const char *str, size_t *i, t_env *env)
 {
     size_t  var_start;
     char    *value;
-    size_t  len;
 
     (*i)++;
     var_start = *i;
@@ -61,7 +39,7 @@ static size_t get_var_length(const char *str, size_t *i, t_env *env)
         (*i)++;
     if (var_start < *i)
     {
-        value = find_env_value(env, str + var_start, *i - var_start);
+        value = find_value(env, str + var_start, *i - var_start);
 		if (value)
 			return (ft_strlen(value));
 		else
@@ -106,7 +84,7 @@ static void copy_var_value(const char *input, size_t *i, size_t *j,
         (*i)++;
     if (var_start < *i)
     {
-        value = find_env_value(env, input + var_start, *i - var_start);
+        value = find_value(env, input + var_start, *i - var_start);
         if (value)
         {
             ft_strlcpy(result + *j, value, total_len - *j + 1);

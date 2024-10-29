@@ -6,7 +6,7 @@ void	free_jobs(t_jobs *jobs)
 		return ;
 	while(jobs->job_list)
 	{
-		free_job(jobs->job_list);
+		free_job_list(jobs->job_list);
 		jobs->job_list = jobs->job_list->next_job;
 	}
 	free(jobs);

@@ -1,5 +1,8 @@
 #include "../../inc/parser.h"
 
+static char	get_redirs(t_jobs *jobs)
+{}
+
 char	parser(t_jobs *jobs, char *prompt)
 {
 	char	**splitted;
@@ -25,5 +28,5 @@ char	parser(t_jobs *jobs, char *prompt)
 				return (EXIT_FAILURE);
 		}
 	}
-	return (EXIT_SUCCESS);
+	return (get_redirs(jobs));
 }
