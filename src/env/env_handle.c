@@ -36,7 +36,6 @@ static char	env_del_index(t_env **env, int index)
 		temp->key[i] = (*env)->key[i + state];
 		temp->value[i] = (*env)->value[i + state];
 	}
-	i = index;
 	return (EXIT_SUCCESS);
 }
 
@@ -88,4 +87,21 @@ char	env_add(t_env **env, char *key, char *value)
 	temp->value[i] = value;
 	*env = temp;
 	return (EXIT_SUCCESS);
+}
+
+char	*env_find_value(t_env *env, char *key)
+{
+	int	key_len;
+	int	i;
+
+	if (!env || !key)
+		return (NULL);
+	key_len = ft_strlen(key);
+	i = -1;
+	while (env->key[++i])
+	{
+		if (ft_strlen(env->key[i]) == key_len && !ft_strncmp(env->key[i], key, key_len))
+			return (env->value[i]);
+	}
+	return (NULL);
 }

@@ -8,6 +8,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	char	**splitted;
 	int		i;
 
+	process_env_vars(jobs->env, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
 		return (EXIT_FAILURE);

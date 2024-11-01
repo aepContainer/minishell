@@ -48,6 +48,7 @@ struct s_job
 struct s_jobs
 {
 	t_type	type;
+	t_env	*env;
 	t_job	*job_list;
 	int		len;
 };
@@ -82,13 +83,25 @@ struct s_quote_state
 struct s_parser_state
 {
     t_quote_state	*state;
-    int				pos;
     int				len;
+    int				i;
 };
 
 // Parser
 char	parser(t_jobs *jobs, char *prompt);
 char 	**word_split(char *prompt);
+
+// Expander
+void	process_env_vars(t_env *env, char **prompt);
+char	*expand_env_vars(t_env *env, char *prompt);
+// Expander Helpers
+void	update_quote_state(t_quote_state *state, char c);
+char	*find_value(t_env *env, const char *key_start, int key_len);
+
+// Env
+char	env_del_element(t_env **env, char *key, char *value);
+char	env_add(t_env **env, char *key, char *value);
+char	*env_find_value(t_env *env, char *key);
 
 // Helpers
 int		str_arr_len(char **arr);
@@ -96,10 +109,6 @@ char	**str_arr_realloc(char **arr, char *element);
 
 // Redir
 void	create_file(char **files, int len);
-
-// Env
-char	env_del_element(t_env **env, char *key, char *value);
-char	env_add(t_env **env, char *key, char *value);
 
 // Free
 void 	free_job_list(t_job *job);

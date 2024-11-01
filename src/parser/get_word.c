@@ -1,61 +1,46 @@
 #include "../../inc/parser.h"
 
-static void update_quote_state(t_parser_state *parser, char c)
-{
-    if (c == '\'')
-    {
-        if (!parser->state->in_double)
-            parser->state->in_single = !parser->state->in_single;
-    }
-    else if (c == '\"')
-    {
-        if (!parser->state->in_single)
-            parser->state->in_double = !parser->state->in_double;
-    }
-}
-
-static int get_word_len(const char *prompt, t_parser_state *parser)
+static int get_word_len(t_parser_state *parser, char *prompt)
 {
     int	len;
 
-    if (prompt[parser->pos] == '<' || prompt[parser->pos] == '>' || prompt[parser->pos] == '|')
+    if (prompt[parser->i] == '<' || prompt[parser->i] == '>' || prompt[parser->i] == '|')
     {
-        if (prompt[parser->pos] != '|' && prompt[parser->pos] == prompt[parser->pos + 1])
+        if (prompt[parser->i] != '|' && prompt[parser->i] == prompt[parser->i + 1])
             return (2);
         else
             return (1);
     }
 	len = -1;
-    while (prompt[++len + parser->pos])
+    while (prompt[++len + parser->i])
     {
-        if (prompt[parser->pos + len] == '\'' || prompt[parser->pos + len] == '\"')
-            update_quote_state(parser, prompt[parser->pos + len]);
+        if (prompt[parser->i + len] == '\'' || prompt[parser->i + len] == '\"')
+            update_quote_state(parser->state, prompt[parser->i + len]);
         else if (!parser->state->in_single && !parser->state->in_double && 
-                (prompt[parser->pos + len] == ' ' || prompt[parser->pos + len] == '<' || 
-                 prompt[parser->pos + len] == '>' || prompt[parser->pos + len] == '|'))
+                (prompt[parser->i + len] == ' ' || prompt[parser->i + len] == '<' || 
+                prompt[parser->i + len] == '>' || prompt[parser->i + len] == '|'))
             break;
     }
     return (len);
 }
 
-static char *get_word(const char *prompt, t_parser_state *parser, char **tokens, int current)
+static char *get_word(t_parser_state *parser, char *prompt, char **tokens)
 {
     char	*word;
     int		i;
 
-    while (prompt[parser->pos] && (prompt[parser->pos] == ' ' || prompt[parser->pos] == '\t' || 
-           prompt[parser->pos] == '\v' || prompt[parser->pos] == '\f' || prompt[parser->pos] == '\r'))
-        parser->pos++;
-    if (!prompt[parser->pos])
+    while (prompt[parser->i] && (prompt[parser->i] == ' ' || prompt[parser->i] == '\t' || 
+        	prompt[parser->i] == '\v' || prompt[parser->i] == '\f' || prompt[parser->i] == '\r'))
+        parser->i++;
+    if (!prompt[parser->i])
         return NULL;
-    parser->len = get_word_len(prompt, parser);
+    parser->len = get_word_len(parser, prompt);
     word = ft_calloc(1, parser->len + 1);
     if (!word)
         return NULL;
 	i = 0;
     while (i < parser->len)
-        word[i++] = prompt[parser->pos++];
-    word[i] = '\0';
+        word[i++] = prompt[parser->i++];
     return (word);
 }
 
@@ -67,9 +52,9 @@ char **word_split(char *prompt)
     char			*word;
     
     words = NULL;
-    while (prompt[parser.pos])
+    while (prompt[parser.i])
     {
-        word = get_word(prompt, &parser, words, 0);
+        word = get_word(&parser, prompt, words);
         if (!word)
             break;
         words = str_arr_realloc(words, word);
