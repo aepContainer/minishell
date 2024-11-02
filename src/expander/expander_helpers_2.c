@@ -1,6 +1,6 @@
 #include "../../inc/parser.h"
 
-void update_quote_state(t_quote_state *state, char c)
+void	update_quote_state(t_quote_state *state, char c)
 {
     if (c == '\'' && !state->in_double)
         state->in_single = !state->in_single;
