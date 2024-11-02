@@ -1,4 +1,4 @@
-#include "../inc/parser.h"
+#include "../inc/minishell.h"
 
 static char	*read_prompt(void)
 {

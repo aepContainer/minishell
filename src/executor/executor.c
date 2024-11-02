@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 static void close_pipe(int pipe[2])
 {
@@ -26,8 +26,8 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
         temp = temp->next_job;
         i--;
     }
-	if (ctrl_builtins())
-    execve(mshell->success_arr[index], temp->args, mshell->envp);
+	if (ctrl_builtins(temp->args[0]) == -1)
+	    execve(mshell->success_arr[index], temp->args, mshell->envp);
     perror("execve error");
 }
 

@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 void	free_jobs(t_jobs *jobs)
 {

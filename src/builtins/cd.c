@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 char	cd(char *path)
 {

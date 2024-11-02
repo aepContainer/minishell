@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 void	process_env_vars(t_env *env, char **prompt)
 {

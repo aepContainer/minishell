@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 static int get_word_len(t_parser_state *parser, char *prompt)
 {

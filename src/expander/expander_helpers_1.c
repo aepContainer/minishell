@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 static int	get_var_length(t_env *env, char *str, int *i)
 {

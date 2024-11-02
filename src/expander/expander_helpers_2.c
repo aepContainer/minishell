@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 void	update_quote_state(t_quote_state *state, char c)
 {

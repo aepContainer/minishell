@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 static char	get_redirs(t_jobs *jobs)
 {}

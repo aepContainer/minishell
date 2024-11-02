@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 static char    **access_pathcheck(char **ctrl_paths, int p_len, int c_len)
 {

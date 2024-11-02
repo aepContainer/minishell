@@ -1,4 +1,4 @@
-#include "../../inc/parser.h"
+#include "../../inc/minishell.h"
 
 char	export(t_env **env, char *key, char *value, char *arg)
 {
