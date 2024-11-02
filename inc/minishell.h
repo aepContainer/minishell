@@ -7,10 +7,11 @@
 # include "stdio.h"
 # include "stdbool.h"
 # include "dirent.h"
-# include "readline/readline.h"
-# include "readline/history.h"
+//# include "readline/readline.h"
+//# include "readline/history.h"
 # include "termios.h"
 # include "signal.h"
+# include "errno.h"
 
 # define PROMPT "shellshock <(^_^)> "
 
@@ -123,6 +124,12 @@ char	cd(char *path);
 
 // Redir
 void	create_file(char **files, int len);
+void	init_pipes(t_mshell *mshell);
+bool	create_pipe(t_mshell *mshell);
+void	handle_pipes_parent(t_mshell *mshell);
+void	handle_pipes_child(t_mshell *mshell);
+void	close_active_pipe(t_mshell *mshell);
+void	close_all_pipes(t_mshell *mshell);
 
 // Helpers
 int		str_arr_len(char **arr);
