@@ -104,10 +104,20 @@ char	*expand_env_vars(t_env *env, char *prompt);
 void	update_quote_state(t_quote_state *state, char c);
 char	*find_value(t_env *env, const char *key_start, int key_len);
 
+// Executor
+char	executor(t_mshell *mshell);
+char	**accessor(t_mshell *mshell);
+
 // Env
 char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env **env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
+
+// Builtins
+char	ctrl_builtins(char	*prompt);
+char	export(t_env **env, char *key, char *value, char *arg);
+char	pwd(void);
+char	cd(char *path);
 
 // Redir
 void	create_file(char **files, int len);
