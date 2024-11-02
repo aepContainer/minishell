@@ -29,13 +29,6 @@ typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
 typedef struct termios			t_termios;
 
-typedef enum	e_type
-{
-	NONE,
-	PIPE,
-	EXEC
-}	t_type;
-
 struct s_redir
 {
 	int		in_file;
@@ -47,15 +40,15 @@ struct s_redir
 
 struct s_job
 {
-	char		*cmd;
+	char		*cmd;// kaldır / yerine args[0] kullan *
 	char		**args;
+	int			arg_len;
 	t_redir		*redir;
 	t_job		*next_job;
 };
 
 struct s_jobs
 {
-	t_type	type;
 	t_env	*env;
 	t_job	*job_list;
 	int		len;

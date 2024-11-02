@@ -1,33 +1,32 @@
 #include "../../inc/minishell.h"
 
-static char	get_redirs(t_jobs *jobs)
-{}
+static char	handle_distribute(t_job *job, char *arg)
+{
+}
 
 char	parser(t_jobs *jobs, char *prompt)
 {
+	t_job	*temp;
 	char	**splitted;
 	int		i;
 
 	process_env_vars(jobs->env, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
-		return (EXIT_FAILURE);
+		return (free_jobs(jobs), EXIT_FAILURE);
+	temp = jobs->job_list;
 	i = -1;
 	while (splitted[++i])
 	{
 		if (splitted[i][0] == '|')
 		{
-			jobs->job_list->next_job = ft_calloc(1, sizeof(t_job));
-			if (!jobs->job_list->next_job)
+			temp->next_job = ft_calloc(1, sizeof(t_job));
+			if (!temp->next_job)
 				return (free_jobs(jobs), EXIT_FAILURE);
-			jobs->job_list = jobs->job_list->next_job;
+			temp = temp->next_job;
 		}
-		else
-		{
-			jobs->job_list->args = str_arr_realloc(jobs->job_list->args, splitted[i]);
-			if (!jobs->job_list->args)
-				return (EXIT_FAILURE);
-		}
+		else if (handle_distribute(temp, splitted[i]))
+			return (free_jobs(jobs), EXIT_FAILURE);
 	}
-	return (get_redirs(jobs));
+	return (EXIT_SUCCESS);
 }
