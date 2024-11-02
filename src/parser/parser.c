@@ -1,7 +1,28 @@
 #include "../../inc/minishell.h"
 
+static char	if_redirection_or_heredoc(char *arg)
+{
+	if ((arg[0] == '<' || arg[0] == '>') && !arg[1])
+		return (1);
+	if ((arg[0] == '<' || arg[0] == '>') && arg[0] == arg[1] && !arg[2])
+		return (2);
+	return (0);
+}
+
+static char	ctrl_redirect(t_job *job, char *arg)
+{}
+
 static char	handle_distribute(t_job *job, char *arg)
 {
+	if (!*arg)
+		return (EXIT_FAILURE);
+	if (ctrl_redirect(job, arg))
+	{
+		job->args = str_arr_realloc(job->args, arg);
+		if (!job->args)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 char	parser(t_jobs *jobs, char *prompt)

@@ -42,7 +42,6 @@ struct s_job
 {
 	char		*cmd;// kaldır / yerine args[0] kullan *
 	char		**args;
-	int			arg_len;
 	t_redir		*redir;
 	t_job		*next_job;
 };
