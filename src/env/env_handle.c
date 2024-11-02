@@ -69,22 +69,26 @@ char	env_add(t_env **env, char *key, char *value)
 	t_env	*temp;
 	int		i;
 
-	if (!key || !value)
-		return (EXIT_FAILURE);
 	temp = ft_calloc(1, sizeof(t_env));
-	if (!temp)
+	if (!temp || !key)
 		return (EXIT_FAILURE);
-	i = -1;
 	temp->len = (*env)->len + 1;
 	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
 		return (free(temp), EXIT_FAILURE);
+	i = -1;
 	while (++i < temp->len)
 	{
 		temp->key[i] = (*env)->key[i];
 		temp->value[i] = (*env)->value[i];
 	}
-	temp->key[i] = key;
-	temp->value[i] = value;
+	temp->key[i] = ft_strdup(key);
+	free(key);
+	if (!temp->key[i])
+		return (free_env_node(temp), EXIT_FAILURE);
+	temp->value[i] = ft_strdup(value);
+	free(value);
+	if (!temp)
+		return (free_env_node(temp), EXIT_FAILURE);
 	*env = temp;
 	return (EXIT_SUCCESS);
 }
