@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 static bool	handle_input_file(t_redir *redir, char *filename)
 {
@@ -107,19 +107,4 @@ static char	handle_redir_type(t_redir *redir, int i)
 			return (1);
 	}
 	return (0);
-}
-
-void	create_file(char **files, int len)
-{
-	int	i;
-	int	fd;
-
-	i = 0;
-	while (i < len && files[i])
-	{
-		fd = open(files[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (fd != -1)
-			close(fd);
-		i++;
-	}
 }

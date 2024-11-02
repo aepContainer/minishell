@@ -14,14 +14,12 @@ bool create_pipe(t_mshell *mshell)
 {
     if (!mshell)
         return (false);
-        
     // Aktif pipe'ı temizle
     if (mshell->active_pipe[0] != -1 || mshell->active_pipe[1] != -1)
     {
         perror("minishell: pipe warning");
         close_active_pipe(mshell);
     }
-    
     // Yeni pipe oluştur
     if (pipe(mshell->active_pipe) == -1)
     {
@@ -30,12 +28,12 @@ bool create_pipe(t_mshell *mshell)
     }
     return (true);
 }
+
 // Parent process için pipe yönetimi
 void handle_pipes_parent(t_mshell *mshell)
 {
     if (!mshell)
         return;
-        
     // Write ucunu kapat
     if (mshell->active_pipe[1] != -1)
     {
@@ -57,14 +55,12 @@ void handle_pipes_child(t_mshell *mshell)
 {
     if (!mshell)
         return;
-        
     if (mshell->active_pipe[0] != -1)
     {
         if (close(mshell->active_pipe[0]) == -1)
             perror("minishell: close error");
         mshell->active_pipe[0] = -1;
     }
-    
     if (mshell->old_pipe[1] != -1)
     {
         if (close(mshell->old_pipe[1]) == -1)
@@ -78,7 +74,6 @@ void close_active_pipe(t_mshell *mshell)
 {
     if (!mshell)
         return;
-        
     if (mshell->active_pipe[0] != -1)
     {
         if (close(mshell->active_pipe[0]) == -1)
@@ -97,9 +92,7 @@ void close_all_pipes(t_mshell *mshell)
 {
     if (!mshell)
         return;
-        
     close_active_pipe(mshell);
-    
     if (mshell->old_pipe[0] != -1)
     {
         if (close(mshell->old_pipe[0]) == -1)
