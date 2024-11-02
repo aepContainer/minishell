@@ -8,6 +8,9 @@ static void close_pipe(int pipe[2])
 
 static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe[2])
 {
+	t_job	*temp;
+	int		index;
+
     if (i > 0)
         dup2(old_pipe[0], STDIN_FILENO);
     if (i + 1 < mshell->jobs->len)
@@ -16,12 +19,15 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
         close_pipe(old_pipe);
     if (i + 1 < mshell->jobs->len)
         close_pipe(active_pipe);
+	temp = mshell->jobs->job_list;
+	index = i;
     while (i)
     {
-        mshell->jobs->job_list = mshell->jobs->job_list->next_job;
+        temp = temp->next_job;
         i--;
     }
-    execve(mshell->success_arr[i], mshell->jobs->job_list->args, mshell->envp);
+	if (ctrl_builtins())
+    execve(mshell->success_arr[index], temp->args, mshell->envp);
     perror("execve error");
 }
 

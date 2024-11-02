@@ -1,13 +1,5 @@
 #include "../inc/minishell.h"
 
-static char	ctrl_builtins(char	*prompt)
-{
-	if (!ft_strncmp(prompt, "pwd", 3)
-			&& ft_strlen(prompt) == 3)
-		return (pwd());
-	return (-1);
-}
-
 static char	*read_prompt(void)
 {
 	char	*rtrn;
@@ -30,9 +22,8 @@ static char	process(t_mshell *mshell)
 	if (!mshell->prompt)
 		return (EXIT_FAILURE);
 	//parser(mshell);
-	if (ctrl_builtins(mshell->prompt))
-		return (EXIT_FAILURE);
-	executor(mshell);
+	if (executor(mshell))
+		mshell->quest_mark = 0;
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 

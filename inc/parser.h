@@ -62,6 +62,7 @@ struct s_mshell
 	char		**ctrl_paths;
 	char		**cmds;
 	char		**success_arr;
+	char		quest_mark;
 	int			active_pipe[2];
 	int			old_pipe[2];
 	t_termios	*termios;
@@ -103,12 +104,15 @@ char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env **env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
 
-// Helpers
-int		str_arr_len(char **arr);
-char	**str_arr_realloc(char **arr, char *element);
+// Builtins
+char	ctrl_builtins(char	*prompt);
 
 // Redir
 void	create_file(char **files, int len);
+
+// Helpers
+int		str_arr_len(char **arr);
+char	**str_arr_realloc(char **arr, char *element);
 
 // Free
 void 	free_job_list(t_job *job);
