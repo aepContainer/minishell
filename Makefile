@@ -11,7 +11,7 @@ RL_FLAGS = -lreadline -I/usr/include/readline
 SRC_PATH = src/
 
 B_PATH = $(SRC_PATH)builtins/
-B_SRC = $(B_PATH)cd.c $(B_PATH)pwd.c $(B_PATH)export.c
+B_SRC = $(B_PATH)ctrl_builtins.c $(B_PATH)cd.c $(B_PATH)pwd.c $(B_PATH)export.c $(B_PATH)unset.c
 
 ENV_PATH = $(SRC_PATH)env/
 ENV_SRC = $(ENV_PATH)env_handle.c

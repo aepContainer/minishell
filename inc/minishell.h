@@ -2,11 +2,6 @@
 # define MINISHELL_H
 
 # include "parser.h"
-# include "dirent.h"
-# include "readline/readline.h"
-# include "readline/history.h"
-# include "termios.h"
-# include "signal.h"
 
 # define PROMPT "shellshock <(^_^)> "
 
@@ -15,6 +10,8 @@ char	executor(t_mshell *mshell);
 char	**accessor(t_mshell *mshell);
 
 // Builtins
+char	ctrl_builtins(char	*prompt);
+char	export(t_env **env, char *key, char *value, char *arg);
 char	pwd(void);
 char	cd(char *path);
 

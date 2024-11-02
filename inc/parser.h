@@ -6,6 +6,11 @@
 # include "unistd.h"
 # include "stdio.h"
 # include "stdbool.h"
+# include "dirent.h"
+# include "readline/readline.h"
+# include "readline/history.h"
+# include "termios.h"
+# include "signal.h"
 
 # define DQUOTE '\"'
 # define SQUOTE '\''
@@ -103,9 +108,6 @@ char	*find_value(t_env *env, const char *key_start, int key_len);
 char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env **env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
-
-// Builtins
-char	ctrl_builtins(char	*prompt);
 
 // Redir
 void	create_file(char **files, int len);
