@@ -60,6 +60,7 @@ static char    **joins(char **env_paths, int paths_len, char **cmds, int cmds_le
 
 static char	get_data(t_mshell *mshell)
 {
+    t_job   *temp;
 	char	*env;
 
 	env = getenv("PATH");
@@ -67,12 +68,13 @@ static char	get_data(t_mshell *mshell)
 	free(env);
 	if (!mshell->envp)
 		return (EXIT_FAILURE);
-	while (mshell->jobs->job_list)
+    temp = mshell->jobs->job_list;
+	while (temp)
 	{
-		mshell->cmds = str_arr_realloc(mshell->cmds, mshell->jobs->job_list->cmd);
+		mshell->cmds = str_arr_realloc(mshell->cmds, temp->cmd);
 		if (!mshell->cmds)
 			return (free_str_arr(mshell->cmds), EXIT_FAILURE);
-		mshell->jobs->job_list = mshell->jobs->job_list->next_job;
+		temp = temp->next_job;
 	}
 	return (EXIT_SUCCESS);
 }

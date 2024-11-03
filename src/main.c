@@ -24,7 +24,7 @@ static char	process(t_mshell *mshell)
 	if (parser(mshell->jobs, mshell->prompt))
 		return (EXIT_FAILURE);
 	if (executor(mshell))
-		mshell->quest_mark = 0;
+		return (EXIT_FAILURE);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 

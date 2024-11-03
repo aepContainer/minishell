@@ -60,6 +60,8 @@ char	executor(t_mshell *mshell)
     int i;
 
     mshell->success_arr = accessor(mshell);
+    if (!mshell->success_arr)
+        return (EXIT_FAILURE);
     signal_handle_exec(mshell);
     i = -1;
     while (++i < mshell->jobs->len)
