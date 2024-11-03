@@ -15,7 +15,7 @@ static void	read_line(char *buffer)
 	buffer[i] = '\0';
 }
 
-void	child_process(int fd[2], const char *eof)
+static void	child_process(int fd[2], const char *eof)
 {
 	char	buffer[1024];
 

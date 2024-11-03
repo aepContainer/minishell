@@ -124,6 +124,7 @@ void	handle_pipes_parent(t_mshell *mshell);
 void	handle_pipes_child(t_mshell *mshell);
 void	close_active_pipe(t_mshell *mshell);
 void	close_all_pipes(t_mshell *mshell);
+void	heredoc(const char *eof);
 
 // Signal
 void	signal_handle_general(t_mshell *mshell);
