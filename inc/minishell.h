@@ -7,11 +7,12 @@
 # include "stdio.h"
 # include "stdbool.h"
 # include "dirent.h"
+# include "signal.h"
+# include "errno.h"
 # include "readline/readline.h"
 # include "readline/history.h"
 # include "termios.h"
-# include "signal.h"
-# include "errno.h"
+# include "sys/wait.h"
 
 # define PROMPT "shellshock <(^_^)> "
 
