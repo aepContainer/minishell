@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-void	process_env_vars(t_env *env, char **prompt)
+void	expander(t_env *env, char **prompt)
 {
     char	*expanded;
 

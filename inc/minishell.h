@@ -34,14 +34,15 @@ struct s_redir
 	int		in_file;
 	int 	out_file;
 	char	**files;
-	char	*eof;
-	char	*args;
+	char	**eof;
+	char	*heredoc_arg;
 };
 
 struct s_job
 {
 	char		*cmd;// kaldır / yerine args[0] kullan *
 	char		**args;
+	int			args_len;
 	t_redir		*redir;
 	t_job		*next_job;
 };
@@ -93,7 +94,7 @@ char	parser(t_jobs *jobs, char *prompt);
 char 	**word_split(char *prompt);
 
 // Expander
-void	process_env_vars(t_env *env, char **prompt);
+void	expander(t_env *env, char **prompt);
 char	*expand_env_vars(t_env *env, char *prompt);
 // Expander Helpers
 void	update_quote_state(t_quote_state *state, char c);
@@ -122,6 +123,10 @@ void	handle_pipes_parent(t_mshell *mshell);
 void	handle_pipes_child(t_mshell *mshell);
 void	close_active_pipe(t_mshell *mshell);
 void	close_all_pipes(t_mshell *mshell);
+
+// Signal
+void	signal_handle_general(t_mshell *mshell);
+void	signal_handle_exec(t_mshell *mshell);
 
 // Helpers
 int		str_arr_len(char **arr);

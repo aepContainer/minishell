@@ -82,13 +82,12 @@ char	env_add(t_env **env, char *key, char *value)
 		temp->value[i] = (*env)->value[i];
 	}
 	temp->key[i] = ft_strdup(key);
-	free(key);
-	if (!temp->key[i])
+	if (free(key), !temp->key[i])
 		return (free_env_node(temp), EXIT_FAILURE);
 	temp->value[i] = ft_strdup(value);
-	free(value);
-	if (!temp)
+	if (free(value), !temp)
 		return (free_env_node(temp), EXIT_FAILURE);
+	free_env_node(*env);
 	*env = temp;
 	return (EXIT_SUCCESS);
 }

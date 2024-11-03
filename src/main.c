@@ -21,7 +21,8 @@ static char	process(t_mshell *mshell)
 	free(prompt);
 	if (!mshell->prompt)
 		return (EXIT_FAILURE);
-	parser(mshell->jobs, prompt);
+	if (parser(mshell->jobs, mshell->prompt))
+		return (EXIT_FAILURE);
 	if (executor(mshell))
 		mshell->quest_mark = 0;
 	return (free(mshell->prompt), EXIT_SUCCESS);
@@ -35,21 +36,15 @@ static char	get_first_env(t_jobs *jobs, char **env)
 	jobs->env = ft_calloc(1, sizeof(t_env));
 	if (!jobs->env)
 		return (EXIT_FAILURE);
-	while (env[jobs->env->len])
-		jobs->env->len += 1;
-	jobs->env->key = ft_calloc(jobs->env->len + 1, sizeof(char *));
-	if (!jobs->env->key)
-		return (free(jobs->env), EXIT_FAILURE);
-	jobs->env->value = ft_calloc(jobs->env->len + 1, sizeof(char *));
-	if (!jobs->env->value)
-		return (free_env_node(jobs->env), EXIT_FAILURE);
 	i = -1;
 	while (env[++i])
 	{
 		splitted = ft_split(env[i], '=');
 		if (!splitted)
 			return (free_env_node(jobs->env), EXIT_FAILURE);
-		env_add(&jobs->env, splitted[0], splitted[1]);
+		if (env_add(&jobs->env, splitted[0], splitted[1]))
+			return (free_env_node(jobs->env), free(splitted), EXIT_FAILURE);
+		free(splitted);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -67,11 +62,12 @@ int main(int argc, char **argv, char **env)
 	if (!mshell->jobs)
 		return (free(mshell), EXIT_FAILURE);
 	if (!get_first_env(mshell->jobs, env))
-		return (free(mshell), EXIT_FAILURE);
+		return (free_mshell(mshell), EXIT_FAILURE);
 	signal_handle_general(mshell);
 	while (1)
 		if (process(mshell))
 			break ;
+	free_mshell(mshell);
 	//quitting(mshell);
 	return (EXIT_SUCCESS);
 }

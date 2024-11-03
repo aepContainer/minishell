@@ -8,8 +8,8 @@ static void close_pipe(int pipe[2])
 
 static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe[2])
 {
-	t_job	*temp;
-	int		index;
+	t_job   *temp;
+	int	    index;
 
     if (i > 0)
         dup2(old_pipe[0], STDIN_FILENO);
@@ -57,7 +57,7 @@ static char	executor_line_helper(t_mshell *mshell, int i)
 
 char	executor(t_mshell *mshell)
 {
-    int     i;
+    int i;
 
     mshell->success_arr = accessor(mshell);
     signal_handle_exec(mshell);

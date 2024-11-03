@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-void	ctrl_output(t_mshell *mshell, char state)
+static void	ctrl_output(t_mshell *mshell, char state)
 {
 	if (state == 1)
 	{
@@ -13,7 +13,7 @@ void	ctrl_output(t_mshell *mshell, char state)
 	mshell->termios->c_lflag &= ~ECHOCTL;
 }
 
-void	reset_prompt(int signal)
+static void	reset_prompt(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);
@@ -22,7 +22,7 @@ void	reset_prompt(int signal)
 	rl_redisplay();
 }
 
-void	reset_prompt_exec(int signal)
+static void	reset_prompt_exec(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);

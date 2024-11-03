@@ -10,19 +10,47 @@ static char	if_redirection_or_heredoc(char *arg)
 }
 
 static char	ctrl_redirect(t_job *job, char *arg)
-{}
+{
+	char	state;
+
+	if (!job->args_len)
+		return (-1);
+	state = if_redirection_or_heredoc(job->args[job->args_len - 1]);
+	if (!state)
+		return (-1);
+	else if (state == 1)
+	{
+		job->redir->files = str_arr_realloc(job->redir->files, arg);
+		if (!job->redir->files)
+			return (EXIT_FAILURE);
+	}
+	else
+	{
+		job->redir->eof = str_arr_realloc(job->redir->eof, arg);
+		if (!job->redir->eof)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
 
 static char	handle_distribute(t_job *job, char *arg)
 {
+	char	state;
+
 	if (!*arg)
 		return (EXIT_FAILURE);
-	if (ctrl_redirect(job, arg))
+	state = ctrl_redirect(job, arg);
+	if (state == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	if (state == -1)
 	{
 		job->args = str_arr_realloc(job->args, arg);
 		if (!job->args)
 			return (EXIT_FAILURE);
+		job->args_len += 1;
+		return (EXIT_SUCCESS);
 	}
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 char	parser(t_jobs *jobs, char *prompt)
@@ -31,7 +59,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	char	**splitted;
 	int		i;
 
-	process_env_vars(jobs->env, &prompt);
+	expander(jobs->env, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
 		return (free_jobs(jobs), EXIT_FAILURE);
@@ -43,11 +71,11 @@ char	parser(t_jobs *jobs, char *prompt)
 		{
 			temp->next_job = ft_calloc(1, sizeof(t_job));
 			if (!temp->next_job)
-				return (free_jobs(jobs), EXIT_FAILURE);
+				return (free_jobs(jobs), free_str_arr(splitted), EXIT_FAILURE);
 			temp = temp->next_job;
 		}
 		else if (handle_distribute(temp, splitted[i]))
-			return (free_jobs(jobs), EXIT_FAILURE);
+			return (free_jobs(jobs), free_str_arr(splitted), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
