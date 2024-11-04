@@ -33,7 +33,7 @@ static void	child_process(int fd[2], const char *eof)
 	exit(0);
 }
 
-void	heredoc(const char *eof)
+void	heredoc(char *eof)
 {
 	int		fd[2];
 	pid_t	pid;

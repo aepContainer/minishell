@@ -11,6 +11,8 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
 	t_job   *temp;
 	int	    index;
 
+	if (handle_redirections(mshell->jobs->job_list))
+		return ;
     if (i > 0)
         dup2(old_pipe[0], STDIN_FILENO);
     if (i + 1 < mshell->jobs->len)

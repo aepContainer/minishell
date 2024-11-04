@@ -69,12 +69,12 @@ static char	apply_redirections(t_redir *redir)
 	return (0);
 }
 
-char	handle_redirections(t_mshell *mshell, t_job *job)
+char	handle_redirections(t_job *job)
 {
 	t_redir	*redir;
 	int		i;
 
-	if (!mshell || !job || !job->redir || !job->redir->files)
+	if (!job || !job->redir || !job->redir->files)
 		return (0);
 	redir = job->redir;
 	redir->in_file = -1;
