@@ -42,7 +42,7 @@ static char	get_first_env(t_jobs *jobs, char **env)
 		splitted = ft_split(env[i], '=');
 		if (!splitted)
 			return (free_env_node(jobs->env), EXIT_FAILURE);
-		if (env_add(&jobs->env, splitted[0], splitted[1]))
+		if (env_add(jobs->env, splitted[0], splitted[1]))
 			return (free_env_node(jobs->env), free(splitted), EXIT_FAILURE);
 		free(splitted);
 	}
@@ -61,9 +61,9 @@ int main(int argc, char **argv, char **env)
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
 		return (free(mshell), EXIT_FAILURE);
-	if (!get_first_env(mshell->jobs, env))
+	if (get_first_env(mshell->jobs, env))
 		return (free_mshell(mshell), EXIT_FAILURE);
-	signal_handle_general(mshell);
+	//signal_handle_general(mshell);
 	while (1)
 		if (process(mshell))
 			break ;

@@ -11,8 +11,6 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
 	t_job   *temp;
 	int	    index;
 
-	if (handle_redirections(mshell->jobs->job_list))
-		return ;
     if (i > 0)
         dup2(old_pipe[0], STDIN_FILENO);
     if (i + 1 < mshell->jobs->len)
@@ -20,7 +18,9 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
     if (i > 0)
         close_pipe(old_pipe);
     if (i + 1 < mshell->jobs->len)
+	{
         close_pipe(active_pipe);
+	}
 	temp = mshell->jobs->job_list;
 	index = i;
     while (i)
@@ -28,8 +28,11 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
         temp = temp->next_job;
         i--;
     }
-	if (ctrl_builtins(temp->args[0]) == -1)
-	    execve(mshell->success_arr[index], temp->args, mshell->envp);
+	if (!handle_redirections(temp))
+	{
+		if (ctrl_builtins(temp->args[0]) == -1)
+	    	execve(mshell->success_arr[index], temp->args, mshell->envp);
+	}
     perror("execve error");
 }
 

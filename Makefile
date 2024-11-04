@@ -6,7 +6,12 @@ LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
 LIBFT = $(LIBFT_PATH)libft.h
 
+PRINTF_PATH = inc/ft_printf/
+PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
+PRINTF = $(PRINTF_PATH)libftprintf.a
+
 RL_FLAGS = -lreadline -I/usr/include/readline
+#READLINE = inc/readline/
 
 SRC_PATH = src/
 
@@ -32,29 +37,33 @@ PARSER_PATH = $(SRC_PATH)parser/
 PARSER_SRC = $(PARSER_PATH)parser.c $(PARSER_PATH)get_word.c
 
 RED_PATH = $(SRC_PATH)redir/
-RED_SRC = $(RED_PATH)create_file.c
+RED_SRC = $(RED_PATH)create_file.c $(RED_PATH)heredoc.c $(RED_PATH)io_file.c \
+$(RED_PATH)io_handler.c $(RED_PATH)pipe.c
 
-SIG_PATH = $(SRC_PATH)signals/
+SIG_PATH = $(SRC_PATH)signal/
 SIG_SRC = $(SIG_PATH)signal_handle.c
 
 SRCS = src/main.c $(B_SRC) $(ENV_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
 
-all: $(SRCS) $(LIBFT) $(READLINE)
-	cc $(CFLAGS) $(SRCS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
+all: $(SRCS) $(LIBFT) $(PRINTF) $(READLINE)
+	cc $(CFLAGS) $(SRCS) $(LIBFT_FLAGS) $(PRINTF_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):
-	make -c $(LIBFT_PATH)
+	make -C $(LIBFT_PATH)
+
+$(PRINTF):
+	make -C $(PRINTF_PATH)
 
 $(READLINE):
 	curl -O https://gnu.org/gnu/readline/readline-8.2.tar.gz
 	tar -xvf readline-8.2.tar.gz
 	cd readline-8.2 && ./configure --prefix=../inc/readline
-#cd readline-8.2 && make install
-	make install
+	cd readline-8.2 && make install
 	@rm -fr readline-8.2 readline-8.2.tar.gz
 
 clean:
-	make -c $(LIBFT_PATH) clean
+	make -C $(LIBFT_PATH) clean
+	make -C $(PRINTF_PATH) clean
 	$(RM) $(NAME)
 
 fclean: clean

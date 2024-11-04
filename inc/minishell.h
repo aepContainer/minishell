@@ -4,7 +4,7 @@
 # include "libft/libft.h"
 # include "fcntl.h"
 # include "unistd.h"
-# include "stdio.h"
+# include "ft_printf/ft_printf.h"
 # include "stdbool.h"
 # include "dirent.h"
 # include "signal.h"
@@ -12,7 +12,12 @@
 # include "readline/readline.h"
 # include "readline/history.h"
 # include "termios.h"
+# include "termcap.h"
 # include "sys/wait.h"
+
+# ifndef ECHOCTL
+#  define ECHOCTL 8
+# endif
 
 # define PROMPT "shellshock <(^_^)> "
 
@@ -41,7 +46,6 @@ struct s_redir
 
 struct s_job
 {
-	char		*cmd;// kaldır / yerine args[0] kullan *
 	char		**args;
 	int			args_len;
 	t_redir		*redir;
@@ -58,7 +62,7 @@ struct s_jobs
 struct s_mshell
 {
 	t_jobs		*jobs;
-	char		*envp;
+	char		**envp;
 	char		*prompt;
 	char		*path_env;
 	char		**ctrl_paths;
@@ -67,7 +71,7 @@ struct s_mshell
 	char		quest_mark;
 	int			active_pipe[2];
 	int			old_pipe[2];
-	t_termios	*termios;
+	t_termios	termios;
 };
 
 struct s_env
@@ -99,7 +103,7 @@ void	expander(t_env *env, char **prompt);
 char	*expand_env_vars(t_env *env, char *prompt);
 // Expander Helpers
 void	update_quote_state(t_quote_state *state, char c);
-char	*find_value(t_env *env, const char *key_start, int key_len);
+char	*find_value(t_env *env, char *key_start, int key_len);
 
 // Executor
 char	executor(t_mshell *mshell);
@@ -107,12 +111,12 @@ char	**accessor(t_mshell *mshell);
 
 // Env
 char	env_del_element(t_env **env, char *key, char *value);
-char	env_add(t_env **env, char *key, char *value);
+char	env_add(t_env *env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
 
 // Builtins
 char	ctrl_builtins(char	*prompt);
-char	export(t_env **env, char *key, char *value, char *arg);
+char	export(t_env *env, char *key, char *value, char *arg);
 char	pwd(void);
 char	cd(char *path);
 

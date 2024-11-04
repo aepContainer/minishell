@@ -8,9 +8,9 @@ static void	ctrl_output(t_mshell *mshell, char state)
 		return ;
 	}
 	tcgetattr(STDIN_FILENO, &mshell->termios);
-	mshell->termios->c_lflag &= ~ECHOCTL;
+	mshell->termios.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &mshell->termios);
-	mshell->termios->c_lflag &= ~ECHOCTL;
+	mshell->termios.c_lflag &= ~ECHOCTL;
 }
 
 static void	reset_prompt(int signal)

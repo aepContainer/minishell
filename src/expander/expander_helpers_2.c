@@ -14,10 +14,14 @@ char	*find_value(t_env *env, char *key_start, int key_len)
 	char	*value;
 
     if (!env || !key_start || !key_len)
+	{
         return (NULL);
+	}
 	key = ft_substr(key_start, 0, key_len);
 	if (!key)
+	{
 		return (NULL);
+	}
 	value = env_find_value(env, key);
 	free(key);
 	if (!value)

@@ -59,11 +59,14 @@ char	parser(t_jobs *jobs, char *prompt)
 	char	**splitted;
 	int		i;
 
+	jobs->job_list = ft_calloc(1, sizeof(t_job));
+	if (!jobs->job_list)
+		return (EXIT_FAILURE);
+	temp = jobs->job_list;
 	expander(jobs->env, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
-		return (free_jobs(jobs), EXIT_FAILURE);
-	temp = jobs->job_list;
+		return (EXIT_FAILURE);
 	i = -1;
 	while (splitted[++i])
 	{
@@ -71,11 +74,11 @@ char	parser(t_jobs *jobs, char *prompt)
 		{
 			temp->next_job = ft_calloc(1, sizeof(t_job));
 			if (!temp->next_job)
-				return (free_jobs(jobs), free_str_arr(splitted), EXIT_FAILURE);
+				return (free_str_arr(splitted), EXIT_FAILURE);
 			temp = temp->next_job;
 		}
 		else if (handle_distribute(temp, splitted[i]))
-			return (free_jobs(jobs), free_str_arr(splitted), EXIT_FAILURE);
+			return (free_str_arr(splitted), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

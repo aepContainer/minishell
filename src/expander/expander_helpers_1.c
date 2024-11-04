@@ -19,7 +19,7 @@ static int	get_var_length(t_env *env, char *str, int *i)
     return (1);
 }
 
-static int	calculate_expanded_length(t_env *env, const char *str)
+static int	calculate_expanded_length(t_env *env, char *str)
 {
     t_quote_state	state;
     int				len;
@@ -84,16 +84,20 @@ char	*expand_env_vars(t_env *env, char *prompt)
     int				*temps;
 
     if (!prompt)
+	{
         return (NULL);
+	}
 	temps = init_temps(env, prompt);
 	if (!temps)
+	{
 		return (NULL);
+	}
     result = ft_calloc(1, temps[3] + 1);
     if (!result)
         return (NULL);
     while (prompt[temps[0]])
     {
-        update_quote_state(prompt[temps[0]], &state);
+        update_quote_state(&state, prompt[temps[0]]);
         if (prompt[temps[0]] == '$' && !state.in_single)
 		{
 			if (expand_env_vars_line_helper(env, prompt, result, temps))
@@ -102,5 +106,6 @@ char	*expand_env_vars(t_env *env, char *prompt)
         else
             result[temps[1]++] = prompt[temps[0]++];
     }
+	result[temps[1]] = 0;
     return (result);
 }

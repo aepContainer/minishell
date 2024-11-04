@@ -69,6 +69,26 @@ static char	apply_redirections(t_redir *redir)
 	return (0);
 }
 
+static char	handle_redir_type(t_redir *redir, int i)
+{
+	if (redir->heredoc_arg[i] == '<')
+	{
+		if (!handle_input_file(redir, redir->files[i]))
+			return (1);
+	}
+	else if (redir->heredoc_arg[i] == '>' && redir->heredoc_arg[i + 1] != '>')
+	{
+		if (!handle_output_file(redir, redir->files[i]))
+			return (1);
+	}
+	else if (redir->heredoc_arg[i] == '>' && redir->heredoc_arg[i + 1] == '>')
+	{
+		if (!handle_append_file(redir, redir->files[i]))
+			return (1);
+	}
+	return (0);
+}
+
 char	handle_redirections(t_job *job)
 {
 	t_redir	*redir;
@@ -87,24 +107,4 @@ char	handle_redirections(t_job *job)
 		i++;
 	}
 	return (apply_redirections(redir));
-}
-
-static char	handle_redir_type(t_redir *redir, int i)
-{
-	if (redir->args[i] == '<')
-	{
-		if (!handle_input_file(redir, redir->files[i]))
-			return (1);
-	}
-	else if (redir->args[i] == '>' && redir->args[i + 1] != '>')
-	{
-		if (!handle_output_file(redir, redir->files[i]))
-			return (1);
-	}
-	else if (redir->args[i] == '>' && redir->args[i + 1] == '>')
-	{
-		if (!handle_append_file(redir, redir->files[i]))
-			return (1);
-	}
-	return (0);
 }

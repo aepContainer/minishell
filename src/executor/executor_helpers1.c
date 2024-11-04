@@ -46,12 +46,16 @@ static char    **joins(char **env_paths, int paths_len, char **cmds, int cmds_le
         index[1] = -1;
         while (env_paths[++index[1]])
         {
-            temp1 = ft_strjoin(env_paths[index[1]], ft_strdup("/"));
+			if (env_paths[index[1]][ft_strlen(env_paths[index[1]]) - 1] != '/')
+				temp1 = ft_strjoin(env_paths[index[1]], ft_strdup("/"));
+			else
+				temp1 = ft_strdup(env_paths[index[1]]);
             temp2 = ft_strjoin(temp1, cmds[index[0]]);
             free(temp1);
-            cmd_paths[index[2]] = ft_calloc(ft_strlen(temp2) + 1, 1);
-            ft_strlcpy(cmd_paths[index[2]], temp2, ft_strlen(temp2) + 1);
+            cmd_paths[index[2]] = ft_strdup(temp2);
             free(temp2);
+			if (!cmd_paths[index[2]])
+				return (NULL);
             index[2]++;
         }
     }
@@ -65,13 +69,12 @@ static char	get_data(t_mshell *mshell)
 
 	env = getenv("PATH");
     mshell->envp = ft_split(env, ':');
-	free(env);
 	if (!mshell->envp)
 		return (EXIT_FAILURE);
     temp = mshell->jobs->job_list;
 	while (temp)
 	{
-		mshell->cmds = str_arr_realloc(mshell->cmds, temp->cmd);
+		mshell->cmds = str_arr_realloc(mshell->cmds, ft_strdup(temp->args[0]));
 		if (!mshell->cmds)
 			return (free_str_arr(mshell->cmds), EXIT_FAILURE);
 		temp = temp->next_job;

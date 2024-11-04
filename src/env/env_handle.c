@@ -57,38 +57,27 @@ char	env_del_element(t_env **env, char *key, char *value)
 		if (len1 == len2 && !ft_strncmp(temp->key[i], key, len1))
 		{
 			len2 = ft_strlen(temp->value[i]);
-			if (ft_strlen(value) == len2 && ft_strncmp(temp->value[i], value, len2))
+			if ((int) ft_strlen(value) == len2
+					&& ft_strncmp(temp->value[i], value, len2))
 				return (env_del_index(env, i));
 		}
 	}
 	return (EXIT_FAILURE);
 }
 
-char	env_add(t_env **env, char *key, char *value)
+char	env_add(t_env *env, char *key, char *value)
 {
-	t_env	*temp;
-	int		i;
-
-	temp = ft_calloc(1, sizeof(t_env));
-	if (!temp || !key)
-		return (EXIT_FAILURE);
-	temp->len = (*env)->len + 1;
-	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
-		return (free(temp), EXIT_FAILURE);
-	i = -1;
-	while (++i < temp->len)
+	env->key = str_arr_realloc(env->key, key);
+	if (!env->key)
 	{
-		temp->key[i] = (*env)->key[i];
-		temp->value[i] = (*env)->value[i];
+		return (EXIT_FAILURE);
 	}
-	temp->key[i] = ft_strdup(key);
-	if (free(key), !temp->key[i])
-		return (free_env_node(temp), EXIT_FAILURE);
-	temp->value[i] = ft_strdup(value);
-	if (free(value), !temp)
-		return (free_env_node(temp), EXIT_FAILURE);
-	free_env_node(*env);
-	*env = temp;
+	if (value)
+	{
+		env->value = str_arr_realloc(env->value, value);
+		if (!env->value)
+			return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -103,7 +92,8 @@ char	*env_find_value(t_env *env, char *key)
 	i = -1;
 	while (env->key[++i])
 	{
-		if (ft_strlen(env->key[i]) == key_len && !ft_strncmp(env->key[i], key, key_len))
+		if ((int) ft_strlen(env->key[i]) == key_len
+				&& !ft_strncmp(env->key[i], key, key_len))
 			return (env->value[i]);
 	}
 	return (NULL);

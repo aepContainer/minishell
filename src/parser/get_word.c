@@ -24,7 +24,7 @@ static int get_word_len(t_parser_state *parser, char *prompt)
     return (len);
 }
 
-static char *get_word(t_parser_state *parser, char *prompt, char **tokens)
+static char *get_word(t_parser_state *parser, char *prompt)
 {
     char	*word;
     int		i;
@@ -36,11 +36,14 @@ static char *get_word(t_parser_state *parser, char *prompt, char **tokens)
         return NULL;
     parser->len = get_word_len(parser, prompt);
     word = ft_calloc(1, parser->len + 1);
+	i = 0;
     if (!word)
         return NULL;
-	i = 0;
     while (i < parser->len)
+	{
         word[i++] = prompt[parser->i++];
+	}
+	word[i] = 0;
     return (word);
 }
 
@@ -54,11 +57,10 @@ char **word_split(char *prompt)
     words = NULL;
     while (prompt[parser.i])
     {
-        word = get_word(&parser, prompt, words);
+        word = get_word(&parser, prompt);
         if (!word)
             break;
         words = str_arr_realloc(words, word);
-        free(word);
         if (!words)
             return (NULL);
     }

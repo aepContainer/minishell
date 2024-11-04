@@ -27,12 +27,12 @@ void	free_redir(t_redir *redir)
 {
 	if (!redir)
 		return ;
+	if(redir->eof)
+		free_str_arr(redir->eof);
     if(redir->files)
 		free_str_arr(redir->files);
-	if(redir->eof)
-		free(redir->eof);
-	if(redir->args)
-		free(redir->args);
+	if(redir->heredoc_arg)
+		free(redir->heredoc_arg);
 	free(redir);
 }
 

@@ -36,15 +36,11 @@ bool	redirect_job_io(t_mshell *mshell, int *read_fd, int *write_fd)
 	return (ret);
 }
 
-char	redirect_pipe_io(t_mshell *mshell, t_job *job)
+char	redirect_pipe_io(t_job *job)
 {
-	int		read_fd;
-	int		write_fd;
 	char	ret;
 
-	read_fd = -1;
-	write_fd = -1;
-	ret = handle_redirections(mshell, job);
+	ret = handle_redirections(job);
 	if (ret == 0 && \
 		((job->redir->in_file != -1 && \
 		dup2(job->redir->in_file, STDIN_FILENO) == -1) || \
