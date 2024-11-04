@@ -55,7 +55,7 @@ static char	apply_redirections(t_redir *redir)
 		if (dup2(redir->in_file, STDIN_FILENO) == -1)
 		{
 			perror("minishell");
-			return (1);
+			return (EXIT_FAILURE);
 		}
 	}
 	if (redir->out_file != -1)
@@ -63,10 +63,10 @@ static char	apply_redirections(t_redir *redir)
 		if (dup2(redir->out_file, STDOUT_FILENO) == -1)
 		{
 			perror("minishell");
-			return (1);
+			return (EXIT_FAILURE);
 		}
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 static char	handle_redir_type(t_redir *redir, int i)
@@ -89,13 +89,13 @@ static char	handle_redir_type(t_redir *redir, int i)
 	return (0);
 }
 
-char	handle_redirections(t_job *job)
+void	handle_redirections(t_job *job)
 {
 	t_redir	*redir;
 	int		i;
 
 	if (!job || !job->redir || !job->redir->files)
-		return (0);
+		return ;
 	redir = job->redir;
 	redir->in_file = -1;
 	redir->out_file = -1;
@@ -103,8 +103,8 @@ char	handle_redirections(t_job *job)
 	while (redir->files && redir->files[i])
 	{
 		if (handle_redir_type(redir, i) != 0)
-			return (1);
+			return ;
 		i++;
 	}
-	return (apply_redirections(redir));
+	apply_redirections(redir);
 }

@@ -52,6 +52,8 @@ static char    **joins(char **env_paths, int paths_len, char **cmds, int cmds_le
 				temp1 = ft_strdup(env_paths[index[1]]);
             temp2 = ft_strjoin(temp1, cmds[index[0]]);
             free(temp1);
+			if (!temp2)
+				return (NULL);
             cmd_paths[index[2]] = ft_strdup(temp2);
             free(temp2);
 			if (!cmd_paths[index[2]])
@@ -94,7 +96,6 @@ char	**accessor(t_mshell *mshell)
     c_len = mshell->jobs->len;
     mshell->ctrl_paths = joins(mshell->envp, p_len, mshell->cmds, c_len);
     success_arr = access_pathcheck(mshell->ctrl_paths, p_len, c_len);
-	free_str_arr(mshell->ctrl_paths);
 	if (!success_arr)
 		return (NULL);
     return (success_arr);

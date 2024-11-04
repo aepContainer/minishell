@@ -35,7 +35,7 @@ bool	redirect_job_io(t_mshell *mshell, int *read_fd, int *write_fd)
 		close(*write_fd);
 	return (ret);
 }
-
+/*
 char	redirect_pipe_io(t_job *job)
 {
 	char	ret;
@@ -56,6 +56,7 @@ char	redirect_pipe_io(t_job *job)
 		close(job->redir->out_file);
 	return (ret);
 }
+*/
 
 bool	restore_std_io(int saved_fd[2])
 {

@@ -62,6 +62,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	jobs->job_list = ft_calloc(1, sizeof(t_job));
 	if (!jobs->job_list)
 		return (EXIT_FAILURE);
+	jobs->len = 1;
 	temp = jobs->job_list;
 	expander(jobs->env, &prompt);
 	splitted = word_split(prompt);
@@ -72,6 +73,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	{
 		if (splitted[i][0] == '|')
 		{
+			jobs->len += 1;
 			temp->next_job = ft_calloc(1, sizeof(t_job));
 			if (!temp->next_job)
 				return (free_str_arr(splitted), EXIT_FAILURE);

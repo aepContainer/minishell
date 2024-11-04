@@ -124,7 +124,7 @@ char	cd(char *path);
 void	create_file(char **files, int len);
 void	init_pipes(t_mshell *mshell);
 bool	create_pipe(t_mshell *mshell);
-char	handle_redirections(t_job *job);
+void	handle_redirections(t_job *job);
 void	handle_pipes_parent(t_mshell *mshell);
 void	handle_pipes_child(t_mshell *mshell);
 void	close_active_pipe(t_mshell *mshell);
