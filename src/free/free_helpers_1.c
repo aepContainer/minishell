@@ -56,10 +56,6 @@ void	free_mshell(t_mshell *mshell)
 		free_jobs(mshell->jobs);
 	if (mshell->envp)
 		free(mshell->envp);
-	if (mshell->prompt)
-		free(mshell->prompt);
-	if (mshell->path_env)
-		free(mshell->path_env);
 	if (mshell->cmds)
 		free_str_arr(mshell->cmds);
 	if (mshell->ctrl_paths)

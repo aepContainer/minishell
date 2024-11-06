@@ -1,22 +1,29 @@
 #include "../inc/minishell.h"
 
-static char	*read_prompt(void)
+static void	nuller(t_mshell *mshell)
 {
-	char	*rtrn;
-
-	rtrn = readline(PROMPT);
-	if (!rtrn)
-		return (NULL);
-	if (*rtrn)
-		add_history(rtrn);
-	return (rtrn);
+	if (mshell->cmds)
+		free_str_arr(mshell->cmds);
+	mshell->cmds = NULL;
+	if (mshell->ctrl_paths)
+		free_str_arr(mshell->ctrl_paths);
+	mshell->ctrl_paths = NULL;
+	if (mshell->envp)
+		free_str_arr(mshell->envp);
+	if (mshell->success_arr)
+		free_str_arr(mshell->success_arr);
+	mshell->success_arr = NULL;
 }
 
 static char	process(t_mshell *mshell)
 {
 	char	*prompt;
 
-	prompt = read_prompt();
+	prompt = readline(PROMPT);
+	if (!prompt)
+		return (EXIT_FAILURE);
+	if (*prompt)
+		add_history(prompt);
 	mshell->prompt = ft_strtrim(prompt, " \t\v\r\f");
 	free(prompt);
 	if (!mshell->prompt)
@@ -25,6 +32,8 @@ static char	process(t_mshell *mshell)
 		return (EXIT_FAILURE);
 	if (executor(mshell))
 		return (EXIT_FAILURE);
+	mshell->quest_mark = 0;
+	nuller(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
@@ -63,11 +72,10 @@ int main(int argc, char **argv, char **env)
 		return (free(mshell), EXIT_FAILURE);
 	if (get_first_env(mshell->jobs, env))
 		return (free_mshell(mshell), EXIT_FAILURE);
-	//signal_handle_general(mshell);
+	signal_handle_general(mshell);
 	while (1)
 		if (process(mshell))
 			break ;
 	free_mshell(mshell);
-	//quitting(mshell);
 	return (EXIT_SUCCESS);
 }

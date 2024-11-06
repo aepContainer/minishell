@@ -9,15 +9,11 @@
 # include "dirent.h"
 # include "signal.h"
 # include "errno.h"
-# include "readline/readline.h"
-# include "readline/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "termios.h"
 # include "termcap.h"
 # include "sys/wait.h"
-
-# ifndef ECHOCTL
-#  define ECHOCTL 8
-# endif
 
 # define PROMPT "shellshock <(^_^)> "
 
@@ -64,7 +60,6 @@ struct s_mshell
 	t_jobs		*jobs;
 	char		**envp;
 	char		*prompt;
-	char		*path_env;
 	char		**ctrl_paths;
 	char		**cmds;
 	char		**success_arr;

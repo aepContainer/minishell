@@ -1,50 +1,53 @@
 #include "../../inc/minishell.h"
 
-static void	read_line(char *buffer)
-{
-	int		rtrn;
-	int		i;
-
-	i = 0;
-	while ((rtrn = read(0, &buffer[i], 1)) > 0)
-	{
-		if (buffer[i] == '\n')
-			break;
-		i++;
-	}
-	buffer[i] = '\0';
-}
-
 static void	child_process(int fd[2], const char *eof)
 {
-	char	buffer[1024];
+	char	*arg;
+	char	*temp;
+	char	*buffer;
+	int		len[2];
 
 	close(fd[0]);
-	while (1)
+	buffer = readline(">");
+	while (!buffer)
+		readline(">");
+	len[0] = ft_strlen(buffer);
+	len[1] = ft_strlen(eof);
+	while (!ft_strncmp(buffer, eof, len[0]) && len[0] == len[1])
 	{
-		write(1, "> ", 2);
-		read_line(buffer);
-		if (strcmp(buffer, eof) == 0)
-			break;
-		write(fd[1], buffer, ft_strlen(buffer));
-		write(fd[1], "\n", 1);
+		temp = arg;
+		arg = ft_strjoin(arg, buffer);
+		free(temp);
+		free(buffer);
+		if (!arg)
+			return (NULL);
+		buffer = readline(">");
+		while (!buffer)
+			readline(">");
+		len[0] = ft_strlen(buffer);
 	}
-	close(fd[1]);
-	exit(0);
+	return (close(fd[1]), arg);
 }
 
-void	heredoc(char *eof)
+char	*heredoc(char **eof)
 {
-	int		fd[2];
+	char	*arg;
 	pid_t	pid;
+	int		fd[2];
+	int		i;
 
 	if (pipe(fd) == -1)
-		return;
+		return (NULL);
 	pid = fork();
 	if (pid < 0)
-		return;
+		return (NULL);
 	if (pid == 0)
-		child_process(fd, eof);
+	{
+		i = -1;
+		while (eof[++i])
+			arg = ft_strjoin(arg, child_process(fd, eof));
+		exit(0);
+	}
 	else
 	{
 		close(fd[1]);
@@ -52,4 +55,5 @@ void	heredoc(char *eof)
 		dup2(fd[0], 0);
 		close(fd[0]);
 	}
+	return (arg);
 }

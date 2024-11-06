@@ -10,8 +10,8 @@ PRINTF_PATH = inc/ft_printf/
 PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
 PRINTF = $(PRINTF_PATH)libftprintf.a
 
-RL_FLAGS = -lreadline -I/usr/include/readline
-#READLINE = inc/readline/
+READLINE = $(PWD)/inc/readline/
+RL_FLAGS = -lreadline -I $(READLINE)/include/readline -L $(READLINE)/lib -lhistory
 
 SRC_PATH = src/
 
@@ -55,9 +55,9 @@ $(PRINTF):
 	make -C $(PRINTF_PATH)
 
 $(READLINE):
-	curl -O https://gnu.org/gnu/readline/readline-8.2.tar.gz
+	curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
 	tar -xvf readline-8.2.tar.gz
-	cd readline-8.2 && ./configure --prefix=../inc/readline
+	cd readline-8.2 && ./configure --prefix=$(READLINE)
 	cd readline-8.2 && make install
 	@rm -fr readline-8.2 readline-8.2.tar.gz
 

@@ -30,9 +30,10 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
     }
 	handle_redirections(temp);
 	if (ctrl_builtins(temp->args[0]) == -1)
+	{
 	    execve(mshell->success_arr[index], temp->args, mshell->envp);
-	else
  		perror("execve error ");
+	}
 }
 
 static char	executor_line_helper(t_mshell *mshell, int i)
