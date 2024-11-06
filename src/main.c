@@ -32,7 +32,6 @@ static char	process(t_mshell *mshell)
 		return (EXIT_FAILURE);
 	if (executor(mshell))
 		return (EXIT_FAILURE);
-	mshell->quest_mark = 0;
 	nuller(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }

@@ -32,6 +32,7 @@ static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe
 	if (ctrl_builtins(temp->args[0]) == -1)
 	{
 	    execve(mshell->success_arr[index], temp->args, mshell->envp);
+		mshell->quest_mark = 127;
  		perror("execve error ");
 	}
 }
@@ -67,7 +68,7 @@ char	executor(t_mshell *mshell)
     mshell->success_arr = accessor(mshell);
     if (!mshell->success_arr)
         return (EXIT_FAILURE);
-    //signal_handle_exec(mshell);
+    signal_handle_exec(mshell);
     i = -1;
     while (++i < mshell->jobs->len)
         if (executor_line_helper(mshell, i))
@@ -75,5 +76,6 @@ char	executor(t_mshell *mshell)
     i = -1;
     while (++i < mshell->jobs->len)
         wait(NULL);
+	mshell->quest_mark = 0;
     return (EXIT_SUCCESS);
 }
