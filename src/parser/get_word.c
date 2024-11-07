@@ -19,7 +19,7 @@ static int get_word_len(t_parser_state *parser, char *prompt)
         else if (!parser->state->in_single && !parser->state->in_double && 
                 (prompt[parser->i + len] == ' ' || prompt[parser->i + len] == '<' || 
                 prompt[parser->i + len] == '>' || prompt[parser->i + len] == '|'))
-            break;
+            break ;
     }
     return (len);
 }
@@ -40,9 +40,7 @@ static char *get_word(t_parser_state *parser, char *prompt)
     if (!word)
         return NULL;
     while (i < parser->len)
-	{
         word[i++] = prompt[parser->i++];
-	}
 	word[i] = 0;
     return (word);
 }

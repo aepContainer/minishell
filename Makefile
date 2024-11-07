@@ -11,7 +11,7 @@ PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
 PRINTF = $(PRINTF_PATH)libftprintf.a
 
 READLINE = $(PWD)/inc/readline/
-RL_FLAGS = -lreadline -I $(READLINE)/include/readline -L $(READLINE)/lib -lhistory
+RL_FLAGS = -lreadline -I $(READLINE)include/ -L $(READLINE)lib -lhistory
 
 SRC_PATH = src/
 

@@ -64,7 +64,7 @@ char	parser(t_jobs *jobs, char *prompt)
 		return (EXIT_FAILURE);
 	jobs->len = 1;
 	temp = jobs->job_list;
-	expander(jobs->env, &prompt);
+	expander(jobs, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
 		return (EXIT_FAILURE);

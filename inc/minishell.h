@@ -50,9 +50,10 @@ struct s_job
 
 struct s_jobs
 {
-	t_env	*env;
-	t_job	*job_list;
-	int		len;
+	t_mshell	*mshell;
+	t_env		*env;
+	t_job		*job_list;
+	int			len;
 };
 
 struct s_mshell
@@ -63,7 +64,7 @@ struct s_mshell
 	char		**ctrl_paths;
 	char		**cmds;
 	char		**success_arr;
-	char		quest_mark;
+	int			quest_mark;
 	int			active_pipe[2];
 	int			old_pipe[2];
 	t_termios	termios;
@@ -94,8 +95,8 @@ char	parser(t_jobs *jobs, char *prompt);
 char 	**word_split(char *prompt);
 
 // Expander
-void	expander(t_env *env, char **prompt);
-char	*expand_env_vars(t_env *env, char *prompt);
+void	expander(t_jobs *jobs, char **prompt);
+char	*expand_env_vars(t_jobs *jobs, char *prompt);
 // Expander Helpers
 void	update_quote_state(t_quote_state *state, char c);
 char	*find_value(t_env *env, char *key_start, int key_len);
@@ -124,7 +125,7 @@ void	handle_pipes_parent(t_mshell *mshell);
 void	handle_pipes_child(t_mshell *mshell);
 void	close_active_pipe(t_mshell *mshell);
 void	close_all_pipes(t_mshell *mshell);
-void	heredoc(char *eof);
+char	*heredoc(char **eof);
 
 // Signal
 void	signal_handle_general(t_mshell *mshell);

@@ -1,5 +1,5 @@
 #include "../inc/minishell.h"
-
+/*
 static void	nuller(t_mshell *mshell)
 {
 	if (mshell->cmds)
@@ -14,6 +14,7 @@ static void	nuller(t_mshell *mshell)
 		free_str_arr(mshell->success_arr);
 	mshell->success_arr = NULL;
 }
+*/
 
 static char	process(t_mshell *mshell)
 {
@@ -32,7 +33,7 @@ static char	process(t_mshell *mshell)
 		return (EXIT_FAILURE);
 	if (executor(mshell))
 		return (EXIT_FAILURE);
-	nuller(mshell);
+	//nuller(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
@@ -69,6 +70,7 @@ int main(int argc, char **argv, char **env)
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
 		return (free(mshell), EXIT_FAILURE);
+	mshell->jobs->mshell = mshell;
 	if (get_first_env(mshell->jobs, env))
 		return (free_mshell(mshell), EXIT_FAILURE);
 	signal_handle_general(mshell);

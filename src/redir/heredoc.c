@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-static void	child_process(int fd[2], const char *eof)
+static char	*child_process(int fd[2], const char *eof)
 {
 	char	*arg;
 	char	*temp;
@@ -36,6 +36,7 @@ char	*heredoc(char **eof)
 	int		fd[2];
 	int		i;
 
+	arg = NULL;
 	if (pipe(fd) == -1)
 		return (NULL);
 	pid = fork();
@@ -45,7 +46,7 @@ char	*heredoc(char **eof)
 	{
 		i = -1;
 		while (eof[++i])
-			arg = ft_strjoin(arg, child_process(fd, eof));
+			arg = ft_strjoin(arg, child_process(fd, eof[i]));
 		exit(0);
 	}
 	else
