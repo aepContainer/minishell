@@ -1,15 +1,14 @@
 #include "../../inc/minishell.h"
 
-static void	free_key_value(t_env *env)
+void	free_str_arr_null(char ***arr)
 {
-	if (env->key)
-		free(env->key);
-	if (env->value)
-		free(env->value);
+	free_str_arr(*arr);
+	*arr = NULL;
 }
 
-void	free_env_node(t_env *env)
+void	free_env(t_env *env)
 {
-	free_key_value(env);
+	free_str_arr_null(&env->key);
+	free_str_arr_null(&env->value);
 	free(env);
 }

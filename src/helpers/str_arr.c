@@ -21,17 +21,14 @@ char	**str_arr_realloc(char **arr, char *element)
         if (!rtrn)
             return (NULL);
         rtrn[0] = ft_strdup(element);
-        return (free(element), rtrn);
+        return (rtrn);
     }
 	rtrn = ft_calloc(sizeof(char *), str_arr_len(arr) + 2);
 	i = -1;
     if (!rtrn)
         return (NULL);
     while (arr[++i])
-    {
         rtrn[i] = ft_strdup(arr[i]);
-        free(arr[i]);
-    }
     rtrn[i] = ft_strdup(element);
-    return (free(arr), free(element), rtrn);
+    return (rtrn);
 }

@@ -17,6 +17,7 @@
 
 # define PROMPT "shellshock <(^_^)> "
 
+# define QUOTES "'\""
 # define DQUOTE '\"'
 # define SQUOTE '\''
 
@@ -123,14 +124,15 @@ char	env_add(t_env *env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
 
 // Builtins
-char	ctrl_builtins(char	*prompt);
+void	built_in(t_job *job);
+char	ctrl_builtins(t_jobs *jobs, t_job *job);
 char	export(t_env *env, char *key, char *value, char *arg);
 char	pwd(void);
 char	cd(char *path);
 
 // Signal
-void	signal_handle_general(t_mshell *mshell);
-void	signal_handle_exec(t_mshell *mshell);
+void	set_signal(int c);
+void	handler_sigint(int sig);
 
 // Helpers
 int		str_arr_len(char **arr);
@@ -142,6 +144,7 @@ void 	free_jobs(t_jobs *jobs);
 void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
 void	free_mshell(t_mshell *mshell);
-void	free_env_node(t_env *env);
+void	free_env(t_env *env);
+void	free_str_arr_null(char ***arr);
 
 #endif

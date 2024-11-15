@@ -14,7 +14,6 @@ static char	calloc_key_value(char ***key, char ***value, int len)
 static char	env_del_index(t_env **env, int index)
 {
 	t_env	*temp;
-	char	state;
 	int		i;
 
 	temp = ft_calloc(1, sizeof(t_env));
@@ -23,19 +22,20 @@ static char	env_del_index(t_env **env, int index)
 	temp->len = (*env)->len - 1;
 	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
 		return (EXIT_FAILURE);
-	state = 0;
 	i = -1;
 	while (++i < temp->len)
 	{
 		if (i == index)
 		{
-			state = 1;
 			free((*env)->key);
 			free((*env)->value);
+			i++;
 		}
-		temp->key[i] = (*env)->key[i + state];
-		temp->value[i] = (*env)->value[i + state];
+		temp->key[i] = (*env)->key[i];
+		temp->value[i] = (*env)->value[i];
 	}
+	free_env(*env);
+	*env = temp;
 	return (EXIT_SUCCESS);
 }
 
@@ -72,6 +72,15 @@ char	env_add(t_env *env, char *key, char *value)
 		return (EXIT_FAILURE);
 	if (value)
 	{
+		env->value = str_arr_realloc(env->value, value);
+		if (!env->value)
+			return (EXIT_FAILURE);
+	}
+	else
+	{
+		value = ft_strdup("");
+		if (!value)
+			return (EXIT_FAILURE);
 		env->value = str_arr_realloc(env->value, value);
 		if (!env->value)
 			return (EXIT_FAILURE);
