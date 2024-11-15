@@ -1,0 +1,13 @@
+Ekleme yapılacaklar
+
+echo
+exit
+export
+
+// executor tamamı
+
+Test edilecekler
+unset
+
+
+// en son tester
