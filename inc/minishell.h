@@ -20,6 +20,12 @@
 # define DQUOTE '\"'
 # define SQUOTE '\''
 
+# define MAIN 0
+# define CHILD 1
+# define HDOC 2
+
+int	g_quest_mark;
+
 typedef struct s_parse_tree		t_parse_tree;
 typedef struct s_redir			t_redir;
 typedef struct s_hdoc			t_hdoc;
@@ -33,15 +39,22 @@ typedef struct termios			t_termios;
 
 struct s_redir
 {
-	int		in_file;
+	char	last_out;
+	char	last_in;
 	int 	out_file;
-	char	**files;
+	int		app_file;
+	int		in_file;
+	char	**out_f;
+	char	**app_f;
+	char	**in_f;
 	char	**eof;
-	char	*heredoc_arg;
+	char	**files;
 };
 
 struct s_job
 {
+	pid_t		pid;
+	char		built_in;
 	char		**args;
 	int			args_len;
 	t_redir		*redir;
@@ -62,11 +75,8 @@ struct s_mshell
 	char		**envp;
 	char		*prompt;
 	char		**ctrl_paths;
-	char		**cmds;
 	char		**success_arr;
-	int			quest_mark;
-	int			active_pipe[2];
-	int			old_pipe[2];
+	int			backup[2];
 	t_termios	termios;
 };
 
@@ -92,11 +102,13 @@ struct s_parser_state
 
 // Parser
 char	parser(t_jobs *jobs, char *prompt);
+char    handle_distribute(t_job *job, char *arg, char *redir_status);
 char 	**word_split(char *prompt);
 
 // Expander
 void	expander(t_jobs *jobs, char **prompt);
 char	*expand_env_vars(t_jobs *jobs, char *prompt);
+
 // Expander Helpers
 void	update_quote_state(t_quote_state *state, char c);
 char	*find_value(t_env *env, char *key_start, int key_len);
@@ -116,17 +128,6 @@ char	export(t_env *env, char *key, char *value, char *arg);
 char	pwd(void);
 char	cd(char *path);
 
-// Redir
-void	create_file(char **files, int len);
-void	init_pipes(t_mshell *mshell);
-bool	create_pipe(t_mshell *mshell);
-void	handle_redirections(t_job *job);
-void	handle_pipes_parent(t_mshell *mshell);
-void	handle_pipes_child(t_mshell *mshell);
-void	close_active_pipe(t_mshell *mshell);
-void	close_all_pipes(t_mshell *mshell);
-char	*heredoc(char **eof);
-
 // Signal
 void	signal_handle_general(t_mshell *mshell);
 void	signal_handle_exec(t_mshell *mshell);
@@ -142,17 +143,5 @@ void 	free_str_arr(char **arr);
 void 	free_redir(t_redir *redir);
 void	free_mshell(t_mshell *mshell);
 void	free_env_node(t_env *env);
-
-/*
-PIPELIST
-	- t_job
-		- cmd
-		- args
-		- redirs
-	- t_job
-		- cmd
-		- args
-		- redirs
-*/
 
 #endif

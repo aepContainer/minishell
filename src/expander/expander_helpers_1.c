@@ -17,7 +17,7 @@ static int	get_var_length(t_jobs *jobs, char *str, int *i)
     }
     else if (ft_strncmp(str, "?", 1) && ft_strlen(str) == 1)
     {
-        value = ft_itoa(jobs->mshell->quest_mark);
+        value = ft_itoa(g_quest_mark);
         if (!value)
             return (0);
         return (ft_strlen(value));
@@ -40,7 +40,6 @@ static int	calculate_expanded_length(t_jobs *jobs, char *str)
         update_quote_state(&state, str[i]);
         if (str[i] == '$' && !state.in_single)
             len += get_var_length(jobs, str, &i);
-
         else
         {
             len++;
@@ -61,19 +60,13 @@ static char	expand_env_vars_line_helper(t_jobs *jobs, char *prompt, char *result
 	if (temps[3] < temps[0])
 	{
 		value = find_value(jobs->env, prompt + temps[3], temps[0] - temps[3]);
+        if (!value && !ft_strncmp(prompt, "?", 1) && ft_strlen(prompt) == 1)
+            value = ft_itoa(g_quest_mark);
 		if (value)
 		{
 			ft_strlcpy(result + temps[1], value, temps[2] - temps[1] + 1);
             temps[1] += ft_strlen(value);
 		}
-        else if (ft_strncmp(prompt, "?", 1) && ft_strlen(prompt) == 1)
-        {
-            value = ft_itoa(jobs->mshell->quest_mark);
-            if (!value)
-                return (EXIT_FAILURE);
-            ft_strlcpy(result + temps[1], value, temps[2] - temps[1] + 1);
-            temps[1] += ft_strlen(value);
-        }
 		temps[1] += ft_strlen(value);
 	}
 	else
@@ -105,18 +98,18 @@ char	*expand_env_vars(t_jobs *jobs, char *prompt)
 		return (NULL);
     result = ft_calloc(1, temps[3] + 1);
     if (!result)
-        return (NULL);
+        return (free(temps), NULL);
     while (prompt[temps[0]])
     {
         update_quote_state(&state, prompt[temps[0]]);
         if (prompt[temps[0]] == '$' && !state.in_single)
 		{
 			if (expand_env_vars_line_helper(jobs, prompt, result, temps))
-				return (NULL);
+				return (free(temps), NULL);
 		}
         else
             result[temps[1]++] = prompt[temps[0]++];
     }
 	result[temps[1]] = 0;
-    return (result);
+    return (free(temps), result);
 }

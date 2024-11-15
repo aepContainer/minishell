@@ -1,5 +1,0 @@
-https://github.com/aepContainer/minishell.git
-
-heredoc'ta cat kendinden önceki çıktıları alır, hafızada tutar,
-kendi çıktısını üzerine ekleyip çıktıyı basar.
-cat < Notes.txt << eof > a.txt

@@ -1,4 +1,5 @@
 #include "../inc/minishell.h"
+
 /*
 static void	nuller(t_mshell *mshell)
 {
@@ -28,7 +29,7 @@ static char	process(t_mshell *mshell)
 	mshell->prompt = ft_strtrim(prompt, " \t\v\r\f");
 	free(prompt);
 	if (!mshell->prompt)
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE);// continue ;
 	if (parser(mshell->jobs, mshell->prompt))
 		return (EXIT_FAILURE);
 	if (executor(mshell))
@@ -73,7 +74,6 @@ int main(int argc, char **argv, char **env)
 	mshell->jobs->mshell = mshell;
 	if (get_first_env(mshell->jobs, env))
 		return (free_mshell(mshell), EXIT_FAILURE);
-	signal_handle_general(mshell);
 	while (1)
 		if (process(mshell))
 			break ;

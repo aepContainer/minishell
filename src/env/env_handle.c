@@ -69,9 +69,7 @@ char	env_add(t_env *env, char *key, char *value)
 {
 	env->key = str_arr_realloc(env->key, key);
 	if (!env->key)
-	{
 		return (EXIT_FAILURE);
-	}
 	if (value)
 	{
 		env->value = str_arr_realloc(env->value, value);

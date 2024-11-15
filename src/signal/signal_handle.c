@@ -1,44 +1,55 @@
 #include "../../inc/minishell.h"
 
-static void	ctrl_output(t_mshell *mshell, char state)
+void	handler_sigint(int sig)
 {
-	if (state == 1)
+	if (sig == SIGINT)
 	{
-		tcgetattr(STDIN_FILENO, &mshell->termios);
-		tcsetattr(STDIN_FILENO, TCSAFLUSH, &mshell->termios);
-		return ;
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
-	tcgetattr(STDIN_FILENO, &mshell->termios);
-	mshell->termios.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &mshell->termios);
-	mshell->termios.c_lflag |= ECHOCTL;
 }
 
-static void	reset_prompt(int signal)
+static void	handler(int sig)
 {
-	(void)signal;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_quest_mark = 130;
+	}
 }
 
-static void	reset_prompt_exec(int signal)
+static void	handler_heredoc(int status)
 {
-	(void)signal;
-	write(1, "\n", 1);
+	if (status == SIGINT)
+	{
+		rl_replace_line("", 0);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		exit(130);
+	}
 }
 
-void	signal_handle_general(t_mshell *mshell)
+void	set_signal(int c)
 {
-	signal(SIGQUIT, &reset_prompt);
-	signal(SIGINT, &reset_prompt);
-	ctrl_output(mshell, 1);
-}
-
-void	signal_handle_exec(t_mshell *mshell)
-{
-	signal(SIGQUIT, &reset_prompt);
-	signal(SIGINT, &reset_prompt_exec);
-	ctrl_output(mshell, 0);
+	if (c == MAIN)
+	{
+		signal(SIGINT, &handler);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (c == CHILD)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
+	else if (c == HDOC)
+	{
+		signal(SIGINT, &handler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else
+		signal(SIGINT, SIG_IGN);
 }

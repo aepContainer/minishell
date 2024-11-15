@@ -10,10 +10,6 @@ char	export(t_env *env, char *key, char *value, char *arg)
 			return (EXIT_FAILURE);
 		else if (env_add(env, key, ft_strdup("")))
 			return (EXIT_FAILURE);
-/*
-		if (env_sort(env))
-			return (EXIT_FAILURE);
-*/
 	}
 	i = -1;
 	while (++i < env->len)
