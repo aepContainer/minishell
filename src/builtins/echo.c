@@ -1,17 +1,40 @@
 #include "../../inc/minishell.h"
 
+static void	echo_line_helper(char *str, bool *in_quote, char *quote_type)
+{
+	int		j;
+
+	j = -1;
+	while (str[++j])
+	{
+		if (ft_strchr(QUOTES, str[j]))
+		{
+			if (!*in_quote)
+			{
+				*quote_type = str[j];
+				*in_quote = true;
+			}
+			else if (str[j] == *quote_type)
+				*in_quote = false;
+			else if (*in_quote)
+				write(1, &str[j], 1);
+		}
+		else
+			write(1, &str[j], 1);
+	}
+}
+
 void	echo(t_job *job)
 {
-	int	i;
-	int	j;
-	int	newline;
-	char	quote_type;
+	int		i;
+	int		newline;
 	bool	in_quote;
+	char	quote_type;
 
 	newline = 1;
 	in_quote = false;
 	i = 1;
-	if (job->args[1] && ft_strncmp(job->args[1], "-n", 2) == 0
+	if (job->args[1] && !ft_strncmp(job->args[1], "-n", 2)
 		&& ft_strlen(job->args[1]) == 2)
 	{
 		newline = 0;
@@ -19,26 +42,7 @@ void	echo(t_job *job)
 	}
 	while (job->args[i])
 	{
-		j = 0;
-		while (job->args[i][j])
-		{
-			if (ft_strchr(QUOTES, job->args[i][j]))
-			{
-				if (!in_quote)
-				{
-					quote_type = job->args[i][j];
-					in_quote = !in_quote;
-				}
-				else
-				{
-					if (job->args[i][j] == quote_type)
-						in_quote = !in_quote;
-				}
-			}
-			if (job->args[i][j] != quote_type)
-				write(1, &job->args[i][j], 1);
-			j++;
-		}
+		echo_line_helper(job->args[i], &in_quote, &quote_type);
 		if (job->args[i + 1])
 			write(1, " ", 1);
 		i++;

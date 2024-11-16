@@ -1,10 +1,11 @@
 Ekleme yapılacaklar
 
-echo
-exit
+exit // sonra bak
 export
 
-// executor tamamı
+// syntax error !
+// executor bitmedi !
+
 
 Test edilecekler
 unset
