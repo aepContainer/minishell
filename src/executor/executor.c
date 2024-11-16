@@ -1,77 +1,73 @@
 #include "../../inc/minishell.h"
 
-static void close_pipe(int pipe[2])
+static void	wait_child(t_mshell *mshell)
 {
-    close(pipe[0]);
-    close(pipe[1]);
+	t_job	*temp_job;
+	int		temp_status;
+	int		i;
+
+	temp_job = mshell->jobs->job_list;
+	if (mshell->jobs->len == 1 && temp_job->is_builtin == true)
+		return ;
+	while (temp_job)
+	{
+		signal(SIGINT, &handler_sigint);
+		i = waitpid(temp_job->pid, &temp_status, 0);
+		if (i < 0)
+			continue ;
+		is_builtin(temp_job);
+		if (mshell->jobs->len == 1 && temp_job->is_builtin == true)
+			break ;
+		if (WIFEXITED(temp_status))
+			g_exit_status = WEXITSTATUS(temp_status);
+		else if (WIFSIGNALED(temp_status))
+			g_exit_status = 128 + WTERMSIG(temp_status);
+		temp_job = temp_job->next_job;
+	}
 }
 
-static void	exec_child(int i, t_mshell *mshell, int active_pipe[2], int old_pipe[2])
+static char	executor_while(t_mshell *mshell)
 {
-	t_job   *temp;
-	int	    index;
+	t_job	*temp;
 
-    if (i > 0)
-        dup2(old_pipe[0], STDIN_FILENO);
-    if (i + 1 < mshell->jobs->len)
-        dup2(active_pipe[1], STDOUT_FILENO);
-    if (i > 0)
-        close_pipe(old_pipe);
-    if (i + 1 < mshell->jobs->len)
-	{
-        close_pipe(active_pipe);
-	}
 	temp = mshell->jobs->job_list;
-	index = i;
-    while (i)
-    {
-        temp = temp->next_job;
-        i--;
-    }
-	handle_redirections(temp);
-	if (ctrl_builtins(temp->args[0]) == -1)
+	while (temp)
 	{
-	    execve(mshell->success_arr[index], temp->args, mshell->envp);
- 		perror("execve error ");
+		if (mshell->jobs->len == 1)
+		{
+			if (temp->redir->eof && heredoc(mshell->jobs, temp, 1))
+				return (EXIT_FAILURE);
+			if (no_pipe(mshell->jobs, temp))
+				return (EXIT_SUCCESS);
+		}
+		else
+		{
+			if (temp->redir->eof && heredoc(mshell->jobs, temp, 0))
+				return (EXIT_FAILURE);
+			if (g_exit_status == 130)
+				return (EXIT_FAILURE);
+			if (pipe_handle(mshell->jobs, temp))
+				return (EXIT_SUCCESS);
+			g_exit_status = 0;
+		}
+		temp = temp->next_job;
 	}
-}
-
-static char	executor_line_helper(t_mshell *mshell, int i)
-{
-	pid_t   pid;
-
-	if (i + 1 < mshell->jobs->len)
-    {
-        if (pipe(mshell->active_pipe) == -1)
-            return (perror("pipe error"), EXIT_FAILURE);
-    }
-    pid = fork();
-    if (pid == -1)
-        return (perror("fork error"), EXIT_FAILURE);
-    if (pid == 0)
-        exec_child(i, mshell, mshell->active_pipe, mshell->old_pipe);
-    if (i > 0)
-        close_pipe(mshell->old_pipe);
-    if (i + 1 < mshell->jobs->len)
-    {
-        mshell->old_pipe[0] = mshell->active_pipe[0];
-        mshell->old_pipe[1] = mshell->active_pipe[1];
-    }
-    waitpid(pid, &mshell->quest_mark, 0);
 	return (EXIT_SUCCESS);
 }
 
 char	executor(t_mshell *mshell)
 {
-    int i;
-
-    mshell->success_arr = accessor(mshell);
-    if (!mshell->success_arr)
-        return (EXIT_FAILURE);
-    signal_handle_exec(mshell);
-    i = -1;
-    while (++i < mshell->jobs->len)
-        if (executor_line_helper(mshell, i))
-			return (EXIT_FAILURE);
-    return (EXIT_SUCCESS);
+	mshell->backup_fd[0] = dup(STDIN_FILENO);
+	mshell->backup_fd[1] = dup(STDOUT_FILENO);
+	if (!executor_while(mshell))
+		return (EXIT_SUCCESS);
+	else
+	{
+		dup2(mshell->backup_fd[0], 0);
+		close(mshell->backup_fd[0]);
+		dup2(mshell->backup_fd[1], 1);
+		close(mshell->backup_fd[1]);
+		wait_child(mshell);
+	}
+	return (EXIT_SUCCESS);
 }
