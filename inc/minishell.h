@@ -119,6 +119,9 @@ char	executor(t_mshell *mshell);
 char	pipe_handle(t_jobs *jobs, t_job *job);
 char	no_pipe(t_jobs *jobs, t_job *job);
 
+// Redir
+int	get_fd(t_jobs *jobs, t_job *job);
+
 // Env
 char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env *env, char *key, char *value);
