@@ -28,15 +28,13 @@ char	ctrl_builtins(t_jobs *jobs, t_job *job)
 	if (!ft_strncmp(job->args[0], "pwd", 3)
 			&& ft_strlen(job->args[0]) == 3)
 	{
-		state = pwd();
-		g_quest_mark = state;
-		return (state);
+		g_quest_mark = pwd();
+		return (g_quest_mark);
 	}
 	else if (!ft_strncmp(job->args[0], "cd", 2) && ft_strlen(job->args[0]) == 2)
 	{
-		state = cd(job->args[1]);
-		g_quest_mark = state;
-		return (state);
+		g_quest_mark = cd(job->args[1]);
+		return (g_quest_mark);
 	}
 	else if (!ft_strncmp(job->args[0], "echo", 4) && ft_strlen(job->args[0]) == 4)
 	{

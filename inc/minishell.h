@@ -116,7 +116,8 @@ char	*find_value(t_env *env, char *key_start, int key_len);
 
 // Executor
 char	executor(t_mshell *mshell);
-char	**accessor(t_mshell *mshell);
+char	pipe_handle(t_jobs *jobs, t_job *job);
+char	no_pipe(t_jobs *jobs, t_job *job);
 
 // Env
 char	env_del_element(t_env **env, char *key, char *value);

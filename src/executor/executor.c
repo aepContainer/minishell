@@ -48,7 +48,7 @@ static char	executor_while(t_mshell *mshell)
 				return (EXIT_FAILURE);
 			if (pipe_handle(mshell->jobs, temp))
 				return (EXIT_SUCCESS);
-			g_exit_status = 0;
+			g_quest_mark = 0;
 		}
 		temp = temp->next_job;
 	}
