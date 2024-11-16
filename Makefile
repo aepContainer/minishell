@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
@@ -11,15 +11,12 @@ PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
 PRINTF = $(PRINTF_PATH)libftprintf.a
 
 READLINE = $(PWD)/inc/readline/
-RL_FLAGS = -lreadline -I $(READLINE)include/ -L $(READLINE)lib -lhistory
+RL_FLAGS = -lreadline -L $(READLINE)lib -lhistory#-I $(READLINE)include/
 
 SRC_PATH = src/
 
 B_PATH = $(SRC_PATH)builtins/
 B_SRC = $(B_PATH)ctrl_builtins.c $(B_PATH)cd.c $(B_PATH)pwd.c $(B_PATH)export.c $(B_PATH)unset.c
-
-ENV_PATH = $(SRC_PATH)env/
-ENV_SRC = $(ENV_PATH)env_handle.c
 
 EX_PATH = $(SRC_PATH)executor/
 EX_SRC = $(EX_PATH)executor_helpers1.c $(EX_PATH)executor.c
@@ -34,19 +31,19 @@ H_PATH = $(SRC_PATH)helpers/
 H_SRC = $(H_PATH)str_arr.c
 
 PARSER_PATH = $(SRC_PATH)parser/
-PARSER_SRC = $(PARSER_PATH)parser.c $(PARSER_PATH)get_word.c
+PARSER_SRC = $(PARSER_PATH)parser.c $(PARSER_PATH)get_word.c $(PARSER_PATH)word_split.c
 
 RED_PATH = $(SRC_PATH)redir/
-RED_SRC = $(RED_PATH)create_file.c $(RED_PATH)heredoc.c $(RED_PATH)io_file.c \
-$(RED_PATH)io_handler.c $(RED_PATH)pipe.c
+RED_SRC = $(RED_PATH)get_fd.c $(RED_PATH)error_ctrl.c
 
 SIG_PATH = $(SRC_PATH)signal/
 SIG_SRC = $(SIG_PATH)signal_handle.c
 
-SRCS = src/main.c $(B_SRC) $(ENV_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
+SRCS = src/main.c src/env/env_handle.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
+OBJS = $(SRCS:.c=.o)
 
-all: $(SRCS) $(LIBFT) $(PRINTF) $(READLINE)
-	cc $(CFLAGS) $(SRCS) $(LIBFT_FLAGS) $(PRINTF_FLAGS) $(RL_FLAGS) -o $(NAME)
+all: $(OBJS) $(LIBFT) $(PRINTF) $(READLINE)
+	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(PRINTF_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
@@ -67,6 +64,7 @@ clean:
 	$(RM) $(NAME)
 
 fclean: clean
+	$(RM) $(OBJS)
 	$(RM) -r inc/readline
 
 re: fclean all

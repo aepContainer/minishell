@@ -6,15 +6,15 @@
 # include "fcntl.h"
 # include "unistd.h"
 # include "stdbool.h"
-# include "dirent.h"
 # include "signal.h"
 # include "errno.h"
+# include "dirent.h"
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "termios.h"
-# include "termcap.h"
 # include "sys/wait.h"
+# include "termios.h"
 # include "sys/stat.h"
+# include "termcap.h"
 
 # define PROMPT "shellshock <(^_^)> "
 
