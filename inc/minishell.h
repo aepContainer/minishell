@@ -2,9 +2,9 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
+# include "ft_printf/ft_printf.h"
 # include "fcntl.h"
 # include "unistd.h"
-# include "ft_printf/ft_printf.h"
 # include "stdbool.h"
 # include "dirent.h"
 # include "signal.h"
@@ -14,6 +14,7 @@
 # include "termios.h"
 # include "termcap.h"
 # include "sys/wait.h"
+# include "sys/stat.h"
 
 # define PROMPT "shellshock <(^_^)> "
 
@@ -120,7 +121,8 @@ char	pipe_handle(t_jobs *jobs, t_job *job);
 char	no_pipe(t_jobs *jobs, t_job *job);
 
 // Redir
-int	get_fd(t_jobs *jobs, t_job *job);
+int		get_fd(t_jobs *jobs, t_job *job);
+char	file_control(t_jobs *jobs, t_job *job, char *file, int fd);
 
 // Env
 char	env_del_element(t_env **env, char *key, char *value);
