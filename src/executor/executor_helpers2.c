@@ -25,20 +25,28 @@ static void	run_cmd_error_ctrl(char *path)
 	}
 }
 
-static char	*env_find_value_const(t_env *env, const char *key)
+static char	*accessor(char *env_path, char *cmd)
 {
-	int	key_len;
-	int	i;
+	char	**splitted;
+	char	*temp1;
+	char	*temp2;
+	int		i;
 
-	if (!env || !key)
+	splitted = ft_split(env_path, ':');
+	if (!splitted)
 		return (NULL);
-	key_len = ft_strlen(key);
 	i = -1;
-	while (env->key[++i])
+	while (splitted[++i])
 	{
-		if ((int) ft_strlen(env->key[i]) == key_len
-				&& !ft_strncmp(env->key[i], key, key_len))
-			return (env->value[i]);
+		temp1 = ft_strjoin_const(splitted[i], "/");
+		temp2 = temp1;
+		temp1 = ft_strjoin(temp1, cmd);
+		free(temp2);
+		if (!temp1)
+			return (free_str_arr(splitted), NULL);
+		if (!access(temp1, X_OK))
+			return (free_str_arr(splitted), temp1);
+		free(temp1);
 	}
 	return (NULL);
 }
@@ -62,18 +70,49 @@ static char	*get_exec_path(t_job *job, char *env_path)
 	return (rtrn);
 }
 
-void	run_cmd(t_jobs *jobs, t_job *job)
+static char	**get_env_for_exec(t_env *env)
 {
-	char	*exec_path;
-	char	*env_path;
+	char	**rtrn;
+	char	*arg;
+	char	*temp;
 	int		i;
 
+	i = -1;
+	while (++i < env->len)
+	{
+		arg = ft_strdup(env->key[i]);
+		if (!arg)
+			return (NULL);
+		temp = arg;
+		arg = ft_strjoin_const(arg, "=");
+		free(temp);
+		if (!arg)
+			return (NULL);
+		temp = arg;
+		arg = ft_strjoin_const(arg, env->value[i]);
+		free(temp);
+		if (!arg)
+			return (NULL);
+		rtrn = str_arr_realloc(rtrn, arg);
+		free(arg);
+	}
+	return (rtrn);
+}
+
+void	run_cmd(t_jobs *jobs, t_job *job)
+{
+	char	**env;
+	char	*exec_path;
+	char	*env_path;
+
 	env_path = env_find_value_const(jobs->env, "PATH");
+	env = get_env_for_exec(jobs->env);
+	//if (!env)
 	if (!env_path)
 	{
 		if (!access(job->args[0], X_OK))
 		{
-			execve(job->args[0], job->args, jobs->env);
+			execve(job->args[0], job->args, env);
 			exit(127);
 		}
 		else
@@ -81,6 +120,6 @@ void	run_cmd(t_jobs *jobs, t_job *job)
 	}
 	exec_path = get_exec_path(job, env_path);
 	g_quest_mark = 0;
-	execve(exec_path, job->args, jobs->env);
+	execve(exec_path, job->args, env);
 	exit(127);
 }

@@ -18,11 +18,11 @@ static int	file_handle(char *ctrl_str, char **files, int *index, char *state)
 				fd = open(files[*index], O_CREAT | O_WRONLY | O_APPEND, 0644);
 			else
 				fd = open(files[*index], O_RDONLY, 0644);
+			(void)*index++;
 			if (state[1] == 0 || state[1] == 1)
 				state[0] = 1;
 			else
 				state[0] = 0;
-			*index++;
 			return (fd);
 		}
 	}
@@ -96,7 +96,7 @@ int	get_fd(t_jobs *jobs, t_job *job)
 	if (!indexes)
 		return (-1);
 	fd = 1;
-	if (job->redir->files_order)
+	if (job->redir->files)
 	{
 		indexes[3] = -1;
 		while (job->redir->files[++indexes[3]])

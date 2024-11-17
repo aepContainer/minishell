@@ -123,6 +123,7 @@ void	run_cmd(t_jobs *jobs, t_job *job);
 // Redir
 int		get_fd(t_jobs *jobs, t_job *job);
 char	file_control(t_jobs *jobs, t_job *job, char *file, int fd);
+char	heredoc(t_jobs *jobs, t_job *job, char state);
 
 // Env
 char	env_del_element(t_env **env, char *key, char *value);
@@ -139,6 +140,8 @@ void	env(t_env *env);
 char	pwd(void);
 char	cd(char *path);
 void	echo(t_job *job);
+void	exit_d(char **args);
+void	handle_exit_argument(char **args, char *stripped);
 
 // Signal
 void	set_signal(int c);
@@ -148,6 +151,9 @@ void	handler_sigint(int sig);
 int		str_arr_len(char **arr);
 char	**str_arr_realloc(char **arr, char *element);
 void	error_msg(char *file, const char *message);
+char	*ft_strjoin_const(char *s1, const char *s2);
+char	*env_find_value_const(t_env *env, const char *key);
+char	exit_error(char *arg, const char *msg);
 
 // Free
 void 	free_job_list(t_job *job);

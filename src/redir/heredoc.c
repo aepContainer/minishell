@@ -10,7 +10,7 @@ static char	calc_state(char *arg, char *test)
 	return (!ft_strncmp(arg, test, len) && len == len_test);
 }
 
-static void	handle_arg(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
+static void	handle_arg(t_job *job, int pipe_fd[2], char state)
 {
 	char	*arg;
 	char	c_state;
@@ -44,7 +44,7 @@ static void	heredoc_child(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
 	if (state)
 		set_signal(HDOC);
 	dup2(jobs->mshell->backup[0], 0);
-    handle_arg(jobs, job, pipe_fd, state);
+    handle_arg(job, pipe_fd, state);
     exit(0);
     close(pipe_fd[1]);
 	dup2(pipe_fd[0], 0);
@@ -53,12 +53,8 @@ static void	heredoc_child(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
 
 char	heredoc(t_jobs *jobs, t_job *job, char state)
 {
-	char	*arg;
 	int		temp_status;
 	int		pipe_fd[2];
-	int		len1;
-	int		len2;
-    int     i;
 
 	if (pipe(pipe_fd) == -1)
 		return (EXIT_FAILURE);

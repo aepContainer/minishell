@@ -9,7 +9,7 @@ static void free_nec(t_mshell *mshell)
     while (temp)
     {
         next = temp->next_job;
-        free_jobs(temp);
+        free_job_list(temp);
         temp = next;
     }
     mshell->jobs->job_list = NULL;

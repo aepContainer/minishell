@@ -11,7 +11,6 @@ void	error_msg(char *file, const char *message)
 static char	redir_error(t_jobs *jobs, t_job *job, char *file_i, int fd)
 {
 	t_stat	stat_t;
-	char	state;
 
 	if (fd == -1)
 	{

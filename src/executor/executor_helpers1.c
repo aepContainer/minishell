@@ -23,7 +23,7 @@ char	no_pipe(t_jobs *jobs, t_job *job)
 	return (EXIT_SUCCESS);
 }
 
-static void	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
+static char	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 {
 	int	fd;
 
@@ -44,12 +44,12 @@ static void	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 	if (job->built_in == false)
 		run_cmd(jobs, job);
 	exit(ctrl_builtins(jobs, job));
+	return (EXIT_SUCCESS);
 }
 
 char	pipe_handle(t_jobs *jobs, t_job *job)
 {
 	int	pipe_fd[2];
-	int	fd;
 
 	if (pipe(pipe_fd) == -1)
 	{
@@ -57,8 +57,8 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 		exit(127);
 	}
 	job->pid = fork();
-	if (job->pid == 0)
-		pipe_handle_child(jobs, job, pipe_fd);
+	if (job->pid == 0 && pipe_handle_child(jobs, job, pipe_fd))
+		return (EXIT_FAILURE);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);

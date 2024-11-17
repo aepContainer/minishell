@@ -1,5 +1,4 @@
 #include "../../inc/minishell.h"
-#include <limits.h>
 
 static char	*strip_quotes(char *str)
 {
@@ -21,32 +20,14 @@ static char	*strip_quotes(char *str)
 	return (new_str);
 }
 
-static char	exit_error(char *arg, const char *msg)
+char	exit_error(char *arg, const char *msg)
 {
 	g_quest_mark = 255;
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(msg, 2);
+	ft_putstr_fd((char *) msg, 2);
 	return (EXIT_FAILURE);
-}
-
-static char	is_all_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || !str[i])
-		return (EXIT_FAILURE);
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (EXIT_FAILURE);
-		i++;
-	}
-	return (EXIT_SUCCESS);
 }
 
 void	exit_d(char **args)

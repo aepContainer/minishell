@@ -6,7 +6,7 @@ static char	export_errors(char *arg, const char *msg)
 	ft_putstr_fd( "minishell: export: `", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd("': ", 2);
-	ft_putendl_fd(msg, 2);
+	ft_putendl_fd((char *) msg, 2);
 	return (EXIT_FAILURE);
 }
 

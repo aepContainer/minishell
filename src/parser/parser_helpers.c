@@ -40,7 +40,7 @@ static char	append_all(t_job *job, char *arg, char *redir_status, char state)
 {
 	if (!arg)
 		return (EXIT_FAILURE);
-	redir_status = -1;
+	*redir_status = -1;
 	if (!state)
 		return (append(job, &job->redir->out_f, arg));
 	else if (state == 1)
@@ -49,6 +49,7 @@ static char	append_all(t_job *job, char *arg, char *redir_status, char state)
 		return (append(job, &job->redir->in_f, arg));
 	else if (state == 3)
 		return (append(job, &job->redir->eof, arg));
+	return (EXIT_FAILURE);
 }
 
 static char	ctrl_redirect(t_job *job, char *arg, char *redir_status)

@@ -15,7 +15,7 @@ static void	wait_child(t_mshell *mshell)
 		i = waitpid(temp_job->pid, &temp_status, 0);
 		if (i < 0)
 			continue ;
-		is_builtin(temp_job);
+		built_in(temp_job);
 		if (mshell->jobs->len == 1 && temp_job->built_in == true)
 			break ;
 		if (WIFEXITED(temp_status))

@@ -85,6 +85,7 @@ char	env_add(t_env *env, char *key, char *value)
 		if (!env->value)
 			return (EXIT_FAILURE);
 	}
+	env->len += 1;
 	return (EXIT_SUCCESS);
 }
 
