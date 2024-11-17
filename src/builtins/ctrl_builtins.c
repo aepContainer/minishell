@@ -47,18 +47,13 @@ char	ctrl_builtins(t_jobs *jobs, t_job *job)
 		return (EXIT_SUCCESS);
 	}
 	else if (!ft_strncmp(job->args[0], "exit", 4) && ft_strlen(job->args[0]) == 4)
-	{
-		exit_d(job->args);
-		return (EXIT_SUCCESS);
-	}
+		return (exit_d(job->args), EXIT_SUCCESS);
 	else if (!ft_strncmp(job->args[0], "unset", 5) && ft_strlen(job->args[0]) == 5)
 	{
-		unset(&jobs->env, job->args);
-		return (EXIT_SUCCESS);
+		g_quest_mark = unset(&jobs->env, job->args);
+		return (g_quest_mark);
 	}
 	else if (!ft_strncmp(job->args[0], "export", 6) && ft_strlen(job->args[0]) == 6)
-	{
 		return (export(jobs->env, job->args));
-	}
 	return (-1);
 }

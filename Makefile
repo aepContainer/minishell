@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
-LIBFT = $(LIBFT_PATH)libft.h
+LIBFT = $(LIBFT_PATH)libft.a
 
 PRINTF_PATH = inc/ft_printf/
 PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
@@ -16,7 +16,7 @@ RL_FLAGS = -lreadline -L $(READLINE)lib -lhistory -I $(READLINE)include/
 SRC_PATH = src/
 
 B_PATH = $(SRC_PATH)builtins/
-B_SRC = $(B_PATH)ctrl_builtins.c $(B_PATH)cd.c $(B_PATH)pwd.c $(B_PATH)echo.c \
+B_SRC = $(B_PATH)ctrl_builtins.c $(B_PATH)cd.c $(B_PATH)pwd.c $(B_PATH)echo.c $(B_PATH)env.c \
 $(B_PATH)export.c $(B_PATH)export_helpers.c $(B_PATH)unset.c $(B_PATH)exit.c $(B_PATH)exit_helpers.c
 
 EX_PATH = $(SRC_PATH)executor/
