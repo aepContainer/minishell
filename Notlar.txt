@@ -3,7 +3,6 @@ Ekleme yapılacaklar
 exit // sonra bak
 
 // syntax error !
-// executor bitmedi !
 
 
 Test edilecekler
