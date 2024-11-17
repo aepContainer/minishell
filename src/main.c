@@ -1,12 +1,27 @@
 #include "../inc/minishell.h"
 
+static void free_nec(t_mshell *mshell)
+{
+    t_job	*temp;
+    t_job	*next;
+
+    temp = mshell->jobs->job_list;
+    while (temp)
+    {
+        next = temp->next_job;
+        free_job(temp);
+        temp = next;
+    }
+    mshell->jobs->job_list = NULL;
+}
+
 static char	process(t_mshell *mshell)
 {
 	if (parser(mshell->jobs, mshell->prompt))
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	if (executor(mshell))
-		return (EXIT_FAILURE);
-	//nuller(mshell);
+		return (EXIT_SUCCESS);
+	free_nec(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
@@ -59,6 +74,7 @@ int main(int argc, char **argv, char **env)
 		prompt = readline(PROMPT);
 		if (!prompt)
 			return (EXIT_FAILURE);
+		set_signal(314159);
 		if (*prompt)
 			add_history(prompt);
 		mshell->prompt = ft_strtrim(prompt, " \t\v\r\f");
