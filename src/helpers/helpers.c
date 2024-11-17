@@ -65,7 +65,7 @@ char	**str_arr_realloc(char **arr, char *element)
         rtrn[0] = ft_strdup(element);
         return (rtrn);
     }
-	rtrn = ft_calloc(sizeof(char *), str_arr_len(arr) + 2);
+	rtrn = ft_calloc(str_arr_len(arr) + 2,sizeof(char *));
 	i = -1;
     if (!rtrn)
         return (NULL);

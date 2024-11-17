@@ -77,6 +77,7 @@ static char	**get_env_for_exec(t_env *env)
 	char	*temp;
 	int		i;
 
+	rtrn = NULL;
 	i = -1;
 	while (++i < env->len)
 	{

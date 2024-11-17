@@ -62,10 +62,10 @@ $(READLINE):
 clean:
 	make -C $(LIBFT_PATH) clean
 	make -C $(PRINTF_PATH) clean
+	$(RM) $(OBJS)
 	$(RM) $(NAME)
 
 fclean: clean
-	$(RM) $(OBJS)
 	$(RM) -r inc/readline
 
 re: fclean all

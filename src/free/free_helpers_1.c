@@ -2,13 +2,13 @@
 
 void	free_str_arr(char **arr)
 {
+	int i;
+
 	if(!arr)
 		return ;
-	while(*arr)
-	{
-		free(*arr);
-		arr++;
-	}
+	i = -1;
+	while(arr[++i])
+		free(arr[i]);
 	free(arr);
 }
 

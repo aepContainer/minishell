@@ -22,7 +22,7 @@ static char	process(t_mshell *mshell)
 	if (executor(mshell))
 		return (EXIT_SUCCESS);
 	free_nec(mshell);
-	return (EXIT_SUCCESS);
+	return (free(mshell->prompt), EXIT_SUCCESS);
 }
 
 static char	get_first_env(t_jobs *jobs, char **env)
