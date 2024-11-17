@@ -11,7 +11,7 @@ PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
 PRINTF = $(PRINTF_PATH)libftprintf.a
 
 READLINE = $(PWD)/inc/readline/
-RL_FLAGS = -lreadline -L $(READLINE)lib -lhistory#-I $(READLINE)include/
+RL_FLAGS = -lreadline -L $(READLINE)lib -lhistory -I $(READLINE)include/
 
 SRC_PATH = src/
 
@@ -43,7 +43,7 @@ SIG_SRC = $(SIG_PATH)signal_handle.c
 SRCS = src/main.c src/env/env_handle.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
 OBJS = $(SRCS:.c=.o)
 
-all: $(OBJS) $(LIBFT) $(PRINTF) $(READLINE)
+all: $(READLINE) $(OBJS) $(LIBFT) $(PRINTF)
 	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(PRINTF_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):

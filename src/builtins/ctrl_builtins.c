@@ -23,8 +23,6 @@ void	built_in(t_job *job)
 
 char	ctrl_builtins(t_jobs *jobs, t_job *job)
 {
-	char	state;
-
 	if (!ft_strncmp(job->args[0], "pwd", 3)
 			&& ft_strlen(job->args[0]) == 3)
 	{
@@ -60,8 +58,7 @@ char	ctrl_builtins(t_jobs *jobs, t_job *job)
 	}
 	else if (!ft_strncmp(job->args[0], "export", 6) && ft_strlen(job->args[0]) == 6)
 	{
-		state = export(jobs->env, job->args);
-		return (state);
+		return (export(jobs->env, job->args));
 	}
 	return (-1);
 }
