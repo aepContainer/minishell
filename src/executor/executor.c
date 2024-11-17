@@ -7,7 +7,7 @@ static void	wait_child(t_mshell *mshell)
 	int		i;
 
 	temp_job = mshell->jobs->job_list;
-	if (mshell->jobs->len == 1 && temp_job->is_builtin == true)
+	if (mshell->jobs->len == 1 && temp_job->built_in == true)
 		return ;
 	while (temp_job)
 	{
@@ -16,12 +16,12 @@ static void	wait_child(t_mshell *mshell)
 		if (i < 0)
 			continue ;
 		is_builtin(temp_job);
-		if (mshell->jobs->len == 1 && temp_job->is_builtin == true)
+		if (mshell->jobs->len == 1 && temp_job->built_in == true)
 			break ;
 		if (WIFEXITED(temp_status))
-			g_exit_status = WEXITSTATUS(temp_status);
+			g_quest_mark = WEXITSTATUS(temp_status);
 		else if (WIFSIGNALED(temp_status))
-			g_exit_status = 128 + WTERMSIG(temp_status);
+			g_quest_mark = 128 + WTERMSIG(temp_status);
 		temp_job = temp_job->next_job;
 	}
 }
@@ -44,7 +44,7 @@ static char	executor_while(t_mshell *mshell)
 		{
 			if (temp->redir->eof && heredoc(mshell->jobs, temp, 0))
 				return (EXIT_FAILURE);
-			if (g_exit_status == 130)
+			if (g_quest_mark == 130)
 				return (EXIT_FAILURE);
 			if (pipe_handle(mshell->jobs, temp))
 				return (EXIT_SUCCESS);
@@ -57,16 +57,16 @@ static char	executor_while(t_mshell *mshell)
 
 char	executor(t_mshell *mshell)
 {
-	mshell->backup_fd[0] = dup(STDIN_FILENO);
-	mshell->backup_fd[1] = dup(STDOUT_FILENO);
+	mshell->backup[0] = dup(STDIN_FILENO);
+	mshell->backup[1] = dup(STDOUT_FILENO);
 	if (!executor_while(mshell))
 		return (EXIT_SUCCESS);
 	else
 	{
-		dup2(mshell->backup_fd[0], 0);
-		close(mshell->backup_fd[0]);
-		dup2(mshell->backup_fd[1], 1);
-		close(mshell->backup_fd[1]);
+		dup2(mshell->backup[0], 0);
+		close(mshell->backup[0]);
+		dup2(mshell->backup[1], 1);
+		close(mshell->backup[1]);
 		wait_child(mshell);
 	}
 	return (EXIT_SUCCESS);

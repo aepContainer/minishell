@@ -8,19 +8,42 @@ char	no_pipe(t_jobs *jobs, t_job *job)
 	fd = get_fd(jobs, job);
 	if (fd == -1)
 		return (EXIT_FAILURE);
-	if (job->is_builtin == false)
+	if (job->built_in == false)
 	{
 		job->pid = fork();
 		if (job->pid == 0)
 		{
 			set_signal(CHILD);
-			runCmd(jobs, job);//
+			run_cmd(jobs, job);
 			exit(g_quest_mark);
 		}
 	}
 	else
 		return (ctrl_builtins(jobs, job));
 	return (EXIT_SUCCESS);
+}
+
+static void	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
+{
+	int	fd;
+
+	set_signal(CHILD);
+	close(pipe_fd[0]);
+	if (job->next_job)
+	{
+		dup2(pipe_fd[1], 1);
+		close(pipe_fd[1]);
+	}
+	if (job->redir->in_f || job->redir->out_f || job->redir->app_f)
+	{
+		fd = get_fd(jobs, job);
+		if (fd == -1)
+			return (EXIT_FAILURE);
+	}
+	built_in(job);
+	if (job->built_in == false)
+		run_cmd(jobs, job);
+	exit(ctrl_builtins(jobs, job));
 }
 
 char	pipe_handle(t_jobs *jobs, t_job *job)
@@ -35,25 +58,7 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 	}
 	job->pid = fork();
 	if (job->pid == 0)
-	{
-		set_signal(CHILD);
-		close(pipe_fd[0]);
-		if (job->next_job)
-		{
-			dup2(pipe_fd[1], 1);
-			close(pipe_fd[1]);
-		}
-		if (job->redir->in_f || job->redir->out_f || job->redir->app_f)
-		{
-			fd = get_fd(jobs, job);
-			if (fd == -1)
-				return (EXIT_FAILURE);
-		}
-		built_in(job);
-		if (job->builtin == false)
-			runCmd(jobs, job);
-		exit(ctrl_builtins(jobs, job));
-	}
+		pipe_handle_child(jobs, job, pipe_fd);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);

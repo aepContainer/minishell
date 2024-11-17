@@ -1,7 +1,6 @@
 Ekleme yapılacaklar
 
 exit // sonra bak
-export
 
 // syntax error !
 // executor bitmedi !

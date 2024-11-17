@@ -31,14 +31,17 @@ static char	get_first_env(t_jobs *jobs, char **env)
 	return (EXIT_SUCCESS);
 }
 
-static char	init_main(t_mshell *mshell, char **env)
+static char	init_main(t_mshell *mshell, char **env, int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
 		return (free(mshell), EXIT_FAILURE);
 	if (get_first_env(mshell->jobs, env))
 		return (free_mshell(mshell), EXIT_FAILURE);
 	mshell->jobs->mshell = mshell;
+	return (EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv, char **env)
@@ -49,7 +52,7 @@ int main(int argc, char **argv, char **env)
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (!mshell)
 		return (EXIT_FAILURE);
-	if (init_main(mshell, env))
+	if (init_main(mshell, env, argc, argv))
 		return (free_mshell(mshell), EXIT_FAILURE);
 	while (1)
 	{

@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-static void	error_msg(char *file, const char *message)
+void	error_msg(char *file, const char *message)
 {
 	g_quest_mark = 1;
 	ft_putstr_fd("minishell: ", 2);

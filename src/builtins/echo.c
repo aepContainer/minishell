@@ -17,10 +17,10 @@ static void	echo_line_helper(char *str, bool *in_quote, char *quote_type)
 			else if (str[j] == *quote_type)
 				*in_quote = false;
 			else if (*in_quote)
-				write(1, &str[j], 1);
+				ft_putchar_fd(str[j], 1);
 		}
 		else
-			write(1, &str[j], 1);
+			ft_putchar_fd(str[j], 1);
 	}
 }
 
@@ -44,9 +44,9 @@ void	echo(t_job *job)
 	{
 		echo_line_helper(job->args[i], &in_quote, &quote_type);
 		if (job->args[i + 1])
-			write(1, " ", 1);
+			ft_putchar_fd(' ', 1);
 		i++;
 	}
 	if (newline)
-		write(1, "\n", 1);
+		ft_putchar_fd('\n', 1);
 }
