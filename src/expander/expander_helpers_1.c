@@ -15,7 +15,7 @@ static int	get_var_length(t_jobs *jobs, char *str, int *i)
 		if (value)
 			return (ft_strlen(value));
     }
-    else if (ft_strncmp(str, "?", 1) && ft_strlen(str) == 1)
+    else if (!ft_strncmp(str, "$?", 2))
     {
         value = ft_itoa(g_quest_mark);
         if (!value)
@@ -51,26 +51,40 @@ static int	calculate_expanded_length(t_jobs *jobs, char *str)
 
 static char	expand_env_vars_line_helper(t_jobs *jobs, char *prompt, char *result, int *temps)
 {
+	char	*key;
 	char	*value;
 
-	temps[0]++;
-	temps[3] = temps[0];
-	while (prompt[temps[0]] && (ft_isalnum(prompt[temps[0]]) || prompt[temps[0]] == '_'))
-		temps[0]++;
-	if (temps[3] < temps[0])
+	if (!ft_strncmp(prompt + temps[0], "$?", 2))
 	{
-		value = find_value(jobs->env, prompt + temps[3], temps[0] - temps[3]);
-        if (!value && !ft_strncmp(prompt, "?", 1) && ft_strlen(prompt) == 1)
-            value = ft_itoa(g_quest_mark);
+		value = ft_itoa(g_quest_mark);
 		if (value)
 		{
-			ft_strlcpy(result + temps[1], value, temps[2] - temps[1] + 1);
-            temps[1] += ft_strlen(value);
+			ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
+			temps[1] += ft_strlen(value);
+			temps[0] += 2;
+			free(value);
+			return (EXIT_SUCCESS);
 		}
-		temps[1] += ft_strlen(value);
 	}
+	else if (!ft_isalnum(prompt[temps[0] + 1]) && prompt[temps[0] + 1] != '_')
+		result[temps[1]++] = prompt[temps[0]++];
 	else
-		result[temps[1]++] = '$';
+	{
+		temps[3] = temps[0] + 1;
+		while (ft_isalnum(prompt[temps[3]]) || prompt[temps[3]] == '_')
+			temps[3]++;
+		key = ft_substr(prompt, temps[0] + 1, temps[3] - temps[0] - 1);
+		if (!key)
+			return (EXIT_FAILURE);
+		value = env_find_value(jobs->env, key);
+		free(key);
+		if (value)
+		{
+			ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
+			temps[1] = ft_strlen(value);
+		}
+		temps[0] = temps[3];
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -96,7 +110,7 @@ char	*expand_env_vars(t_jobs *jobs, char *prompt)
 	temps = init_temps(jobs, prompt);
 	if (!temps)
 		return (NULL);
-    result = ft_calloc(1, temps[3] + 1);
+    result = ft_calloc(1, temps[2] + 1);
     if (!result)
         return (free(temps), NULL);
     while (prompt[temps[0]])

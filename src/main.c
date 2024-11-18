@@ -1,20 +1,5 @@
 #include "../inc/minishell.h"
 
-static void free_nec(t_mshell *mshell)
-{
-    t_job	*temp;
-    t_job	*next;
-
-    temp = mshell->jobs->job_list;
-    while (temp)
-    {
-        next = temp->next_job;
-        free_job_list(temp);
-        temp = next;
-    }
-    mshell->jobs->job_list = NULL;
-}
-
 static char	process(t_mshell *mshell)
 {
 	if (parser(mshell->jobs, mshell->prompt))
@@ -23,6 +8,23 @@ static char	process(t_mshell *mshell)
 		return (EXIT_SUCCESS);
 	free_nec(mshell);
 	return (free(mshell->prompt), EXIT_SUCCESS);
+}
+
+static char	*get_prompt(void)
+{
+	char	*prompt;
+	char	*temp;
+
+	prompt = readline(PROMPT);
+	if (!prompt)
+		return (NULL);
+	set_signal(314159);
+	if (*prompt)
+		add_history(prompt);
+	temp = prompt;
+	prompt = ft_strtrim(prompt, " \t\v\r\f");
+	free(temp);
+	return (prompt);
 }
 
 static char	get_first_env(t_jobs *jobs, char **env)
@@ -62,7 +64,6 @@ static char	init_main(t_mshell *mshell, char **env, int argc, char **argv)
 int main(int argc, char **argv, char **env)
 {
 	t_mshell	*mshell;
-	char		*prompt;
 
 	mshell = ft_calloc(1, sizeof(t_mshell));
 	if (!mshell)
@@ -71,16 +72,11 @@ int main(int argc, char **argv, char **env)
 		return (free_mshell(mshell), EXIT_FAILURE);
 	while (1)
 	{
-		prompt = readline(PROMPT);
-		if (!prompt)
-			return (EXIT_FAILURE);
-		set_signal(314159);
-		if (*prompt)
-			add_history(prompt);
-		mshell->prompt = ft_strtrim(prompt, " \t\v\r\f");
-		free(prompt);
+		mshell->prompt = get_prompt();
 		if (!mshell->prompt)
 			continue ;
+		if (check_unclosed_quotes(mshell->prompt))
+            continue ;
 		if (process(mshell))
 			break ;
 	}

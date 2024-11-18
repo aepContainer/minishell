@@ -1,12 +1,10 @@
 Ekleme yapılacaklar
 
-exit // sonra bak
+exit // exit 1 -> 1: numeric argument required !!!
 
-// syntax error !
-
+echo $12 -> seg
 
 Test edilecekler
 unset
-
 
 // en son tester

@@ -40,7 +40,8 @@ RED_SRC = $(RED_PATH)get_fd.c $(RED_PATH)error_ctrl.c $(RED_PATH)heredoc.c
 SIG_PATH = $(SRC_PATH)signal/
 SIG_SRC = $(SIG_PATH)signal_handle.c
 
-SRCS = src/main.c src/env/env_handle.c $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
+SRCS = src/main.c src/env/env_handle.c src/syntax_check.c $(B_SRC) $(EX_SRC) \
+$(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
 OBJS = $(SRCS:.c=.o)
 
 all: $(READLINE) $(OBJS) $(LIBFT) $(PRINTF)
@@ -63,10 +64,10 @@ clean:
 	make -C $(LIBFT_PATH) clean
 	make -C $(PRINTF_PATH) clean
 	$(RM) $(OBJS)
-	$(RM) $(NAME)
 
 fclean: clean
 	$(RM) -r inc/readline
+	$(RM) $(NAME)
 
 re: fclean all
 

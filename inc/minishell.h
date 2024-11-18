@@ -101,36 +101,33 @@ struct s_parser_state
     int				i;
 };
 
-// Parser
+bool	check_unclosed_quotes(const char *input);
+bool	check_syntax_errors(char **tokens);
+
 char	parser(t_jobs *jobs, char *prompt);
 char    handle_distribute(t_job *job, char *arg, char *redir_status);
 char 	**word_split(char *prompt);
 
-// Expander
+char	expander_new(t_jobs *jobs, char **splitted);
 void	expander(t_jobs *jobs, char **prompt);
 char	*expand_env_vars(t_jobs *jobs, char *prompt);
 
-// Expander Helpers
 void	update_quote_state(t_quote_state *state, char c);
 char	*find_value(t_env *env, char *key_start, int key_len);
 
-// Executor
 char	executor(t_mshell *mshell);
 char	pipe_handle(t_jobs *jobs, t_job *job);
 char	no_pipe(t_jobs *jobs, t_job *job);
 void	run_cmd(t_jobs *jobs, t_job *job);
 
-// Redir
 int		get_fd(t_jobs *jobs, t_job *job);
 char	file_control(t_jobs *jobs, t_job *job, char *file, int fd);
 char	heredoc(t_jobs *jobs, t_job *job, char state);
 
-// Env
 char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env *env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
 
-// Builtins
 void	built_in(t_job *job);
 char	ctrl_builtins(t_jobs *jobs, t_job *job);
 char	update_env(t_env *env, char *key, char *value);
@@ -143,11 +140,9 @@ void	echo(t_job *job);
 void	exit_d(char **args);
 void	handle_exit_argument(char **args, char *stripped);
 
-// Signal
 void	set_signal(int c);
 void	handler_sigint(int sig);
 
-// Helpers
 int		str_arr_len(char **arr);
 char	**str_arr_realloc(char **arr, char *element);
 void	error_msg(char *file, const char *message);
@@ -155,7 +150,6 @@ char	*ft_strjoin_const(char *s1, const char *s2);
 char	*env_find_value_const(t_env *env, const char *key);
 char	exit_error(char *arg, const char *msg);
 
-// Free
 void 	free_job_list(t_job *job);
 void 	free_jobs(t_jobs *jobs);
 void 	free_str_arr(char **arr);
@@ -163,5 +157,6 @@ void 	free_redir(t_redir *redir);
 void	free_mshell(t_mshell *mshell);
 void	free_env(t_env *env);
 void	free_str_arr_null(char ***arr);
+void 	free_nec(t_mshell *mshell);
 
 #endif

@@ -61,7 +61,7 @@ void	handle_exit_argument(char **args, char *stripped)
 {
 	int	exit_status;
 
-	if (is_all_digit(stripped) == EXIT_FAILURE)
+	if (is_all_digit(stripped))
 	{
 		exit_error(args[1], "numeric argument required\n");
 		free(stripped);

@@ -39,9 +39,11 @@ char	parser(t_jobs *jobs, char *prompt)
 	if (!jobs->job_list->redir)
 		return (free(jobs->job_list), EXIT_FAILURE);
 	jobs->len = 1;
-	expander(jobs, &prompt);
 	splitted = word_split(prompt);
 	if (!splitted)
 		return (EXIT_FAILURE);
+	if (check_syntax_errors(splitted))
+		return (EXIT_FAILURE);
+	expander(jobs, splitted);
 	return (distribute(jobs, splitted));
 }
