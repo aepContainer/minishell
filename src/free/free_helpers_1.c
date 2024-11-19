@@ -65,8 +65,5 @@ void	free_mshell(t_mshell *mshell)
 		free_jobs(mshell->jobs);
 	if (mshell->envp)
 		free(mshell->envp);
-	if (mshell->ctrl_paths)
-		free_str_arr_null(&mshell->ctrl_paths);
-	if (mshell->success_arr)
-		free_str_arr_null(&mshell->success_arr);
+	free(mshell);
 }

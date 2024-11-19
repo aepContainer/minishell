@@ -1,85 +1,84 @@
 #include "../inc/minishell.h"
 
-static char	process(t_mshell *mshell)
+static char	nuller(t_mshell *mshell)
 {
-	if (parser(mshell->jobs, mshell->prompt))
-		return (EXIT_SUCCESS);
-	if (executor(mshell))
-		return (EXIT_SUCCESS);
-	free_nec(mshell);
-	return (free(mshell->prompt), EXIT_SUCCESS);
-}
+	t_job	*temp;
+	t_job	*next;
 
-static char	*get_prompt(void)
-{
-	char	*prompt;
-	char	*temp;
-
-	prompt = readline(PROMPT);
-	if (!prompt)
-		return (NULL);
-	set_signal(314159);
-	if (*prompt)
-		add_history(prompt);
-	temp = prompt;
-	prompt = ft_strtrim(prompt, " \t\v\r\f");
-	free(temp);
-	return (prompt);
-}
-
-static char	get_first_env(t_jobs *jobs, char **env)
-{
-	char	**splitted;
-	int		i;
-
-	jobs->env = ft_calloc(1, sizeof(t_env));
-	if (!jobs->env)
-		return (EXIT_FAILURE);
-	i = -1;
-	while (env[++i])
+	temp = mshell->jobs->job_list;
+	if (temp)
 	{
-		splitted = ft_split(env[i], '=');
-		if (!splitted)
-			return (free_env(jobs->env), EXIT_FAILURE);
-		if (env_add(jobs->env, splitted[0], splitted[1]))
-			return (free_env(jobs->env), free(splitted), EXIT_FAILURE);
-		free(splitted);
+		
+		while (temp)
+		{
+			next = temp->next_job;
+			free_job_list(temp);
+			temp = next;
+		}
+		mshell->jobs->job_list = NULL;	
 	}
+	mshell->jobs->job_list = ft_calloc(1, sizeof(t_job));
+	if(!mshell->jobs->job_list)
+		return (EXIT_FAILURE);
+	mshell->jobs->job_list->redir = ft_calloc(1, sizeof(t_redir));
+	if(!mshell->jobs->job_list->redir)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-static char	init_main(t_mshell *mshell, char **env, int argc, char **argv)
+static char	mshell_init(t_mshell *mshell, char **env)
 {
-	(void)argc;
-	(void)argv;
+	g_quest_mark = 0;
+	mshell->exit = 0;
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
-		return (free(mshell), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	if (get_first_env(mshell->jobs, env))
-		return (free_mshell(mshell), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	mshell->jobs->mshell = mshell;
 	return (EXIT_SUCCESS);
 }
 
-int main(int argc, char **argv, char **env)
+static char	process(t_mshell *mshell, char *prompt)
+{
+	if(parser(mshell->jobs, prompt))
+		return (EXIT_FAILURE);
+	if(executor(mshell))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+static void	start_mshell(t_mshell *mshell)
+{
+	char	*prompt;
+
+	while (1)
+	{
+		nuller(mshell);
+		prompt = readline("shellshock <(o_o)> ");
+		if (!prompt)
+		{
+			free(prompt);
+			break ;
+		}
+		if (process(mshell, prompt))
+			continue ;
+	}
+}
+
+int	main(int argc, char **argv, char **env)
 {
 	t_mshell	*mshell;
 
-	mshell = ft_calloc(1, sizeof(t_mshell));
-	if (!mshell)
+	(void)argv;
+	if (argc != 1)
+		return (1);
+	mshell = ft_calloc(1,sizeof(t_mshell));
+	if(!mshell)
 		return (EXIT_FAILURE);
-	if (init_main(mshell, env, argc, argv))
-		return (free_mshell(mshell), EXIT_FAILURE);
-	while (1)
-	{
-		mshell->prompt = get_prompt();
-		if (!mshell->prompt)
-			continue ;
-		if (check_unclosed_quotes(mshell->prompt))
-            continue ;
-		if (process(mshell))
-			break ;
-	}
+	if(mshell_init(mshell, env))
+		return (EXIT_FAILURE);
+	start_mshell(mshell);
 	free_mshell(mshell);
-	return (EXIT_SUCCESS);
+	return (0);
 }

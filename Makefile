@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/
+CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ #-g -fsanitize=address 
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
@@ -32,16 +32,16 @@ H_PATH = $(SRC_PATH)helpers/
 H_SRC = $(H_PATH)helpers.c
 
 PARSER_PATH = $(SRC_PATH)parser/
-PARSER_SRC = $(PARSER_PATH)parser.c $(PARSER_PATH)parser_helpers.c $(PARSER_PATH)word_split.c
+PARSER_SRC = $(PARSER_PATH)parser.c $(PARSER_PATH)parser_helpers1.c $(PARSER_PATH)parser_helpers2.c $(PARSER_PATH)word_split.c
 
 RED_PATH = $(SRC_PATH)redir/
-RED_SRC = $(RED_PATH)get_fd.c $(RED_PATH)error_ctrl.c $(RED_PATH)heredoc.c
+RED_SRC = $(RED_PATH)get_fd.c $(RED_PATH)get_fd_helpers.c $(RED_PATH)error_ctrl.c $(RED_PATH)heredoc.c
 
 SIG_PATH = $(SRC_PATH)signal/
 SIG_SRC = $(SIG_PATH)signal_handle.c
 
-SRCS = src/main.c src/env/env_handle.c src/syntax_check.c $(B_SRC) $(EX_SRC) \
-$(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
+SRCS = src/main.c src/env/env_handle1.c src/env/env_handle2.c src/syntax_check.c \
+$(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
 OBJS = $(SRCS:.c=.o)
 
 all: $(READLINE) $(OBJS) $(LIBFT) $(PRINTF)

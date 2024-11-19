@@ -75,8 +75,7 @@ struct s_mshell
 	t_jobs		*jobs;
 	char		**envp;
 	char		*prompt;
-	char		**ctrl_paths;
-	char		**success_arr;
+	char		exit;
 	int			backup[2];
 	t_termios	termios;
 };
@@ -108,9 +107,9 @@ char	parser(t_jobs *jobs, char *prompt);
 char    handle_distribute(t_job *job, char *arg, char *redir_status);
 char 	**word_split(char *prompt);
 
-char	expander_new(t_jobs *jobs, char **splitted);
 void	expander(t_jobs *jobs, char **prompt);
 char	*expand_env_vars(t_jobs *jobs, char *prompt);
+char	ctrl_append(t_redir *redir, char *arg);
 
 void	update_quote_state(t_quote_state *state, char c);
 char	*find_value(t_env *env, char *key_start, int key_len);
@@ -119,14 +118,17 @@ char	executor(t_mshell *mshell);
 char	pipe_handle(t_jobs *jobs, t_job *job);
 char	no_pipe(t_jobs *jobs, t_job *job);
 void	run_cmd(t_jobs *jobs, t_job *job);
+char	**get_env_for_exec(t_env *env);
 
 int		get_fd(t_jobs *jobs, t_job *job);
+int		get_fd_lh(t_jobs *jobs, t_job *job, int *indexes);
 char	file_control(t_jobs *jobs, t_job *job, char *file, int fd);
 char	heredoc(t_jobs *jobs, t_job *job, char state);
 
 char	env_del_element(t_env **env, char *key, char *value);
 char	env_add(t_env *env, char *key, char *value);
 char	*env_find_value(t_env *env, char *key);
+char	get_first_env(t_jobs *jobs, char **env);
 
 void	built_in(t_job *job);
 char	ctrl_builtins(t_jobs *jobs, t_job *job);

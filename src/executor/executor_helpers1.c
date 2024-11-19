@@ -34,6 +34,7 @@ static char	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 		dup2(pipe_fd[1], 1);
 		close(pipe_fd[1]);
 	}
+	fd = 1;
 	if (job->redir->in_f || job->redir->out_f || job->redir->app_f)
 	{
 		fd = get_fd(jobs, job);
@@ -63,4 +64,33 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	return (EXIT_SUCCESS);
+}
+char	**get_env_for_exec(t_env *env)
+{
+	char	**rtrn;
+	char	*arg;
+	char	*temp;
+	int		i;
+
+	rtrn = NULL;
+	i = -1;
+	while (++i < env->len)
+	{
+		arg = ft_strdup(env->key[i]);
+		if (!arg)
+			return (NULL);
+		temp = arg;
+		arg = ft_strjoin_const(arg, "=");
+		free(temp);
+		if (!arg)
+			return (NULL);
+		temp = arg;
+		arg = ft_strjoin_const(arg, env->value[i]);
+		free(temp);
+		if (!arg)
+			return (NULL);
+		rtrn = str_arr_realloc(rtrn, arg);
+		free(arg);
+	}
+	return (rtrn);
 }

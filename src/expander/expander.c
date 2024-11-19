@@ -4,7 +4,7 @@ void	expander(t_jobs *jobs, char **prompt)
 {
     char	*expanded;
 
-    if (!prompt || !*prompt)
+    if (!*prompt)
         return ;
     expanded = expand_env_vars(jobs, *prompt);
     if (!expanded)

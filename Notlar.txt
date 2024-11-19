@@ -1,10 +1,10 @@
-Ekleme yapılacaklar
+degistirilecekler/bakmaya devam edilecekler
 
-exit // exit 1 -> 1: numeric argument required !!!
-
-echo $12 -> seg
+executor;
 
 Test edilecekler
-unset
+builtins
 
-// en son tester
+// en son testler
+	leaklere bakilacak.
+	98/140;

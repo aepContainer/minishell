@@ -1,129 +1,125 @@
 #include "../../inc/minishell.h"
 
-static int	get_var_length(t_jobs *jobs, char *str, int *i)
+static int calc_len_helper(t_jobs *jobs, char *prompt, int *index)
 {
-    char	*value;
-    int		var_start;
+	int		len;
+	char	*key;
+	char	*value;
+	int		start;
 
-    (*i)++;
-    var_start = *i;
-    while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
-        (*i)++;
-    if (var_start < *i)
-    {
-        value = find_value(jobs->env, str + var_start, *i - var_start);
+	len = 0;
+	(*index)++;
+	if (prompt[*index] == '?')
+		len += ft_strlen(ft_itoa(g_quest_mark));
+	else
+	{
+		start = *index;
+		while (ft_isalnum(prompt[*index]) || prompt[*index] == '_')
+			(*index)++;
+		key = ft_substr(prompt, start, *index - start);
+		value = env_find_value(jobs->env, key);
 		if (value)
-			return (ft_strlen(value));
-    }
-    else if (!ft_strncmp(str, "$?", 2))
-    {
-        value = ft_itoa(g_quest_mark);
-        if (!value)
-            return (0);
-        return (ft_strlen(value));
-    }
-    return (0);
+			len += ft_strlen(value);
+		free(key);
+	}
+	return (len);
 }
 
-static int	calculate_expanded_length(t_jobs *jobs, char *str)
-{
-    t_quote_state	state;
-    int				len;
-    int				i;
-
-    len = 0;
-    i = 0;
-    state.in_single = false;
-    state.in_double = false;
-    while (str[i])
-    {
-        update_quote_state(&state, str[i]);
-        if (str[i] == '$' && !state.in_single)
-            len += get_var_length(jobs, str, &i);
-        else
-        {
-            len++;
-            i++;
-        }
-    }
-    return (len);
-}
-
-static char	expand_env_vars_line_helper(t_jobs *jobs, char *prompt, char *result, int *temps)
+static void	expand_variable(char *prompt, char *result, t_jobs *jobs,
+		int *temps)
 {
 	char	*key;
 	char	*value;
+	int		start;
 
-	if (!ft_strncmp(prompt + temps[0], "$?", 2))
+	start = temps[0];
+	while (ft_isalnum(prompt[start]) || prompt[start] == '_')
+		start++;
+	key = ft_substr(prompt, temps[0], start - temps[0]);
+	value = env_find_value(jobs->env, key);
+	free(key);
+	if (value)
 	{
-		value = ft_itoa(g_quest_mark);
-		if (value)
-		{
-			ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
-			temps[1] += ft_strlen(value);
-			temps[0] += 2;
-			free(value);
-			return (EXIT_SUCCESS);
-		}
+		ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
+		temps[1] += ft_strlen(value);
 	}
-	else if (!ft_isalnum(prompt[temps[0] + 1]) && prompt[temps[0] + 1] != '_')
-		result[temps[1]++] = prompt[temps[0]++];
-	else
-	{
-		temps[3] = temps[0] + 1;
-		while (ft_isalnum(prompt[temps[3]]) || prompt[temps[3]] == '_')
-			temps[3]++;
-		key = ft_substr(prompt, temps[0] + 1, temps[3] - temps[0] - 1);
-		if (!key)
-			return (EXIT_FAILURE);
-		value = env_find_value(jobs->env, key);
-		free(key);
-		if (value)
-		{
-			ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
-			temps[1] = ft_strlen(value);
-		}
-		temps[0] = temps[3];
-	}
-	return (EXIT_SUCCESS);
+	temps[0] = start;
 }
 
-static int	*init_temps(t_jobs *jobs, char *prompt)
+static void	process_variable(char *prompt, char *result, t_jobs *jobs,
+		int *temps)
 {
-	int	*temps;
+	char	*value;
 
-	temps = ft_calloc(4, sizeof(int));
-	if (!temps)
-		return (NULL);
-	temps[2] = calculate_expanded_length(jobs, prompt);
-	return (temps);
+	temps[0]++;
+	if (prompt[temps[0]] == 0)
+		result[temps[1]++] = '$';
+	else if (prompt[temps[0]] == '?')
+	{
+		value = ft_itoa(g_quest_mark);
+		if (!value)
+			return ;
+		ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
+		temps[1] += ft_strlen(value);
+		free(value);
+		temps[0]++;
+	}
+	else if (ft_isalnum(prompt[temps[0]]) || prompt[temps[0]] == '_')
+		expand_variable(prompt, result, jobs, temps);
+	else
+		result[temps[1]++] = '$';
+}
+
+static int calc_len(t_jobs *jobs, char *prompt,	t_quote_state state)
+{
+	int		len;
+	int		index;
+
+	len = 0;
+	state.in_single = false;
+	state.in_double = false;
+	index= 0;
+	while (prompt[index])
+	{
+		update_quote_state(&state, prompt[index]);
+		if (prompt[index] == '$' && !state.in_single)
+		{
+			len += calc_len_helper(jobs, prompt, &index);
+			index++;
+		}
+		else
+		{
+			len++;
+			index++;
+		}
+	}
+	return (len);		
 }
 
 char	*expand_env_vars(t_jobs *jobs, char *prompt)
 {
-    t_quote_state	state = (t_quote_state){false, false};
-    char			*result;
-    int				*temps;
+	t_quote_state	state;
+	char			*result;
+	int				*temps;
 
-    if (!prompt)
-        return (NULL);
-	temps = init_temps(jobs, prompt);
+	if (!prompt)
+		return (NULL);
+	temps = ft_calloc(3, sizeof(int));
 	if (!temps)
 		return (NULL);
-    result = ft_calloc(1, temps[2] + 1);
-    if (!result)
-        return (free(temps), NULL);
-    while (prompt[temps[0]])
-    {
-        update_quote_state(&state, prompt[temps[0]]);
-        if (prompt[temps[0]] == '$' && !state.in_single)
-		{
-			if (expand_env_vars_line_helper(jobs, prompt, result, temps))
-				return (free(temps), NULL);
-		}
-        else
-            result[temps[1]++] = prompt[temps[0]++];
-    }
+	state = (t_quote_state){false, false};
+	temps[2] = calc_len(jobs, prompt, state);
+	result = ft_calloc(1, temps[2] + 1);
+	if (!result)
+		return (free(temps), NULL);
+	while (prompt[temps[0]])
+	{
+		update_quote_state(&state, prompt[temps[0]]);
+		if (prompt[temps[0]] == '$' && !state.in_single)
+			process_variable(prompt, result, jobs, temps);
+		else
+			result[temps[1]++] = prompt[temps[0]++];
+	}
 	result[temps[1]] = 0;
-    return (free(temps), result);
+	return (free(temps), result);
 }

@@ -13,14 +13,15 @@ bool	check_syntax_errors(char **tokens)
 {
     int i;
 
-    i = 0;
-    while (tokens[i])
+    i = -1;
+    while (tokens[++i])
     {
         if (ft_strncmp(tokens[i], "|", 2) == 0)
         {
             if (i == 0 || tokens[i + 1] == NULL || is_special_char(tokens[i + 1]))
             {
                 ft_putendl_fd("Syntax error near unexpected token '|'", 2);
+				g_quest_mark = 2;
                 return (true);
             }
         }
@@ -29,10 +30,10 @@ bool	check_syntax_errors(char **tokens)
             if (tokens[i + 1] == NULL || is_special_char(tokens[i + 1]))
             {
                 ft_putendl_fd("Syntax error near unexpected token", 2);
+				g_quest_mark = 2;
                 return (true);
             }
         }
-        i++;
     }
     return (false);
 }
@@ -56,6 +57,7 @@ bool	check_unclosed_quotes(const char *input)
     if (quote)
     {
         ft_putendl_fd("Syntax error: Unclosed quote", 2);
+		g_quest_mark = 2;
         return (true);
     }
     return (false);

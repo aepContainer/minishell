@@ -19,11 +19,6 @@ static void	handle_arg(t_job *job, int pipe_fd[2], char state)
 	i = 0;
 	while (job->redir->eof[i])
 	{
-		//if (g_quest_mark == 999)
-		//{
-		//	free(arg);
-		//	exit(130);
-		//}
 		arg = readline(">");
 		if (!arg)
 		{
@@ -46,9 +41,6 @@ static void	heredoc_child(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
 	dup2(jobs->mshell->backup[0], 0);
     handle_arg(job, pipe_fd, state);
     exit(0);
-    close(pipe_fd[1]);
-	dup2(pipe_fd[0], 0);
-	close(pipe_fd[0]);
 }
 
 char	heredoc(t_jobs *jobs, t_job *job, char state)
@@ -66,8 +58,8 @@ char	heredoc(t_jobs *jobs, t_job *job, char state)
 	{
 		if (WIFEXITED(temp_status))
 			g_quest_mark = WEXITSTATUS(temp_status);
-		if (g_quest_mark == 130)
-			return (EXIT_FAILURE);
 	}
+	if (g_quest_mark == 130)
+		return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }

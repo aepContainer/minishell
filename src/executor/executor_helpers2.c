@@ -70,36 +70,6 @@ static char	*get_exec_path(t_job *job, char *env_path)
 	return (rtrn);
 }
 
-static char	**get_env_for_exec(t_env *env)
-{
-	char	**rtrn;
-	char	*arg;
-	char	*temp;
-	int		i;
-
-	rtrn = NULL;
-	i = -1;
-	while (++i < env->len)
-	{
-		arg = ft_strdup(env->key[i]);
-		if (!arg)
-			return (NULL);
-		temp = arg;
-		arg = ft_strjoin_const(arg, "=");
-		free(temp);
-		if (!arg)
-			return (NULL);
-		temp = arg;
-		arg = ft_strjoin_const(arg, env->value[i]);
-		free(temp);
-		if (!arg)
-			return (NULL);
-		rtrn = str_arr_realloc(rtrn, arg);
-		free(arg);
-	}
-	return (rtrn);
-}
-
 void	run_cmd(t_jobs *jobs, t_job *job)
 {
 	char	**env;
@@ -108,17 +78,8 @@ void	run_cmd(t_jobs *jobs, t_job *job)
 
 	env_path = env_find_value_const(jobs->env, "PATH");
 	env = get_env_for_exec(jobs->env);
-	//if (!env)
 	if (!env_path)
-	{
-		if (!access(job->args[0], X_OK))
-		{
-			execve(job->args[0], job->args, env);
-			exit(127);
-		}
-		else
-			error_msg(job->args[0], ": No such file or directory\n");
-	}
+		handle_no_env_path(jobs, job);
 	exec_path = get_exec_path(job, env_path);
 	g_quest_mark = 0;
 	execve(exec_path, job->args, env);

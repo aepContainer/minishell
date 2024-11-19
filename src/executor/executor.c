@@ -26,60 +26,52 @@ static void	wait_child(t_mshell *mshell)
 	}
 }
 
-static char	executor_while(t_mshell *mshell, char *state)
+static char executer_while(t_mshell *mshell, t_job *temp_job)
 {
-	t_job	*temp;
-
-	temp = mshell->jobs->job_list;
-	while (temp)
+	if (mshell->jobs->len == 1)
 	{
-		if (mshell->jobs->len == 1)
-		{
-			if (temp->redir->eof && heredoc(mshell->jobs, temp, 1))
-			{
-				*state = 0;
-				return (EXIT_FAILURE);
-			}
-			if (no_pipe(mshell->jobs, temp))
-				return (EXIT_SUCCESS);
-		}
-		else
-		{
-			if (temp->redir->eof && heredoc(mshell->jobs, temp, 0))
-			{
-				state = 0;
-				return (EXIT_FAILURE);
-			}
-			if (g_quest_mark == 130)
-			{
-				state = 0;
-				return (EXIT_FAILURE);
-			}
-			if (pipe_handle(mshell->jobs, temp))
-				return (EXIT_SUCCESS);
-			g_quest_mark = 0;
-		}
-		temp = temp->next_job;
+		if (temp_job->redir->eof && heredoc(mshell->jobs, temp_job, 1))
+			return (EXIT_SUCCESS);
+		if (no_pipe(mshell->jobs, temp_job))
+			return (EXIT_SUCCESS);
 	}
-	return (EXIT_SUCCESS);
+	else
+	{
+		if (temp_job->redir->eof && heredoc(mshell->jobs, temp_job, 0))
+			return (EXIT_SUCCESS);
+		if (g_quest_mark == 130)
+			return (EXIT_SUCCESS);
+		if (pipe_handle(mshell->jobs, temp_job))
+			return (EXIT_SUCCESS);
+		g_quest_mark = 0;
+	}
+	return (EXIT_FAILURE);
 }
 
 char	executor(t_mshell *mshell)
 {
-	char state;
+	t_job	*temp_job;
+	int		state;
 
 	state = 1;
 	mshell->backup[0] = dup(STDIN_FILENO);
 	mshell->backup[1] = dup(STDOUT_FILENO);
-	if (executor_while(mshell, &state))
-		return (EXIT_SUCCESS);
-	if(state)
+	temp_job = mshell->jobs->job_list;
+	while (temp_job)
+	{
+		state = executer_while(mshell, temp_job);
+		if (state != 1)
+			break ;
+		temp_job = temp_job->next_job;
+	}
+	if (state)
 	{
 		dup2(mshell->backup[0], 0);
-		close(mshell->backup[0]);
 		dup2(mshell->backup[1], 1);
+		close(mshell->backup[0]);
 		close(mshell->backup[1]);
 		wait_child(mshell);
 	}
 	return (EXIT_SUCCESS);
 }
+

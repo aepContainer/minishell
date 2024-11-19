@@ -62,7 +62,7 @@ char	env_del_element(t_env **env, char *key, char *value)
 				return (env_del_index(env, i));
 		}
 	}
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 char	env_add(t_env *env, char *key, char *value)
@@ -102,7 +102,7 @@ char	*env_find_value(t_env *env, char *key)
 	{
 		if ((int) ft_strlen(env->key[i]) == key_len
 				&& !ft_strncmp(env->key[i], key, key_len))
-			return (env->value[i]);
+				return (env->value[i]);
 	}
 	return (NULL);
 }
