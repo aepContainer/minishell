@@ -65,6 +65,7 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 	close(pipe_fd[1]);
 	return (EXIT_SUCCESS);
 }
+
 char	**get_env_for_exec(t_env *env)
 {
 	char	**rtrn;

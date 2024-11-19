@@ -75,12 +75,6 @@ void	handle_exit_argument(char **args, char *stripped)
 		return ;
 	}
 	exit_status = get_exit_value(stripped);
-	if (exit_status == EXIT_FAILURE)
-	{
-		exit_error(args[1], "numeric argument required\n");
-		free(stripped);
-		exit(g_quest_mark);
-	}
 	g_quest_mark = exit_status;
 	free(stripped);
 }

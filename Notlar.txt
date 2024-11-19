@@ -1,10 +1,10 @@
-degistirilecekler/bakmaya devam edilecekler
-
-executor;
-
 Test edilecekler
-builtins
+unset silmior
+
+Düzeltilecekler
+heredoc
+sinyaller ve quest_mark
 
 // en son testler
 	leaklere bakilacak.
-	98/140;
+	128/140;

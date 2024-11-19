@@ -47,14 +47,16 @@ int	get_fd_lh(t_jobs *jobs, t_job *job, int *indexes)
 	char	*file;
 
 	fd = 1;
-	file = job->redir->files[indexes[3]];
-	if (get_fd_lh_if(job->redir->out_f
+	file = NULL;
+	if (job->redir->files)
+		file = job->redir->files[indexes[3]];
+	if (job->redir->out_f && get_fd_lh_if(job->redir->out_f
 		, job->redir->out_f[indexes[0]], file,ft_strlen(file)))
 		fd = open_out(jobs, job, job->redir->out_f[indexes[0]++]);
-	else if (get_fd_lh_if(job->redir->app_f
+	else if (job->redir->app_f && get_fd_lh_if(job->redir->app_f
 		, job->redir->app_f[indexes[1]], file,ft_strlen(file)))
 		fd = open_app(jobs, job, job->redir->app_f[indexes[1]++]);
-	else if (get_fd_lh_if(job->redir->in_f
+	else if (job->redir->in_f && get_fd_lh_if(job->redir->in_f
 		, job->redir->in_f[indexes[2]], file,ft_strlen(file)))
 		fd = open_in(jobs, job, job->redir->in_f[indexes[2]++]);
 	return (fd);

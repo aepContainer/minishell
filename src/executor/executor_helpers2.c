@@ -48,14 +48,14 @@ static char	*accessor(char *env_path, char *cmd)
 			return (free_str_arr(splitted), temp1);
 		free(temp1);
 	}
-	return (NULL);
+	return (free_str_arr(splitted), NULL);
 }
 
 static char	*get_exec_path(t_job *job, char *env_path)
 {
 	char	*rtrn;
 
-	if (job->args[0][0] == '/')
+	if (ft_strchr(job->args[0], '/'))
 	{
 		run_cmd_error_ctrl(job->args[0]);
 		rtrn = ft_strdup(job->args[0]);
@@ -70,6 +70,24 @@ static char	*get_exec_path(t_job *job, char *env_path)
 	return (rtrn);
 }
 
+static char	handle_env_path_null(t_job *job, char **env)
+{
+	if (!access(job->args[0], X_OK))
+	{
+		execve(job->args[0], job->args, env);
+		exit(127);
+	}
+	else
+	{
+		g_quest_mark = 1;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(job->args[0], 2);
+		ft_putstr_fd(": No such file or directory", 2);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	run_cmd(t_jobs *jobs, t_job *job)
 {
 	char	**env;
@@ -78,8 +96,8 @@ void	run_cmd(t_jobs *jobs, t_job *job)
 
 	env_path = env_find_value_const(jobs->env, "PATH");
 	env = get_env_for_exec(jobs->env);
-	if (!env_path)
-		handle_no_env_path(jobs, job);
+	if (!env_path && handle_env_path_null(job, env))
+		return ;
 	exec_path = get_exec_path(job, env_path);
 	g_quest_mark = 0;
 	execve(exec_path, job->args, env);
