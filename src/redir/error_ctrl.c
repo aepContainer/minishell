@@ -8,7 +8,7 @@ void	error_msg(char *file, const char *message)
 	ft_putstr_fd((char *) message, 2);
 }
 
-static char	redir_error(t_jobs *jobs, t_job *job, char *file_i, int fd)
+char	redir_error(t_jobs *jobs, t_job *job, char *file_i, int fd)
 {
 	t_stat	stat_t;
 
@@ -25,24 +25,5 @@ static char	redir_error(t_jobs *jobs, t_job *job, char *file_i, int fd)
 		if (jobs->len != 1 || job->built_in == false)
 			exit(1);
 	}
-	return (EXIT_SUCCESS);
-}
-
-char	file_control(t_jobs *jobs, t_job *job, char *file, int fd)
-{
-	if (!file)
-		return (EXIT_FAILURE);
-	if (access(file, F_OK))
-	{
-		error_msg(file, ": No such file or directory\n");
-		return (EXIT_FAILURE);
-	}
-	if (access(file, R_OK))
-	{
-		error_msg(file, ": Permission denied\n");
-		exit(1);
-	}
-	if (redir_error(jobs, job, file, fd))
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

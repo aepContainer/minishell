@@ -70,7 +70,7 @@ char	**str_arr_realloc(char **arr, char *element)
     if (!rtrn)
         return (NULL);
     while (arr[++i])
-        rtrn[i] = ft_strdup(arr[i]);
+        rtrn[i] = arr[i];
     rtrn[i] = ft_strdup(element);
     return (rtrn);
 }

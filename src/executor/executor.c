@@ -74,4 +74,3 @@ char	executor(t_mshell *mshell)
 	}
 	return (EXIT_SUCCESS);
 }
-

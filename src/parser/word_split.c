@@ -47,12 +47,26 @@ static char *get_word(t_parser_state *parser, char *prompt)
     return (word);
 }
 
+static char	*get_trimmed(char *word)
+{
+	char	*trimmed;
+
+	if (word[0] == '\"')
+		trimmed = ft_strtrim(word, "\"");
+	else if (word[0] == '\'')
+		trimmed = ft_strtrim(word, "\'");
+	else
+		trimmed = ft_strdup(word);
+	return (trimmed);
+}
+
 char **word_split(char *prompt)
 {
     t_quote_state	quote_state = {false, false};
     t_parser_state	parser = {&quote_state, 0, 0};
     char			**words;
     char			*word;
+	char			*trimmed;
 
     words = NULL;
     while (prompt[parser.i])
@@ -60,7 +74,11 @@ char **word_split(char *prompt)
         word = get_word(&parser, prompt);
         if (!word)
             break;
-        words = str_arr_realloc(words, word);
+		trimmed = get_trimmed(word);
+		free(word);
+		if (!trimmed)
+			return (free_str_arr(words), NULL);
+        words = str_arr_realloc(words, trimmed);
         if (!words)
             return (NULL);
     }

@@ -39,7 +39,7 @@ static char	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 	{
 		fd = get_fd(jobs, job);
 		if (fd == -1)
-			return (EXIT_FAILURE);
+			exit(1);
 	}
 	built_in(job);
 	if (job->built_in == false)

@@ -122,7 +122,7 @@ char	**get_env_for_exec(t_env *env);
 
 int		get_fd(t_jobs *jobs, t_job *job);
 int		get_fd_lh(t_jobs *jobs, t_job *job, int *indexes);
-char	file_control(t_jobs *jobs, t_job *job, char *file, int fd);
+char	redir_error(t_jobs *jobs, t_job *job, char *file_i, int fd);
 char	heredoc(t_jobs *jobs, t_job *job, char state);
 
 char	env_del_element(t_env **env, char *key, char *value);

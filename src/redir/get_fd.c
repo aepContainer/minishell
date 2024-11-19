@@ -3,11 +3,12 @@
 int	get_fd(t_jobs *jobs, t_job *job)
 {
 	int 	fd;
-	int		indexes[4];
+	int		indexes[5];
 
 	indexes[0] = 0;
 	indexes[1] = 0;
 	indexes[2] = 0;
+	indexes[4] = -1;
 	fd = 1;
 	if (job->redir->files)
 	{
@@ -15,9 +16,12 @@ int	get_fd(t_jobs *jobs, t_job *job)
 		while (job->redir->files[++indexes[3]])
 		{
 			fd = get_fd_lh(jobs, job, indexes);
-			if(indexes[3] >= indexes[2])
+			if (fd == -1)
+				return (dup2(jobs->mshell->backup[0], 0), close(jobs->mshell->backup[0])
+					, dup2(jobs->mshell->backup[1], 1), close(jobs->mshell->backup[1]), -1);
+			if(indexes[4] == 1)
 				dup2(fd, 1);
-			else
+			else if (!indexes[4])
 				dup2(fd, 0);
 		}
 	}

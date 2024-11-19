@@ -38,14 +38,13 @@ char	distribute(t_mshell *mshell, char **splitted)
 		else if (handle_distribute(temp, splitted[i], &redir_status))
 			return (free_str_arr(splitted), EXIT_FAILURE);
 	}
-	return (EXIT_SUCCESS);
+	return (free_str_arr(splitted), EXIT_SUCCESS);
 }
 
 char	parser(t_jobs *jobs, char *prompt)
 {
 	char	**splitted;
 
-	set_signal(MAIN);
 	add_history(prompt);
 	expander(jobs, &prompt);
 	if (!prompt[0] || check_unclosed_quotes(prompt))

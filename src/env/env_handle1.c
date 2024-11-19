@@ -14,6 +14,7 @@ static char	calloc_key_value(char ***key, char ***value, int len)
 static char	env_del_index(t_env **env, int index)
 {
 	t_env	*temp;
+	char	state;
 	int		i;
 
 	temp = ft_calloc(1, sizeof(t_env));
@@ -22,19 +23,19 @@ static char	env_del_index(t_env **env, int index)
 	temp->len = (*env)->len - 1;
 	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
 		return (EXIT_FAILURE);
+	state = 0;
 	i = -1;
 	while (++i < temp->len)
 	{
 		if (i == index)
 		{
-			free((*env)->key);
-			free((*env)->value);
-			i++;
+			free((*env)->key[i]);
+			free((*env)->value[i]);
+			state = 1;
 		}
-		temp->key[i] = (*env)->key[i];
-		temp->value[i] = (*env)->value[i];
+		temp->key[i] = (*env)->key[i + state];
+		temp->value[i] = (*env)->value[i + state];
 	}
-	free_env(*env);
 	*env = temp;
 	return (EXIT_SUCCESS);
 }
@@ -55,12 +56,7 @@ char	env_del_element(t_env **env, char *key, char *value)
 	{
 		len2 = ft_strlen(temp->key[i]);
 		if (len1 == len2 && !ft_strncmp(temp->key[i], key, len1))
-		{
-			len2 = ft_strlen(temp->value[i]);
-			if ((int) ft_strlen(value) == len2
-					&& ft_strncmp(temp->value[i], value, len2))
-				return (env_del_index(env, i));
-		}
+			return (env_del_index(env, i));
 	}
 	return (EXIT_SUCCESS);
 }

@@ -23,58 +23,50 @@ static void	get_status(char *arg, char *redir_status)
 }
 
 static char	ctrl_redirect_line_helper(t_job *job, char *arg
-	, char *redir_status, char *arg_net)
+	, char *redir_status)
 {
 	if (*redir_status == 2)
 	{
 		*redir_status = -1;
 		job->redir->last_in = 2;
-		arg_net = ft_strtrim(arg, "\"");
-		job->redir->eof = str_arr_realloc(job->redir->eof, arg_net);
-		if (!job->redir->eof || append_files(job, arg_net))
-			return (free(arg_net), EXIT_FAILURE);
+		job->redir->eof = str_arr_realloc(job->redir->eof, arg);
+		if (!job->redir->eof || append_files(job, arg))
+			return (EXIT_FAILURE);
 	}
 	else if (*redir_status == 3)
 	{
 		*redir_status = -1;
 		job->redir->last_out = 2;
-		arg_net = ft_strtrim(arg, "\"");
-		job->redir->app_f = str_arr_realloc(job->redir->app_f, arg_net);
-		if (!job->redir->app_f || append_files(job, arg_net))
-			return (free(arg_net), EXIT_FAILURE);
+		job->redir->app_f = str_arr_realloc(job->redir->app_f, arg);
+		if (!job->redir->app_f || append_files(job, arg))
+			return (EXIT_FAILURE);
 	}
 	else
 		get_status(arg, redir_status);
-	free(arg_net);
 	return (EXIT_SUCCESS);
 }
 
 static char	ctrl_redirect(t_job *job, char *arg, char *redir_status)
 {
-	char	*arg_net;
-
-	arg_net = NULL;
 	if (*redir_status == 0)
 	{
 		*redir_status = -1;
 		job->redir->last_in = 1;
-		arg_net = ft_strtrim(arg, "\"");
 		job->redir->in_f = str_arr_realloc(job->redir->in_f,
-				arg_net);
-		if (!job->redir->in_f || append_files(job, arg_net))
-			return (free(arg_net), EXIT_FAILURE);
+				arg);
+		if (!job->redir->in_f || append_files(job, arg))
+			return (EXIT_FAILURE);
 	}
 	else if (*redir_status == 1)
 	{
 		*redir_status = -1;
 		job->redir->last_out = 1;
-		arg_net = ft_strtrim(arg, "\"");
 		job->redir->out_f = str_arr_realloc(job->redir->out_f,
-				arg_net);
-		if (!job->redir->out_f || append_files(job, arg_net))
-			return (free(arg_net), EXIT_FAILURE);
+				arg);
+		if (!job->redir->out_f || append_files(job, arg))
+			return (EXIT_FAILURE);
 	}
-	return (ctrl_redirect_line_helper(job, arg, redir_status, arg_net));
+	return (ctrl_redirect_line_helper(job, arg, redir_status));
 }
 
 char	handle_distribute(t_job *temp, char *arg, char *redir_status)

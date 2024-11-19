@@ -55,6 +55,7 @@ static void	start_mshell(t_mshell *mshell)
 	while (1)
 	{
 		nuller(mshell);
+		set_signal(MAIN);
 		prompt = readline("shellshock <(o_o)> ");
 		if (!prompt)
 		{

@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ #-g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ 
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft

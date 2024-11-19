@@ -1,5 +1,11 @@
 {
 	"files.associations": {
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"__config": "c",
+		"ios": "c",
+		"string": "c",
+		"string_view": "c",
+		"variant": "c",
+		"vector": "c"
 	}
 }
