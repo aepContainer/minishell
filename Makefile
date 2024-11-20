@@ -6,10 +6,6 @@ LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
 LIBFT = $(LIBFT_PATH)libft.a
 
-PRINTF_PATH = inc/ft_printf/
-PRINTF_FLAGS = -L $(PRINTF_PATH) -lftprintf
-PRINTF = $(PRINTF_PATH)libftprintf.a
-
 READLINE = $(PWD)/inc/readline/
 RL_FLAGS = -lreadline -L $(READLINE)lib -lhistory -I $(READLINE)include/
 
@@ -44,14 +40,11 @@ SRCS = src/main.c src/env/env_handle1.c src/env/env_handle2.c src/syntax_check.c
 $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
 OBJS = $(SRCS:.c=.o)
 
-all: $(READLINE) $(OBJS) $(LIBFT) $(PRINTF)
-	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(PRINTF_FLAGS) $(RL_FLAGS) -o $(NAME)
+all: $(READLINE) $(OBJS) $(LIBFT)
+	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
-
-$(PRINTF):
-	make -C $(PRINTF_PATH)
 
 $(READLINE):
 	curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
@@ -62,7 +55,6 @@ $(READLINE):
 
 clean:
 	make -C $(LIBFT_PATH) clean
-	make -C $(PRINTF_PATH) clean
 	$(RM) $(OBJS)
 
 fclean: clean

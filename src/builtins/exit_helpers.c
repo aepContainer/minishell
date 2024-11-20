@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_helpers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:32:55 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:32:56 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 #include "limits.h"
 
@@ -57,24 +69,21 @@ static char	is_all_digit(char *str)
 	return (EXIT_SUCCESS);
 }
 
-void	handle_exit_argument(char **args, char *stripped)
+void	handle_exit_argument(t_jobs *jobs, char **args, char *stripped)
 {
-	int	exit_status;
-
 	if (is_all_digit(stripped))
 	{
-		exit_error(args[1], "numeric argument required\n");
+		exit_error(jobs, args[1], "numeric argument required\n");
 		free(stripped);
-		exit(g_quest_mark);
+		exit(jobs->mshell->quest_mark);
 	}
 	if (args[2])
 	{
-		g_quest_mark = 1;
+		jobs->mshell->quest_mark = 1;
 		write(2, "minishell: exit: too many arguments\n", 37);
 		free(stripped);
 		return ;
 	}
-	exit_status = get_exit_value(stripped);
-	g_quest_mark = exit_status;
+	jobs->mshell->quest_mark = get_exit_value(stripped);
 	free(stripped);
 }

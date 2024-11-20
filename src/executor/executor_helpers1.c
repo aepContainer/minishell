@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_helpers1.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:24 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:25 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 char	no_pipe(t_jobs *jobs, t_job *job)
@@ -15,7 +27,7 @@ char	no_pipe(t_jobs *jobs, t_job *job)
 		{
 			set_signal(CHILD);
 			run_cmd(jobs, job);
-			exit(g_quest_mark);
+			exit(jobs->mshell->quest_mark);
 		}
 	}
 	else

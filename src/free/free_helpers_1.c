@@ -1,22 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_helpers_1.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:50 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:51 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	free_str_arr(char **arr)
 {
-	int i;
+	int	i;
 
-	if(!arr)
+	if (!arr)
 		return ;
 	i = -1;
-	while(arr[++i])
+	while (arr[++i])
 		free(arr[i]);
 	free(arr);
 }
 
 void	free_jobs(t_jobs *jobs)
 {
-	if(!jobs)
+	if (!jobs)
 		return ;
-	while(jobs->job_list)
+	while (jobs->job_list)
 	{
 		free_job_list(jobs->job_list);
 		jobs->job_list = jobs->job_list->next_job;
@@ -28,27 +40,27 @@ void	free_jobs(t_jobs *jobs)
 
 void	free_job_list(t_job *job_list)
 {
-	if(!job_list)
+	if (!job_list)
 		return ;
-	if(job_list->args)
+	if (job_list->args)
 		free_str_arr_null(&job_list->args);
-	if(job_list->redir)
+	if (job_list->redir)
 	{
 		free_redir(job_list->redir);
 		job_list->redir = NULL;
 	}
-    free(job_list);
+	free(job_list);
 }
 
 void	free_redir(t_redir *redir)
 {
 	if (!redir)
 		return ;
-    if(redir->files)
+	if (redir->files)
 		free_str_arr_null(&redir->files);
-	if(redir->eof)
+	if (redir->eof)
 		free_str_arr_null(&redir->eof);
-	if(redir->in_f)
+	if (redir->in_f)
 		free_str_arr_null(&redir->in_f);
 	if (redir->out_f)
 		free_str_arr_null(&redir->out_f);

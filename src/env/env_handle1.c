@@ -1,44 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_handle1.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:18 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:19 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
-
-static char	calloc_key_value(char ***key, char ***value, int len)
-{
-	*key = ft_calloc(len, sizeof(char *));
-	if (!*key)
-		return (EXIT_FAILURE);
-	*value = ft_calloc(len, sizeof(char *));
-	if (!*value)
-		return (free(*key), EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-static char	env_del_index(t_env **env, int index)
-{
-	t_env	*temp;
-	char	state;
-	int		i;
-
-	temp = ft_calloc(1, sizeof(t_env));
-	if (!temp)
-		return (EXIT_FAILURE);
-	temp->len = (*env)->len - 1;
-	if (calloc_key_value(&temp->key, &temp->value, temp->len + 1))
-		return (EXIT_FAILURE);
-	state = 0;
-	i = -1;
-	while (++i < temp->len)
-	{
-		if (i == index)
-		{
-			free((*env)->key[i]);
-			free((*env)->value[i]);
-			state = 1;
-		}
-		temp->key[i] = (*env)->key[i + state];
-		temp->value[i] = (*env)->value[i + state];
-	}
-	*env = temp;
-	return (EXIT_SUCCESS);
-}
 
 char	env_del_element(t_env **env, char *key, char *value)
 {
@@ -96,9 +68,9 @@ char	*env_find_value(t_env *env, char *key)
 	i = -1;
 	while (env->key[++i])
 	{
-		if ((int) ft_strlen(env->key[i]) == key_len
-				&& !ft_strncmp(env->key[i], key, key_len))
-				return (env->value[i]);
+		if ((int)ft_strlen(env->key[i]) == key_len && !ft_strncmp(env->key[i],
+				key, key_len))
+			return (env->value[i]);
 	}
 	return (NULL);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_helpers.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:32:59 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:00 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 char	update_env(t_env *env, char *key, char *value)
@@ -10,7 +22,7 @@ char	update_env(t_env *env, char *key, char *value)
 	while (env->key[++i])
 	{
 		if (!ft_strncmp(env->key[i], key, key_len)
-				&& key_len == ft_strlen(env->key[i]))
+			&& key_len == ft_strlen(env->key[i]))
 		{
 			free(env->value[i]);
 			env->value[i] = ft_strdup(value);

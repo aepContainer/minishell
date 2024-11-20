@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
+/*   Created: 2024/11/20 21:34:07 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:34:07 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 static char	job_init(t_job **temp, char **splitted)
@@ -47,13 +62,13 @@ char	parser(t_jobs *jobs, char *prompt)
 
 	add_history(prompt);
 	expander(jobs, &prompt);
-	if (!prompt[0] || check_unclosed_quotes(prompt))
+	if (!prompt[0] || check_unclosed_quotes(jobs, prompt))
 		return (EXIT_FAILURE);
 	splitted = word_split(prompt);
 	free(prompt);
 	if (!splitted)
 		return (EXIT_FAILURE);
-	if (check_syntax_errors(splitted))
-		return (EXIT_FAILURE);
+	if (check_syntax_errors(jobs, splitted))
+		return (free_str_arr(splitted), EXIT_FAILURE);
 	return (distribute(jobs->mshell, splitted));
 }

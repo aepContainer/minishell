@@ -1,16 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_helpers_1.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:34 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:35 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-static int calc_len_helper(t_jobs *jobs, char *prompt, int *index)
+static int	calc_len_helper(t_jobs *jobs, char *prompt, int *index)
 {
 	int		len;
 	char	*key;
 	char	*value;
+	char	*temp;
 	int		start;
 
 	len = 0;
 	(*index)++;
 	if (prompt[*index] == '?')
-		len += ft_strlen(ft_itoa(g_quest_mark));
+	{
+		temp = ft_itoa(jobs->mshell->quest_mark);
+		if (!temp)
+			return (0);
+		len += ft_strlen(temp);
+		free(temp);
+	}
 	else
 	{
 		start = *index;
@@ -56,7 +75,7 @@ static void	process_variable(char *prompt, char *result, t_jobs *jobs,
 		result[temps[1]++] = '$';
 	else if (prompt[temps[0]] == '?')
 	{
-		value = ft_itoa(g_quest_mark);
+		value = ft_itoa(jobs->mshell->quest_mark);
 		if (!value)
 			return ;
 		ft_strlcpy(result + temps[1], value, ft_strlen(value) + 1);
@@ -70,15 +89,15 @@ static void	process_variable(char *prompt, char *result, t_jobs *jobs,
 		result[temps[1]++] = '$';
 }
 
-static int calc_len(t_jobs *jobs, char *prompt,	t_quote_state state)
+static int	calc_len(t_jobs *jobs, char *prompt, t_quote_state state)
 {
-	int		len;
-	int		index;
+	int	len;
+	int	index;
 
 	len = 0;
 	state.in_single = false;
 	state.in_double = false;
-	index= 0;
+	index = 0;
 	while (prompt[index])
 	{
 		update_quote_state(&state, prompt[index]);
@@ -93,7 +112,7 @@ static int calc_len(t_jobs *jobs, char *prompt,	t_quote_state state)
 			index++;
 		}
 	}
-	return (len);		
+	return (len);
 }
 
 char	*expand_env_vars(t_jobs *jobs, char *prompt)

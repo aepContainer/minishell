@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_helpers2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:34:05 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:44:41 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-static char check_redir(char **redir_list, char *arg_trimmed)
+static char	check_redir(char **redir_list, char *arg_trimmed)
 {
 	int	len_str;
 	int	len_arg;
@@ -24,10 +36,9 @@ char	ctrl_append(t_redir *redir, char *arg)
 	trimmed = ft_strtrim(arg, "\"");
 	if (!trimmed)
 		return (1);
-	if (check_redir(redir->app_f, trimmed)
-		|| check_redir(redir->in_f, trimmed)
-		|| check_redir(redir->out_f, trimmed)
-		|| check_redir(redir->eof, trimmed))
+	if (check_redir(redir->app_f, trimmed) || check_redir(redir->in_f, trimmed)
+		|| check_redir(redir->out_f, trimmed) || check_redir(redir->eof,
+			trimmed))
 	{
 		free(trimmed);
 		return (1);

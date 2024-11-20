@@ -6,6 +6,9 @@
 		"string": "c",
 		"string_view": "c",
 		"variant": "c",
-		"vector": "c"
+		"vector": "c",
+		"locale": "c",
+		"ft_printf.h": "c",
+		"chrono": "c"
 	}
 }

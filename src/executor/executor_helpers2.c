@@ -1,26 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_helpers2.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:26 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:27 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-static void	run_cmd_error_ctrl(char *path)
+static void	run_cmd_error_ctrl(t_jobs *jobs, char *path)
 {
 	t_stat	stat_t;
 
 	stat(path, &stat_t);
 	if (S_ISDIR(stat_t.st_mode))
 	{
-		g_quest_mark = 1;
-		error_msg(path, ": Is a directory\n");
+		jobs->mshell->quest_mark = 1;
+		error_msg(jobs, path, ": Is a directory\n");
 		exit(126);
 	}
 	else if (!S_ISREG(stat_t.st_mode))
 	{
-		g_quest_mark = 1;
-		error_msg(path, ": No such file or directory\n");
+		jobs->mshell->quest_mark = 1;
+		error_msg(jobs, path, ": No such file or directory\n");
 		exit(127);
 	}
 	if (access(path, R_OK))
 	{
-		g_quest_mark = 1;
-		error_msg(path, ":  Permission denied\n");
+		jobs->mshell->quest_mark = 1;
+		error_msg(jobs, path, ":  Permission denied\n");
 		exit(126);
 	}
 }
@@ -51,26 +63,26 @@ static char	*accessor(char *env_path, char *cmd)
 	return (free_str_arr(splitted), NULL);
 }
 
-static char	*get_exec_path(t_job *job, char *env_path)
+static char	*get_exec_path(t_jobs *jobs, t_job *job, char *env_path)
 {
 	char	*rtrn;
 
 	if (ft_strchr(job->args[0], '/'))
 	{
-		run_cmd_error_ctrl(job->args[0]);
+		run_cmd_error_ctrl(jobs, job->args[0]);
 		rtrn = ft_strdup(job->args[0]);
 	}
 	else
 		rtrn = accessor(env_path, job->args[0]);
 	if (!rtrn)
 	{
-		error_msg(job->args[0], ": command not found\n");
+		error_msg(jobs, job->args[0], ": command not found\n");
 		exit(127);
 	}
 	return (rtrn);
 }
 
-static char	handle_env_path_null(t_job *job, char **env)
+static char	handle_env_path_null(t_jobs *jobs, t_job *job, char **env)
 {
 	if (!access(job->args[0], X_OK))
 	{
@@ -79,7 +91,7 @@ static char	handle_env_path_null(t_job *job, char **env)
 	}
 	else
 	{
-		g_quest_mark = 1;
+		jobs->mshell->quest_mark = 1;
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(job->args[0], 2);
 		ft_putstr_fd(": No such file or directory", 2);
@@ -96,10 +108,10 @@ void	run_cmd(t_jobs *jobs, t_job *job)
 
 	env_path = env_find_value_const(jobs->env, "PATH");
 	env = get_env_for_exec(jobs->env);
-	if (!env_path && handle_env_path_null(job, env))
+	if (!env_path && handle_env_path_null(jobs, job, env))
 		return ;
-	exec_path = get_exec_path(job, env_path);
-	g_quest_mark = 0;
+	exec_path = get_exec_path(jobs, job, env_path);
+	jobs->mshell->quest_mark = 0;
 	execve(exec_path, job->args, env);
 	exit(127);
 }

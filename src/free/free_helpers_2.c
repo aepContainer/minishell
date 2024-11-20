@@ -1,18 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_helpers_2.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:53 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:54 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	free_nec(t_mshell *mshell)
 {
-    t_job	*temp;
-    t_job	*next;
+	t_job	*temp;
+	t_job	*next;
 
-    temp = mshell->jobs->job_list;
-    while (temp)
-    {
-        next = temp->next_job;
-        free_job_list(temp);
-        temp = next;
-    }
-    mshell->jobs->job_list = NULL;
+	temp = mshell->jobs->job_list;
+	while (temp)
+	{
+		next = temp->next_job;
+		free_job_list(temp);
+		temp = next;
+	}
+	mshell->jobs->job_list = NULL;
 }
 
 void	free_str_arr_null(char ***arr)

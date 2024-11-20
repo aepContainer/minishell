@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helpers.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:33:57 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:33:58 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 char	*env_find_value_const(t_env *env, const char *key)
@@ -11,8 +23,8 @@ char	*env_find_value_const(t_env *env, const char *key)
 	i = -1;
 	while (env->key[++i])
 	{
-		if ((int) ft_strlen(env->key[i]) == key_len
-				&& !ft_strncmp(env->key[i], key, key_len))
+		if ((int)ft_strlen(env->key[i]) == key_len && !ft_strncmp(env->key[i],
+				key, key_len))
 			return (env->value[i]);
 	}
 	return (NULL);
@@ -44,33 +56,34 @@ char	*ft_strjoin_const(char *s1, const char *s2)
 
 int	str_arr_len(char **arr)
 {
-    int	i;
+	int	i;
 
 	i = 0;
-    while (arr[i])
-        i++;
-    return (i);
+	while (arr[i])
+		i++;
+	return (i);
 }
 
 char	**str_arr_realloc(char **arr, char *element)
 {
-    char	**rtrn;
-    int		i;
+	char	**rtrn;
+	int		i;
 
-    if (!arr)
-    {
+	if (!arr)
+	{
 		rtrn = ft_calloc(2, sizeof(char *));
-        if (!rtrn)
-            return (NULL);
-        rtrn[0] = ft_strdup(element);
-        return (rtrn);
-    }
-	rtrn = ft_calloc(str_arr_len(arr) + 2,sizeof(char *));
+		if (!rtrn)
+			return (NULL);
+		rtrn[0] = ft_strdup(element);
+		return (rtrn);
+	}
+	rtrn = ft_calloc(str_arr_len(arr) + 2, sizeof(char *));
 	i = -1;
-    if (!rtrn)
-        return (NULL);
-    while (arr[++i])
-        rtrn[i] = arr[i];
-    rtrn[i] = ft_strdup(element);
-    return (rtrn);
+	if (!rtrn)
+		return (NULL);
+	while (arr[++i])
+		rtrn[i] = ft_strdup(arr[i]);
+	free_str_arr(arr);
+	rtrn[i] = ft_strdup(element);
+	return (rtrn);
 }

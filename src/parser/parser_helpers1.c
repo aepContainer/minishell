@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_helpers1.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:34:02 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:34:03 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 static char	append_files(t_job *temp, char *arg)
@@ -22,8 +34,7 @@ static void	get_status(char *arg, char *redir_status)
 		*redir_status = -1;
 }
 
-static char	ctrl_redirect_line_helper(t_job *job, char *arg
-	, char *redir_status)
+static char	ctrl_redirect_line_helper(t_job *job, char *arg, char *redir_status)
 {
 	if (*redir_status == 2)
 	{
@@ -52,8 +63,7 @@ static char	ctrl_redirect(t_job *job, char *arg, char *redir_status)
 	{
 		*redir_status = -1;
 		job->redir->last_in = 1;
-		job->redir->in_f = str_arr_realloc(job->redir->in_f,
-				arg);
+		job->redir->in_f = str_arr_realloc(job->redir->in_f, arg);
 		if (!job->redir->in_f || append_files(job, arg))
 			return (EXIT_FAILURE);
 	}
@@ -61,8 +71,7 @@ static char	ctrl_redirect(t_job *job, char *arg, char *redir_status)
 	{
 		*redir_status = -1;
 		job->redir->last_out = 1;
-		job->redir->out_f = str_arr_realloc(job->redir->out_f,
-				arg);
+		job->redir->out_f = str_arr_realloc(job->redir->out_f, arg);
 		if (!job->redir->out_f || append_files(job, arg))
 			return (EXIT_FAILURE);
 	}

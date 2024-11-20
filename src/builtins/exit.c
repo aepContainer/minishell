@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 21:32:57 by apalaz            #+#    #+#             */
+/*   Updated: 2024/11/20 21:32:58 by apalaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 static char	*strip_quotes(char *str)
@@ -20,17 +32,17 @@ static char	*strip_quotes(char *str)
 	return (new_str);
 }
 
-char	exit_error(char *arg, const char *msg)
+char	exit_error(t_jobs *jobs, char *arg, const char *msg)
 {
-	g_quest_mark = 255;
+	jobs->mshell->quest_mark = 255;
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": ", 2);
-	ft_putstr_fd((char *) msg, 2);
+	ft_putstr_fd((char *)msg, 2);
 	return (EXIT_FAILURE);
 }
 
-void	exit_d(char **args)
+void	exit_d(t_jobs *jobs, char **args)
 {
 	char	*stripped;
 
@@ -40,12 +52,12 @@ void	exit_d(char **args)
 		stripped = strip_quotes(args[1]);
 		if (!stripped)
 		{
-			exit_error(args[1], "memory allocation error\n");
-			exit(g_quest_mark);
+			exit_error(jobs, args[1], "memory allocation error\n");
+			exit(jobs->mshell->quest_mark);
 		}
-		handle_exit_argument(args, stripped);
+		handle_exit_argument(jobs, args, stripped);
 	}
 	else
-		g_quest_mark = 0;
-	exit(g_quest_mark);
+		jobs->mshell->quest_mark = 0;
+	exit(jobs->mshell->quest_mark);
 }
