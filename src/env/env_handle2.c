@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handle2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:20 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:21 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 20:27:54 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ char	get_first_env(t_jobs *jobs, char **env)
 	{
 		splitted = ft_split(env[i], '=');
 		if (!splitted)
-			return (free_env(jobs->env), EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		if (env_add(jobs->env, splitted[0], splitted[1]))
-			return (free_env(jobs->env), free(splitted), EXIT_FAILURE);
+			return (free_str_arr(splitted), EXIT_FAILURE);
 		free_str_arr(splitted);
 	}
 	return (EXIT_SUCCESS);
@@ -54,11 +54,7 @@ static char	env_del_index_lh(t_env **env, t_env *temp, int index)
 	while (++i < temp->len)
 	{
 		if (i == index)
-		{
-			free((*env)->key[i]);
-			free((*env)->value[i]);
 			state = 1;
-		}
 		temp->key[i] = ft_strdup((*env)->key[i + state]);
 		if (!temp->key[i])
 			return (free_env(temp), EXIT_FAILURE);

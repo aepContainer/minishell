@@ -3,46 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expander_helpers_1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:34 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:35 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 20:34:49 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-static int	calc_len_helper(t_jobs *jobs, char *prompt, int *index)
-{
-	int		len;
-	char	*key;
-	char	*value;
-	char	*temp;
-	int		start;
-
-	len = 0;
-	(*index)++;
-	if (prompt[*index] == '?')
-	{
-		temp = ft_itoa(jobs->mshell->quest_mark);
-		if (!temp)
-			return (0);
-		len += ft_strlen(temp);
-		free(temp);
-	}
-	else
-	{
-		start = *index;
-		while (ft_isalnum(prompt[*index]) || prompt[*index] == '_')
-			(*index)++;
-		key = ft_substr(prompt, start, *index - start);
-		value = env_find_value(jobs->env, key);
-		if (value)
-			len += ft_strlen(value);
-		free(key);
-	}
-	return (len);
-}
 
 static void	expand_variable(char *prompt, char *result, t_jobs *jobs,
 		int *temps)
@@ -55,6 +23,8 @@ static void	expand_variable(char *prompt, char *result, t_jobs *jobs,
 	while (ft_isalnum(prompt[start]) || prompt[start] == '_')
 		start++;
 	key = ft_substr(prompt, temps[0], start - temps[0]);
+	if (!key)
+		return ;
 	value = env_find_value(jobs->env, key);
 	free(key);
 	if (value)
@@ -87,32 +57,6 @@ static void	process_variable(char *prompt, char *result, t_jobs *jobs,
 		expand_variable(prompt, result, jobs, temps);
 	else
 		result[temps[1]++] = '$';
-}
-
-static int	calc_len(t_jobs *jobs, char *prompt, t_quote_state state)
-{
-	int	len;
-	int	index;
-
-	len = 0;
-	state.in_single = false;
-	state.in_double = false;
-	index = 0;
-	while (prompt[index])
-	{
-		update_quote_state(&state, prompt[index]);
-		if (prompt[index] == '$' && !state.in_single)
-		{
-			len += calc_len_helper(jobs, prompt, &index);
-			index++;
-		}
-		else
-		{
-			len++;
-			index++;
-		}
-	}
-	return (len);
 }
 
 char	*expand_env_vars(t_jobs *jobs, char *prompt)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:29 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:30 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 20:52:00 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	executer_while(t_mshell *mshell, t_job *temp_job)
 		if (temp_job->redir->eof && heredoc(mshell->jobs, temp_job, 1))
 			return (0);
 		if (no_pipe(mshell->jobs, temp_job))
-			return (EXIT_SUCCESS);
+			return (0);
 	}
 	else
 	{
@@ -54,10 +54,18 @@ static int	executer_while(t_mshell *mshell, t_job *temp_job)
 		if (mshell->quest_mark == 130)
 			return (0);
 		if (pipe_handle(mshell->jobs, temp_job))
-			return (EXIT_SUCCESS);
+			return (0);
 		mshell->quest_mark = 0;
 	}
 	return (1);
+}
+
+void	get_backup(t_mshell *mshell)
+{
+	dup2(mshell->backup[0], 0);
+	close(mshell->backup[0]);
+	dup2(mshell->backup[1], 1);
+	close(mshell->backup[1]);
 }
 
 char	executor(t_mshell *mshell)
@@ -78,10 +86,7 @@ char	executor(t_mshell *mshell)
 	}
 	if (state)
 	{
-		dup2(mshell->backup[0], 0);
-		close(mshell->backup[0]);
-		dup2(mshell->backup[1], 1);
-		close(mshell->backup[1]);
+		get_backup(mshell);
 		wait_child(mshell);
 	}
 	return (EXIT_SUCCESS);

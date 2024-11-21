@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_helpers1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:24 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:25 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 18:24:41 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,20 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 	return (EXIT_SUCCESS);
 }
 
+static char	*get_env_for_exec_lh(char *key)
+{
+	char	*temp;
+	char	*arg;
+
+	arg = ft_strdup(key);
+	if (!arg)
+		return (NULL);
+	temp = arg;
+	arg = ft_strjoin_const(arg, "=");
+	free(temp);
+	return (arg);
+}
+
 char	**get_env_for_exec(t_env *env)
 {
 	char	**rtrn;
@@ -89,12 +103,7 @@ char	**get_env_for_exec(t_env *env)
 	i = -1;
 	while (++i < env->len)
 	{
-		arg = ft_strdup(env->key[i]);
-		if (!arg)
-			return (NULL);
-		temp = arg;
-		arg = ft_strjoin_const(arg, "=");
-		free(temp);
+		arg = get_env_for_exec_lh(env->key[i]);
 		if (!arg)
 			return (NULL);
 		temp = arg;

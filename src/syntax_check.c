@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:40 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:47:33 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 18:34:02 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ bool	is_special_char(const char *token)
 		|| ft_strncmp(token, ">>", 3) == 0);
 }
 
+static bool	cse_lh(t_jobs *jobs, const char *msg)
+{
+	jobs->mshell->quest_mark = 2;
+	ft_putendl_fd((char *) msg, 2);
+	return (true);
+}
+
 bool	check_syntax_errors(t_jobs *jobs, char **tokens)
 {
 	int	i;
@@ -28,21 +35,14 @@ bool	check_syntax_errors(t_jobs *jobs, char **tokens)
 	{
 		if (ft_strncmp(tokens[i], "|", 2) == 0)
 		{
-			if (i == 0 || tokens[i + 1] == NULL || is_special_char(tokens[i + 1]))
-			{
-				ft_putendl_fd("Syntax error near unexpected token '|'", 2);
-				jobs->mshell->quest_mark = 2;
-				return (true);
-			}
+			if (i == 0 || tokens[i + 1] == NULL
+				|| is_special_char(tokens[i + 1]))
+				return (cse_lh(jobs, "Syntax error near unexpected token '|'"));
 		}
 		if (is_special_char(tokens[i]) && ft_strncmp(tokens[i], "|", 2) != 0)
 		{
 			if (tokens[i + 1] == NULL || is_special_char(tokens[i + 1]))
-			{
-				ft_putendl_fd("Syntax error near unexpected token", 2);
-				jobs->mshell->quest_mark = 2;
-				return (true);
-			}
+				return (cse_lh(jobs, "Syntax error near unexpected token"));
 		}
 	}
 	return (false);

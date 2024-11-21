@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:32:40 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:32:41 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 18:14:49 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,9 @@ void	built_in(t_job *job)
 		job->built_in = false;
 }
 
-char	ctrl_builtins(t_jobs *jobs, t_job *job)
+static char	ctrl_builtins_lh(t_jobs *jobs, t_job *job)
 {
-	if (!ft_strncmp(job->args[0], "pwd", 3) && ft_strlen(job->args[0]) == 3)
-	{
-		jobs->mshell->quest_mark = pwd(jobs);
-		return (jobs->mshell->quest_mark);
-	}
-	else if (!ft_strncmp(job->args[0], "cd", 2) && ft_strlen(job->args[0]) == 2)
-	{
-		jobs->mshell->quest_mark = cd(jobs, job->args[1]);
-		return (jobs->mshell->quest_mark);
-	}
-	else if (!ft_strncmp(job->args[0], "echo", 4)
-		&& ft_strlen(job->args[0]) == 4)
+	if (!ft_strncmp(job->args[0], "echo", 4) && ft_strlen(job->args[0]) == 4)
 		return (echo(jobs, job), jobs->mshell->quest_mark);
 	else if (!ft_strncmp(job->args[0], "env", 3)
 		&& ft_strlen(job->args[0]) == 3)
@@ -67,5 +56,22 @@ char	ctrl_builtins(t_jobs *jobs, t_job *job)
 	else if (!ft_strncmp(job->args[0], "export", 6)
 		&& ft_strlen(job->args[0]) == 6)
 		return (export(jobs, job->args));
+	return (-1);
+}
+
+char	ctrl_builtins(t_jobs *jobs, t_job *job)
+{
+	if (!ft_strncmp(job->args[0], "pwd", 3) && ft_strlen(job->args[0]) == 3)
+	{
+		jobs->mshell->quest_mark = pwd(jobs);
+		return (jobs->mshell->quest_mark);
+	}
+	else if (!ft_strncmp(job->args[0], "cd", 2) && ft_strlen(job->args[0]) == 2)
+	{
+		jobs->mshell->quest_mark = cd(jobs, job->args[1]);
+		return (jobs->mshell->quest_mark);
+	}
+	else if (ctrl_builtins_lh(jobs, job))
+		return (-1);
 	return (-1);
 }

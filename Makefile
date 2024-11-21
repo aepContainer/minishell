@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ 
+CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ #-fsanitize=address
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
@@ -38,9 +38,12 @@ SIG_SRC = $(SIG_PATH)signal_handle.c
 
 SRCS = src/main.c src/env/env_handle1.c src/env/env_handle2.c src/syntax_check.c \
 $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SIG_SRC)
+
 OBJS = $(SRCS:.c=.o)
 
-all: $(READLINE) $(OBJS) $(LIBFT)
+all: $(READLINE) $(OBJS) $(LIBFT) $(NAME)
+
+$(NAME):
 	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):

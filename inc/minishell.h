@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:32:43 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:32:44 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 20:51:06 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,16 @@ char							**word_split(char *prompt);
 void							expander(t_jobs *jobs, char **prompt);
 char							*expand_env_vars(t_jobs *jobs, char *prompt);
 char							ctrl_append(t_redir *redir, char *arg);
+int								calc_len(t_jobs *jobs, char *prompt,
+									t_quote_state state);
 
 void							update_quote_state(t_quote_state *state,
 									char c);
-char							*find_value(t_env *env, char *key_start,
-									int key_len);
 
 char							executor(t_mshell *mshell);
 char							pipe_handle(t_jobs *jobs, t_job *job);
 char							no_pipe(t_jobs *jobs, t_job *job);
+void							get_backup(t_mshell *mshell);
 void							run_cmd(t_jobs *jobs, t_job *job);
 char							**get_env_for_exec(t_env *env);
 

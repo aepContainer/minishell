@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:36 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:34:37 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 19:55:15 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static char	nuller(t_mshell *mshell)
 		{
 			next = temp->next_job;
 			free_job_list(temp);
+			temp = NULL;
 			temp = next;
 		}
 		mshell->jobs->job_list = NULL;
@@ -79,7 +80,6 @@ static void	start_mshell(t_mshell *mshell)
 
 	while (1)
 	{
-		nuller(mshell);
 		set_signal(MAIN);
 		prompt = readline("shellshock <(o_o)> ");
 		if (!prompt)
@@ -87,6 +87,8 @@ static void	start_mshell(t_mshell *mshell)
 			free(prompt);
 			break ;
 		}
+		set_signal(314);
+		nuller(mshell);
 		if (process(mshell, prompt))
 			continue ;
 	}
