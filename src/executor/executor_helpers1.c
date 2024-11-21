@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_helpers1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:24 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 18:24:41 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:40:26 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	no_pipe(t_jobs *jobs, t_job *job)
 	return (EXIT_SUCCESS);
 }
 
-static char	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
+static void	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 {
 	int	fd;
 
@@ -57,7 +57,6 @@ static char	pipe_handle_child(t_jobs *jobs, t_job *job, int pipe_fd[2])
 	if (job->built_in == false)
 		run_cmd(jobs, job);
 	exit(ctrl_builtins(jobs, job));
-	return (EXIT_SUCCESS);
 }
 
 char	pipe_handle(t_jobs *jobs, t_job *job)
@@ -70,8 +69,8 @@ char	pipe_handle(t_jobs *jobs, t_job *job)
 		exit(127);
 	}
 	job->pid = fork();
-	if (job->pid == 0 && pipe_handle_child(jobs, job, pipe_fd))
-		return (EXIT_FAILURE);
+	if (job->pid == 0)
+		pipe_handle_child(jobs, job, pipe_fd);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
