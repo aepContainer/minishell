@@ -6,7 +6,7 @@
 /*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:22 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 20:53:46 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/21 21:51:06 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	get_fd(t_jobs *jobs, t_job *job)
 			fd = get_fd_lh(jobs, job, indexes);
 			if (fd == -1)
 			{
-				jobs->mshell->quest_mark = 1;	
+				jobs->mshell->quest_mark = 1;
 				return (get_backup(jobs->mshell), -1);
 			}
 			if (fd != 1 && indexes[4] == 1)
 				dup2(fd, 1);
 			else if (fd != 0 && !indexes[4])
 				dup2(fd, 0);
-			if (fd != 1)
+			if (fd != 0 && fd != 1)
 				close(fd);
 		}
 	}

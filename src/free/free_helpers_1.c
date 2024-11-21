@@ -6,7 +6,7 @@
 /*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:50 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 19:02:12 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/21 22:27:06 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,5 @@ void	free_mshell(t_mshell *mshell)
 		return ;
 	if (mshell->jobs)
 		free_jobs(mshell->jobs);
-	if (mshell->envp)
-		free(mshell->envp);
 	free(mshell);
 }

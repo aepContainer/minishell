@@ -63,7 +63,7 @@ char	parser(t_jobs *jobs, char *prompt)
 	add_history(prompt);
 	expander(jobs, &prompt);
 	if (!prompt[0] || check_unclosed_quotes(jobs, prompt))
-		return (EXIT_FAILURE);
+		return (free(prompt), EXIT_FAILURE);
 	splitted = word_split(prompt);
 	free(prompt);
 	if (!splitted)

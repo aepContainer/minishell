@@ -6,7 +6,7 @@
 /*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:29 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 20:52:00 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/21 21:07:34 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ char	executor(t_mshell *mshell)
 			break ;
 		temp_job = temp_job->next_job;
 	}
+	get_backup(mshell);
 	if (state)
-	{
-		get_backup(mshell);
 		wait_child(mshell);
-	}
 	return (EXIT_SUCCESS);
 }

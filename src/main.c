@@ -6,7 +6,7 @@
 /*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:36 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 19:55:15 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/21 22:25:50 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static char	nuller(t_mshell *mshell)
 
 static char	mshell_init(t_mshell *mshell, char **env)
 {
-	mshell->exit = 0;
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
 		return (EXIT_FAILURE);
@@ -83,10 +82,7 @@ static void	start_mshell(t_mshell *mshell)
 		set_signal(MAIN);
 		prompt = readline("shellshock <(o_o)> ");
 		if (!prompt)
-		{
-			free(prompt);
 			break ;
-		}
 		set_signal(314);
 		nuller(mshell);
 		if (process(mshell, prompt))

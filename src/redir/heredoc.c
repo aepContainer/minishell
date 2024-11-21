@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:24 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:34:25 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/21 21:27:22 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,5 @@ char	heredoc(t_jobs *jobs, t_job *job, char state)
 		if (WIFEXITED(temp_status))
 			jobs->mshell->quest_mark = WEXITSTATUS(temp_status);
 	}
-	if (jobs->mshell->quest_mark == 130)
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

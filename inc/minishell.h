@@ -6,7 +6,7 @@
 /*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:32:43 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 20:51:06 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/21 22:04:20 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "stdio.h"
 # include "sys/stat.h"
 # include "sys/wait.h"
-# include "termcap.h"
-# include "termios.h"
 # include "unistd.h"
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -45,7 +43,6 @@ typedef struct s_mshell			t_mshell;
 typedef struct s_env			t_env;
 typedef struct s_quote_state	t_quote_state;
 typedef struct s_parser_state	t_parser_state;
-typedef struct termios			t_termios;
 typedef struct stat				t_stat;
 
 struct							s_redir
@@ -83,12 +80,8 @@ struct							s_jobs
 struct							s_mshell
 {
 	t_jobs						*jobs;
-	char						**envp;
-	char						*prompt;
-	char						exit;
 	int							quest_mark;
 	int							backup[2];
-	t_termios					termios;
 };
 
 struct							s_env
