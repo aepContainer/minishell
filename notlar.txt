@@ -1,3 +1,0 @@
-sinyallere bak.
-ctrl - c durumunda ^C cikmamali
-ctrl - d fsanitize leak.

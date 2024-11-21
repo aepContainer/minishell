@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:36 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 22:25:50 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:30:41 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,11 @@ static char	nuller(t_mshell *mshell)
 	t_job	*next;
 
 	temp = mshell->jobs->job_list;
-	if (temp)
+	while (temp)
 	{
-		while (temp)
-		{
-			next = temp->next_job;
-			free_job_list(temp);
-			temp = NULL;
-			temp = next;
-		}
-		mshell->jobs->job_list = NULL;
+		next = temp->next_job;
+		free_job_list(temp);
+		temp = next;
 	}
 	mshell->jobs->job_list = ft_calloc(1, sizeof(t_job));
 	if (!mshell->jobs->job_list)
@@ -38,16 +33,20 @@ static char	nuller(t_mshell *mshell)
 	return (EXIT_SUCCESS);
 }
 
-static char	mshell_init(t_mshell *mshell, char **env)
+static t_mshell	*mshell_init(char **env)
 {
+	t_mshell	*mshell;
+
+	mshell = ft_calloc(1, sizeof(t_mshell));
+	if (!mshell)
+		return (NULL);
 	mshell->jobs = ft_calloc(1, sizeof(t_jobs));
 	if (!mshell->jobs)
-		return (EXIT_FAILURE);
+		return (free(mshell), NULL);
 	if (get_first_env(mshell->jobs, env))
-		return (EXIT_FAILURE);
-	mshell->quest_mark = 0;
+		return (free(mshell->jobs), free(mshell), NULL);
 	mshell->jobs->mshell = mshell;
-	return (EXIT_SUCCESS);
+	return (mshell);
 }
 
 static char	process(t_mshell *mshell, char *prompt)
@@ -76,16 +75,25 @@ static char	process(t_mshell *mshell, char *prompt)
 static void	start_mshell(t_mshell *mshell)
 {
 	char	*prompt;
+	char	*trim;
 
 	while (1)
 	{
 		set_signal(MAIN);
-		prompt = readline("shellshock <(o_o)> ");
+		prompt = readline(PROMPT);
 		if (!prompt)
 			break ;
+		trim = ft_strtrim(prompt, " \t\r\f\v");
+		free(prompt);
+		if (!trim)
+			break ;
 		set_signal(314);
-		nuller(mshell);
-		if (process(mshell, prompt))
+		if (nuller(mshell))
+		{
+			free(trim);
+			break ;
+		}
+		if (process(mshell, trim))
 			continue ;
 	}
 }
@@ -97,10 +105,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 		return (1);
-	mshell = ft_calloc(1, sizeof(t_mshell));
+	mshell = mshell_init(env);
 	if (!mshell)
-		return (EXIT_FAILURE);
-	if (mshell_init(mshell, env))
 		return (EXIT_FAILURE);
 	start_mshell(mshell);
 	free_mshell(mshell);

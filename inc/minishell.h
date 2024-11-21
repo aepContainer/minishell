@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:32:43 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 22:04:20 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:51:59 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define PROMPT "shellshock <(^_^)> "
+# define PROMPT "shellshock <(o_o)> "
 
 # define QUOTES "'\""
 # define DQUOTE '\"'

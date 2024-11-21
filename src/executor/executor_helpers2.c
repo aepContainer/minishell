@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_helpers2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:26 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:27 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/22 01:10:27 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static char	handle_env_path_null(t_jobs *jobs, t_job *job, char **env)
 		jobs->mshell->quest_mark = 1;
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(job->args[0], 2);
-		ft_putstr_fd(": No such file or directory", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

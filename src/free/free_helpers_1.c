@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_helpers_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem <yunozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:50 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/21 22:27:06 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:48:44 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,20 @@ void	free_str_arr(char **arr)
 
 void	free_jobs(t_jobs *jobs)
 {
+	t_job	*temp1;
+	t_job	*temp2;
+
 	if (!jobs)
 		return ;
-	while (jobs->job_list)
+	if (jobs->job_list)
 	{
-		free_job_list(jobs->job_list);
-		jobs->job_list = jobs->job_list->next_job;
+		temp1 = jobs->job_list;
+		while (temp1)
+		{
+			temp2 = temp1->next_job;
+			free_job_list(temp1);
+			temp1 = temp2;
+		}
 	}
 	if (jobs->env)
 		free_env(jobs->env);

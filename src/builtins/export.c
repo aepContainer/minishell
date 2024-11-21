@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:02 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/20 21:33:03 by apalaz           ###   ########.fr       */
+/*   Updated: 2024/11/22 01:03:13 by yunozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ static char	export_arg(t_jobs *jobs, char *arg)
 		return (free(key), EXIT_FAILURE);
 	state = update_env(jobs->env, key, value);
 	if (state == -1)
-		return (free(value), free(key), EXIT_FAILURE);
+		return (free(key), EXIT_FAILURE);
 	if (state)
 		if (env_add(jobs->env, key, value))
-			return (free(value), free(key), EXIT_FAILURE);
-	return (free(value), free(key), EXIT_SUCCESS);
+			return (free(key), EXIT_FAILURE);
+	return (free(key), EXIT_SUCCESS);
 }
 
 static void	print_values(t_env *env)
