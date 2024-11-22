@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:34:24 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/22 01:36:53 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:27:02 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	calc_state(char *arg, char *test)
 	return (!ft_strncmp(arg, test, len) && len == len_test);
 }
 
-static void	handle_arg(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
+static void	handle_arg(t_jobs *jobs, t_job *job, int pipe_fd[2])
 {
 	char	*arg;
 	char	c_state;
@@ -38,7 +38,7 @@ static void	handle_arg(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
 			exit(jobs->mshell->quest_mark);
 		}
 		c_state = calc_state(arg, job->redir->eof[i]);
-		if (!c_state && arg && !job->redir->eof[i + 1] && state)
+		if (!c_state && arg && !job->redir->eof[i + 1])
 			ft_putendl_fd(arg, pipe_fd[1]);
 		if (c_state)
 			i++;
@@ -51,7 +51,7 @@ static void	heredoc_child(t_jobs *jobs, t_job *job, int pipe_fd[2], char state)
 	if (state)
 		set_signal(HDOC);
 	dup2(jobs->mshell->backup[0], 0);
-	handle_arg(jobs, job, pipe_fd, state);
+	handle_arg(jobs, job, pipe_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	exit(0);
