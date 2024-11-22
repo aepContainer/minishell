@@ -1,6 +1,6 @@
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/ -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(READLINE)include/
 
 LIBFT_PATH = inc/libft/
 LIBFT_FLAGS = -L $(LIBFT_PATH) -lft
@@ -41,9 +41,9 @@ $(B_SRC) $(EX_SRC) $(EXP_SRC) $(FREE_SRC) $(H_SRC) $(PARSER_SRC) $(RED_SRC) $(SI
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(READLINE) $(OBJS) $(LIBFT) $(NAME)
+all: $(READLINE) $(LIBFT) $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
 	cc $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) $(RL_FLAGS) -o $(NAME)
 
 $(LIBFT):

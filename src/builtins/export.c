@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunozdem < yunozdem@student.42istanbul.    +#+  +:+       +#+        */
+/*   By: apalaz <apalaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:33:02 by apalaz            #+#    #+#             */
-/*   Updated: 2024/11/22 01:03:13 by yunozdem         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:36:23 by apalaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,17 @@ static char	export_arg(t_jobs *jobs, char *arg)
 		i++;
 	key = ft_substr(arg, 0, i);
 	if (validate(key, 0))
-		return (export_errors(jobs, arg, "not a valid identifier"));
+		return (free(key), export_errors(jobs, arg, "not a valid identifier"));
 	value = ft_substr(arg, i + 1, ft_strlen(arg) - i);
 	if (!value)
 		return (free(key), EXIT_FAILURE);
 	state = update_env(jobs->env, key, value);
 	if (state == -1)
-		return (free(key), EXIT_FAILURE);
+		return (free(key), free(value), EXIT_FAILURE);
 	if (state)
 		if (env_add(jobs->env, key, value))
-			return (free(key), EXIT_FAILURE);
-	return (free(key), EXIT_SUCCESS);
+			return (free(key), free(value), EXIT_FAILURE);
+	return (free(key), free(value), EXIT_SUCCESS);
 }
 
 static void	print_values(t_env *env)
